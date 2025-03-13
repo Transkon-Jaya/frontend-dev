@@ -1,71 +1,65 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
+import DashboardView from "../views/DashboardView.vue";
 
-interface RouteMeta {
-  requiresAuth?: boolean;
-  minimumLevel?: number;
-  [key: string]: unknown;
-  [key: symbol]: unknown; // Allows additional properties
-}
-
+// Daftar Routes
 const routes: Array<RouteRecordRaw> = [
+  { path: "/", name: "home", component: HomeView },
+  { path: "/login", name: "login", component: LoginView },
   {
-    path: "/",
-    name: "home",
-    component: HomeView,
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: LoginView,
+    path: "/dashboard",
+    name: "dashboard",
+    component: DashboardView,
+    meta: { requiresAuth: true },
   },
   {
     path: "/about",
     name: "about",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    component: () => import("../views/AboutView.vue"),
   },
   {
     path: "/test",
     name: "test",
-    component: () =>
-      import(/* webpackChunkName: "test" */ "../views/TestView.vue"),
+    component: () => import("../views/TestView.vue"),
   },
   {
     path: "/marketing",
     name: "marketing",
-    component: () =>
-      import(/* webpackChunkName: "marketing" */ "../views/MarketingView.vue"),
+    component: () => import("../views/MarketingView.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/marketing-e",
     name: "marketing-e",
-    component: () =>
-      import(
-        /* webpackChunkName: "marketing-e" */ "../views/MarketingViewE.vue"
-      ),
-    meta: { requiresAuth: true, minimumLevel: 5 } as RouteMeta,
+    component: () => import("../views/MarketingViewE.vue"),
+    meta: { requiresAuth: true, minimumLevel: 5 },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/" },
+  { path: "/:pathMatch(.*)*", redirect: "/" }, // Redirect untuk route yang tidak ditemukan
 ];
 
+// Buat router
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
 });
 
-// Add type assertion to ensure meta is always of the correct type
+// Middleware untuk autentikasi sebelum masuk ke halaman tertentu
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
-  const user_level_g = localStorage.getItem("user_level");
-  const user_level = user_level_g ? parseInt(user_level_g, 10) : 10;
-  // Ensure meta is defined before accessing it
-  const meta = to.meta as RouteMeta;
-  if (meta.requiresAuth && !token) {
+  const user_level = parseInt(localStorage.getItem("user_level") || "0", 10); // Default 0 jika tidak ada
+
+  // Cek apakah route memiliki meta auth atau minimumLevel
+  if (to.meta.requiresAuth && !token) {
+    console.warn("🔒 Akses ditolak! Harus login dulu.");
     next("/login");
-  } else if (meta.minimumLevel && meta.minimumLevel < user_level) {
+  } else if (
+    to.meta.minimumLevel &&
+    user_level < (to.meta.minimumLevel as number) // ✅ Type assertion agar TypeScript mengenali tipe
+  ) {
+    console.warn(
+      `⛔ Akses ditolak! Level ${user_level} kurang dari ${to.meta.minimumLevel}`
+    );
     next("/");
   } else {
     next();

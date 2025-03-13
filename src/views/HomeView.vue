@@ -1,3 +1,5 @@
+<!--
+
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
@@ -15,4 +17,13 @@ import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
   },
 })
 export default class HomeView extends Vue {}
+</script>
+-->
+
+<template>
+  <LoginView />
+</template>
+
+<script setup>
+import LoginView from "./LoginView.vue";
 </script>
