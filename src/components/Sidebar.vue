@@ -8,9 +8,21 @@
       <div v-if="showDashboard" class="dashboard" @mouseleave="hideDashboard">
         <h2 class="text-center">Dashboard Menu</h2>
         <ul>
-          <li><router-link to="/marketing">Marketing</router-link></li>
-          <li><router-link to="/marketing-e">Marketing-E</router-link></li>
-          <li><router-link to="/test">Test</router-link></li>
+          <li v-for="(menu, index) in menus" :key="index">
+            <div @click="toggleDropdown(index)" class="menu-title">
+              {{ menu.title }}
+              <i
+                :class="
+                  menu.open ? 'fas fa-chevron-down' : 'fas fa-chevron-right'
+                "
+              ></i>
+            </div>
+            <ul v-if="menu.open" class="submenu">
+              <li v-for="(submenu, subIndex) in menu.submenus" :key="subIndex">
+                <router-link :to="submenu.link">{{ submenu.name }}</router-link>
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </transition>
@@ -22,18 +34,60 @@ import { ref, onMounted, onUnmounted } from "vue";
 
 const showDashboard = ref(false);
 
+// Daftar menu utama dan submenunya
+const menus = ref([
+  {
+    title: "Fleet",
+    open: false,
+    submenus: [
+      { name: "Marketing", link: "/marketing" },
+      { name: "PO List", link: "/po-list" },
+      { name: "Operations", link: "/fleet-operations" },
+    ],
+  },
+  {
+    title: "HR",
+    open: false,
+    submenus: [
+      { name: "Employee Data", link: "/hr-employee" },
+      { name: "Payroll", link: "/hr-payroll" },
+    ],
+  },
+  {
+    title: "Workshop",
+    open: false,
+    submenus: [
+      { name: "Repairs", link: "/workshop-repairs" },
+      { name: "Inventory", link: "/workshop-inventory" },
+    ],
+  },
+  {
+    title: "Supply Chain",
+    open: false,
+    submenus: [
+      { name: "Logistics", link: "/supply-chain-logistics" },
+      { name: "Procurement", link: "/supply-chain-procurement" },
+    ],
+  },
+]);
+
 // Fungsi untuk menampilkan sidebar jika mouse ke sisi kiri layar
 const handleMouseMove = (event) => {
   if (event.clientX < 50 && !showDashboard.value) {
     showDashboard.value = true;
-    document.body.classList.add("sidebar-active"); // Nonaktifkan scroll saat sidebar terbuka
+    document.body.classList.add("sidebar-active");
   }
 };
 
 // Fungsi untuk menyembunyikan sidebar saat mouse keluar
 const hideDashboard = () => {
   showDashboard.value = false;
-  document.body.classList.remove("sidebar-active"); // Aktifkan scroll kembali
+  document.body.classList.remove("sidebar-active");
+};
+
+// Fungsi untuk menampilkan atau menyembunyikan submenu
+const toggleDropdown = (index) => {
+  menus.value[index].open = !menus.value[index].open;
 };
 
 // Tambahkan event listener saat komponen dimuat
@@ -62,7 +116,6 @@ onUnmounted(() => {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
   z-index: 10;
-  pointer-events: auto; /* Pastikan sidebar hanya menangkap klik saat terbuka */
 }
 
 /* Overlay transparan saat sidebar aktif */
@@ -72,9 +125,8 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Transparan hitam */
-  z-index: 9; /* Pastikan berada di bawah sidebar */
-  pointer-events: auto; /* Pastikan overlay bisa menangkap klik */
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9;
 }
 
 /* Sidebar transisi */
@@ -88,23 +140,50 @@ onUnmounted(() => {
   transform: translateX(-100%);
 }
 
-/* Menu styling */
+/* Styling menu utama */
 .dashboard ul {
   list-style: none;
   padding: 0;
 }
 
 .dashboard ul li {
-  margin: 15px 0;
+  margin: 10px 0;
 }
 
-.dashboard ul li a {
+/* Gaya untuk tombol dropdown */
+.menu-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  background: #dcdcdc;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.menu-title:hover {
+  background: #c0c0c0;
+}
+
+/* Styling submenu */
+.submenu {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.submenu li {
+  padding: 5px 0;
+}
+
+.submenu li a {
   color: rgb(0, 0, 0);
   text-decoration: none;
-  font-weight: bold;
 }
 
-.dashboard ul li a:hover {
+.submenu li a:hover {
   text-decoration: underline;
 }
 

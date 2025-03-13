@@ -23,10 +23,10 @@
 import { ref } from "vue";
 
 const dashboardItems = ref([
-  { name: "Fleet", link: "/marketing", icon: "fas fa-car-side" },
-  { name: "HR", link: "/hr", icon: "fas fa-file-signature" },
-  { name: "Workshop", link: "/workshop", icon: "fas fa-screwdriver-wrench" },
-  { name: "Supply Chain", link: "/supply-chain", icon: "fas fa-link" },
+  { name: "Fleet", link: "/test", icon: "fas fa-car-side" },
+  { name: "HR", link: "/test", icon: "fas fa-file-signature" },
+  { name: "Workshop", link: "/test", icon: "fas fa-screwdriver-wrench" },
+  { name: "Supply Chain", link: "/test", icon: "fas fa-link" },
 ]);
 </script>
 
