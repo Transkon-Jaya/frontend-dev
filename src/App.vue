@@ -17,7 +17,7 @@
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 import AppHeader from "./components/AppHeader.vue";
-import Sidebar from "./components/Sidebar.vue";
+import Sidebar from "./components/AppSidebar.vue";
 
 // Dapatkan informasi rute saat ini
 const route = useRoute();

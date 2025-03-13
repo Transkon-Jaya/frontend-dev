@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/marketing",
     name: "marketing",
     component: () => import("../views/MarketingView.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, minimumLevel: 10 },
   },
   {
     path: "/marketing-e",
@@ -48,19 +48,19 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   const user_level = parseInt(localStorage.getItem("user_level") || "0", 10); // Default 0 jika tidak ada
-
+  console.log(`${user_level} > ${to.meta.minimumLevel}`);
   // Cek apakah route memiliki meta auth atau minimumLevel
   if (to.meta.requiresAuth && !token) {
     console.warn("🔒 Akses ditolak! Harus login dulu.");
     next("/login");
   } else if (
     to.meta.minimumLevel &&
-    user_level < (to.meta.minimumLevel as number) // ✅ Type assertion agar TypeScript mengenali tipe
+    user_level > (to.meta.minimumLevel as number) // ✅ Type assertion agar TypeScript mengenali tipe
   ) {
     console.warn(
       `⛔ Akses ditolak! Level ${user_level} kurang dari ${to.meta.minimumLevel}`
     );
-    next("/");
+    next("/dashboard");
   } else {
     next();
   }
