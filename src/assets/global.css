@@ -1,0 +1,48 @@
+/* Center checkboxes globally */
+input[type="checkbox"] {
+    width: 20px; /* Make it bigger */
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+select {
+  width: 100%;  /* Makes dropdown stretch to column width */
+  height: 100%; /* Matches row height */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.vue-good-table {
+  overflow: visible !important; /* Ensures dropdowns aren't clipped */
+}
+
+.vue-good-table .vgt-table td {
+  position: relative; /* Needed for absolute positioning inside cells */
+  overflow: visible; /* Allow dropdowns to extend */
+}
+
+.dropdown {
+  width: 100%; /* Ensures it takes up the column width */
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+}
+
+/* Ensures the dropdown pops out when clicked */
+.dropdown-container {
+  position: absolute;
+  left: 0;
+  top: 100%; /* Position below the cell */
+  z-index: 1000; /* Keep it above other elements */
+  background-color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+

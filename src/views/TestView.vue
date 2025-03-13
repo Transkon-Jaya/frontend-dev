@@ -1,98 +1,285 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
+import { VueGoodTable } from "vue-good-table-next";
+import "vue-good-table-next/dist/vue-good-table-next.css";
+import * as XLSX from "xlsx";
 
+const apiUrl = "https://www.transkon-rent.com/api/marketing";
+const customerUrl = "https://www-transkon-rent.com/api/customer";
 const marketingData = ref([]);
+const customers = ref([]);
+const filteredData = ref([]); // Store filtered data
+const columns = ref([]);
 const loading = ref(true);
 const error = ref(null);
+const firstColumnWidth = ref("150px");
+const secondColumnWidth = ref("100px");
+const changedRows = ref(new Map()); // Store changed rows
+const checkboxFields = [
+  "front_bumper", 
+  "rear_bumper",
+  "roll_bar",
+  "rops",
+  "buggy_whip_cw_flag",
+  "body_strip_3m",
+  "foglamp_led_16_mata",
+  "rotary_lamp_led",
+  "rotary_lamp_flash_tube",
+  "lamp_comb_led",
+  "safety_cone",
+  "wheel_chock",
+  "fire_exting",
+  "radio_motorolla",
+  "gps",
+  "wheel_nut_indic",
+  "tyre_gt_265_65_r17_mt",
+  "radio_icom"
+];
+// Fetch Data
+const fetchCustomers = async () => {
+  try {
+      const response = await fetch("/api/customer"); // Adjust URL if necessary
+      const data = await response.json();
+      this.customers = data; // Store fetched customer names
+    } catch (error) {
+      console.error("Failed to fetch customers:", error);
+    }
+}
 
 const fetchMarketingData = async () => {
   try {
-    console.log("Fetching marketing data...");
-    const response = await axios.get(
-      "https://www.transkon-rent.com/api/marketing",
-      {
-        maxRedirects: 0,
-        headers: { "Custom-Header": "CustomValue" },
-      }
-    );
+    loading.value = true;
+    const response = await axios.get(apiUrl);
+    if (response.data.length > 0) {
+      columns.value = [
+        {
+          label: "ID",
+          field: "id",
+          width: secondColumnWidth.value,
+          minWidth: "100px",
+          sortable: true,
+          filterable: false,
+          editable: false,
+          frozen: true,
+        },
+        ...Object.keys(response.data[0])
+          .filter((key) => key !== "id")
+          .map((key) => ({
+            label: key.replace(/_/g, " ").toUpperCase(),
+            field: key,
+            sortable: true,
+            filterable: true,
+            filterOptions: { enabled: true, placeholder: `${key}` },
+            editable: true,
+            type: checkboxFields.includes(key) ? "checkbox" : "text",
+            width: Math.max(...response.data.map(item => String(item[key]).length), key.length) * 10 + 20 + "px",
+            minWidth: "80px",
+          })),
+      ];
+    }
 
-    // Assign response data to marketingData
-    marketingData.value = response.data;
+    marketingData.value = response.data.map((item) => ({
+      ...item,
+      filterable: true,
+    }));
+
+    filteredData.value = [...marketingData.value]; // Initialize filtered data
+
+    setTimeout(updateColumnWidths, 500);
   } catch (err) {
-    console.error("Error fetching data:", err);
-    error.value = "Failed to fetch marketing data.";
+    error.value = "Failed to fetch data";
+    console.error(err);
   } finally {
     loading.value = false;
   }
 };
 
-const updateMarketingData = async (item) => {
-  try {
-    await axios.put(`https://www.transkon-rent.com/api/marketing`, {
-      id: item.id,
-      name_customer: item.name_customer,
-      location: item.location,
-    });
-    alert("Updated successfully!");
-  } catch (err) {
-    console.error("Update failed:", err);
-    alert("Failed to update");
+// Track changes
+const trackChanges = (row, field) => {
+  if (!changedRows.value.has(row.id)) {
+    changedRows.value.set(row.id, { ...row });
+  } else {
+    changedRows.value.get(row.id)[field] = row[field];
   }
 };
 
-onMounted(fetchMarketingData);
+// Save all changes
+const saveChanges = async () => {
+  try {
+    const updates = Array.from(changedRows.value.values());
+    for (const item of updates) {
+      const updatedItem = { ...item };
+      delete updatedItem.isEditing;
+      await axios.put(`${apiUrl}/${item.id}`, updatedItem);
+    }
+    alert("Changes saved successfully!");
+    changedRows.value.clear();
+  } catch (err) {
+    console.error("Failed to save changes:", err);
+    alert("Failed to save changes");
+  }
+};
+
+// Export to Excel (filtered data only)
+const exportToExcel = () => {
+  const worksheet = XLSX.utils.json_to_sheet(filteredData.value);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Marketing Data");
+  XLSX.writeFile(workbook, "Filtered_Marketing_Data.xlsx");
+};
+
+// Update filtered data when table is filtered
+const onTableFiltered = (filteredRows) => {
+  filteredData.value = filteredRows;
+};
+
+// Dynamic Column Width Calculation
+const updateColumnWidths = () => {
+  const secondCol = document.querySelector(".vue-good-table th:nth-child(1)");
+  if (secondCol) secondColumnWidth.value = secondCol.offsetWidth + "px";
+  document.documentElement.style.setProperty("--second-column-width", secondColumnWidth.value);
+};
+
+onMounted(() => {
+  fetchMarketingData();
+  window.addEventListener("resize", updateColumnWidths);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateColumnWidths);
+});
 </script>
 
 <template>
   <div>
-    <h2>Marketing Data (Editable)</h2>
+    <h2>Marketing Data (Always Editable)</h2>
+    <button @click="saveChanges">Save Changes</button>
+    <button @click="exportToExcel">Export to Excel</button>
+
     <p v-if="loading">Loading...</p>
     <p v-if="error" class="error">{{ error }}</p>
+    <div class="table-container">
+          <vue-good-table
+            v-if="!loading && !error"
+            :columns="columns"
+            :rows="[{}]"
+            :pagination-options="{ enabled: false, mode: 'pages', perPage: 10 }"
+            :search-options="{ enabled: false }"
+            :sort-options="{ enabled: false }"
+            :filter-ptions="{ enabled: false }"
+            style="overflow-x: auto"
+          >
+        <template v-slot:table-row="props">
+          <template v-if="checkboxFields.includes(props.column.field)">
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                :checked="props.row[props.column.field] == 1"
+                @change="props.row[props.column.field] = $event.target.checked ? 1 : 0"
+              />
+            </div>
+          </template>
 
-    <table v-if="!loading && !error" border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Customer Name</th>
-          <th>Location</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in marketingData" :key="item.id">
-          <td>{{ item.id }}</td>
-          <td>{{ item.name_customer }}</td>
-          <td><input v-model="item.location" /></td>
-          <td>
-            <button @click="updateMarketingData(item)">Update</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <template v-else-if="props.column.editable !== false">
+            <input v-model="props.row[props.column.field]" @input="trackChanges(props.row, props.column.field)" />
+          </template>
+          <template v-else>
+            <span>{{ props.row[props.column.field] }}</span>
+          </template>
+        </template>
+      </vue-good-table>
+    </div>
+    <div class="table-container">
+      <vue-good-table
+        v-if="!loading && !error"
+        :columns="columns"
+        :rows="marketingData"
+        :pagination-options="{ enabled: true, mode: 'pages', perPage: 10 }"
+        :search-options="{ enabled: true }"
+        :sort-options="{ enabled: true }"
+        style="overflow-x: auto"
+        @on-filtered="onTableFiltered"
+      >
+        <template v-slot:table-row="props">
+          <template v-if="checkboxFields.includes(props.column.field)">
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                :checked="props.row[props.column.field] == 1"
+                @change="props.row[props.column.field] = $event.target.checked ? 1 : 0"
+              />
+            </div>
+          </template>
+
+          <template v-else-if="props.column.editable !== false">
+            <input v-model="props.row[props.column.field]" @input="trackChanges(props.row, props.column.field)" />
+          </template>
+          <template v-else>
+            <span>{{ props.row[props.column.field] }}</span>
+          </template>
+        </template>
+      </vue-good-table>
+    </div>
   </div>
 </template>
 
 <style>
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  max-width: 100%;
+  position: relative;
+  margin-top: "200px";
+}
+.vue-good-table th,
+.vue-good-table td {
+  white-space: nowrap;
+}
+.vue-good-table thead th {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 5;
+}
+.vue-good-table th:nth-child(1),
+.vue-good-table td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 4;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.vue-good-table th:nth-child(2),
+.vue-good-table td:nth-child(2) {
+  position: sticky;
+  left: 100px;
+  background: white;
+  z-index: 4;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.vue-good-table table {
+  min-width: 1200px;
+}
+
+.checkbox-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .error {
   color: red;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th,
-td {
-  padding: 8px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
 input {
+  padding: 5px;
   width: 100%;
-  padding: 4px;
+  margin: 5px 0;
 }
 button {
-  padding: 5px 10px;
+  padding: 6px 10px;
+  margin: 5px;
   background-color: #28a745;
   color: white;
   border: none;

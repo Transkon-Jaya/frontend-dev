@@ -1,9 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
       <router-link class="navbar-brand" to="/dashboard">
         <img
-          src="@/assets/logo.png"
+          src="@images/logo.png"
           alt="Logo"
           class="logo"
           style="width: 120px; height: auto"
@@ -28,24 +28,15 @@
             <router-link class="nav-link" to="/test">Test</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/marketing"
-              >Marketing</router-link
-            >
+            <router-link class="nav-link" to="/marketing">Marketing</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/marketing-e"
-              >Marketing-E</router-link
-            >
+            <router-link class="nav-link" to="/marketing-e">Marketing-E</router-link>
           </li>
         </ul>
 
-        <!-- Tombol Login/Logout -->
         <div class="d-flex">
-          <router-link
-            v-if="!isLoggedIn"
-            class="btn btn-primary me-2"
-            to="/login"
-          >
+          <router-link v-if="!isLoggedIn" class="btn btn-primary me-2" to="/login">
             Login
           </router-link>
           <button v-if="isLoggedIn" @click="logout" class="btn btn-danger">
@@ -67,12 +58,10 @@ const router = useRouter();
 const route = useRoute();
 const isLoggedIn = ref(false);
 
-// Cek apakah user sudah login
 const checkLoginStatus = () => {
   isLoggedIn.value = !!localStorage.getItem("token");
 };
 
-// Tutup navbar setelah klik link
 const closeNavbar = () => {
   const navbar = document.getElementById("navbarNav");
   if (navbar) {
@@ -80,7 +69,6 @@ const closeNavbar = () => {
   }
 };
 
-// Pantau perubahan rute untuk update UI saat login/logout
 watch(route, checkLoginStatus);
 
 const logout = () => {
@@ -89,11 +77,15 @@ const logout = () => {
   router.push("/login");
 };
 
-// Cek login saat pertama kali komponen dimuat
 onMounted(checkLoginStatus);
 </script>
 
 <style scoped>
+/* Fix content being overlapped by navbar */
+.page-content {
+  padding-top: 80px; /* Adjust based on navbar height */
+}
+
 .navbar-nav .nav-link {
   font-weight: bold;
   margin-right: 10px;

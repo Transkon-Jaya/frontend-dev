@@ -63,6 +63,5 @@ body {
   background-color: #f8f9fa !important;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 </style>

@@ -44,4 +44,8 @@ const showSidebar = computed(() => route.path !== "/login");
   box-sizing: border-box;
   margin: 0;
 }
+
+.content {
+  padding-top: 100px; /* Adjust based on navbar height */
+}
 </style>

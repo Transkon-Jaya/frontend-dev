@@ -5,7 +5,9 @@ import DashboardView from "../views/DashboardView.vue";
 
 // Daftar Routes
 const routes: Array<RouteRecordRaw> = [
-  { path: "/", name: "home", component: HomeView },
+  { path: "/", 
+    redirect: "/dashboard",
+   },
   { path: "/login", name: "login", component: LoginView },
   {
     path: "/dashboard",
@@ -35,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/MarketingViewE.vue"),
     meta: { requiresAuth: true, minimumLevel: 5 },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/" }, // Redirect untuk route yang tidak ditemukan
+  { path: "/:pathMatch(.*)*", redirect: "/dashboard" }, // Redirect untuk route yang tidak ditemukan
 ];
 
 // Buat router

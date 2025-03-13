@@ -75,14 +75,14 @@ const menus = ref([
 const handleMouseMove = (event) => {
   if (event.clientX < 50 && !showDashboard.value) {
     showDashboard.value = true;
-    document.body.classList.add("sidebar-active");
+    //document.body.classList.add("sidebar-active");
   }
 };
 
 // Fungsi untuk menyembunyikan sidebar saat mouse keluar
 const hideDashboard = () => {
   showDashboard.value = false;
-  document.body.classList.remove("sidebar-active");
+  //document.body.classList.remove("sidebar-active");
 };
 
 // Fungsi untuk menampilkan atau menyembunyikan submenu
@@ -98,13 +98,14 @@ onMounted(() => {
 // Hapus event listener saat komponen dihancurkan
 onUnmounted(() => {
   window.removeEventListener("mousemove", handleMouseMove);
-  document.body.classList.remove("sidebar-active");
+  //document.body.classList.remove("sidebar-active");
 });
 </script>
 
 <style scoped>
 /* Sidebar sebagai overlay */
 .dashboard {
+  overflow-y: auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -116,6 +117,7 @@ onUnmounted(() => {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
   z-index: 10;
+  max-height: 100vh;
 }
 
 /* Memberi jarak antara judul sidebar dan menu */
@@ -201,7 +203,7 @@ onUnmounted(() => {
 }
 
 /* Saat sidebar aktif, nonaktifkan scroll */
-body.sidebar-active {
+/* body.sidebar-active {
   overflow: hidden;
-}
+} */
 </style>
