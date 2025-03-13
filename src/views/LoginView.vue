@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div
+    class="d-flex justify-content-center align-items-center vh-100 vw-100 bg-light position-absolute top-0 start-0"
+  >
     <div class="card p-4 shadow-lg" style="width: 350px">
       <h2 class="text-center mb-4">Login</h2>
       <form @submit.prevent="login">
@@ -47,9 +49,7 @@ export default {
         console.log(response.data);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user_level", response.data.user_level);
-
-        // Redirect ke dashboard setelah login sukses
-        this.$router.push("/dashboard");
+        this.$router.push("/dashboard"); // ✅ Redirect ke DashboardView setelah login sukses
       } catch (err) {
         this.error = err.response?.data?.error || "Login failed";
       }
@@ -60,6 +60,9 @@ export default {
 
 <style>
 body {
-  background-color: #f8f9fa;
+  background-color: #f8f9fa !important;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 </style>

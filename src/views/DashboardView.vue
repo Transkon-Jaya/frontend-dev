@@ -1,60 +1,23 @@
 <template>
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <div class="sidebar bg-dark text-white p-3 vh-100">
-      <h4 class="text-center mb-4">Dashboard</h4>
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <router-link class="nav-link text-white" to="/dashboard"
-            >🏠 Home</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link text-white" to="/profile"
-            >👤 Profile</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link text-white" to="/settings"
-            >⚙ Settings</router-link
-          >
-        </li>
-        <li class="nav-item">
-          <button @click="logout" class="btn btn-danger w-100 mt-3">
-            🚪 Logout
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Main Content -->
-    <div class="content p-4 flex-grow-1">
-      <h2>Welcome to Dashboard</h2>
-      <p>This is your main dashboard page.</p>
-    </div>
+  <div class="main-dashboard">
+    <h1>Welcome to the Dashboard</h1>
+    <p>This is your main dashboard page.</p>
   </div>
 </template>
 
-<script setup>
-import { useRouter } from "vue-router";
-
-const router = useRouter();
-
-const logout = () => {
-  localStorage.removeItem("token");
-  router.push("/login");
-};
-</script>
+<script setup></script>
 
 <style scoped>
-.sidebar {
-  width: 250px;
+.main-dashboard {
+  text-align: center;
+  padding: 50px;
+  background: #f8f9fa;
+  min-height: 100vh;
 }
-.nav-link {
-  padding: 10px;
-  font-size: 18px;
-}
-.nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.page-container {
+  width: 100%;
+  padding: 20px; /* Sesuaikan jika perlu */
+  box-sizing: border-box; /* Pastikan padding tidak mempengaruhi lebar */
+  margin: 0;
 }
 </style>
