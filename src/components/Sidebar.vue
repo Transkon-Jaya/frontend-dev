@@ -6,7 +6,7 @@
     <!-- Sidebar -->
     <transition name="sidebar-fade">
       <div v-if="showDashboard" class="dashboard" @mouseleave="hideDashboard">
-        <h2 class="text-center">Dashboard Menu</h2>
+        <h2 class="sidebar-title">Transkon Jaya</h2>
         <ul>
           <li v-for="(menu, index) in menus" :key="index">
             <div @click="toggleDropdown(index)" class="menu-title">
@@ -118,6 +118,15 @@ onUnmounted(() => {
   z-index: 10;
 }
 
+/* Memberi jarak antara judul sidebar dan menu */
+.sidebar-title {
+  text-align: center;
+  font-size: 24px; /* Perbesar tulisan */
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 10px 0;
+}
+
 /* Overlay transparan saat sidebar aktif */
 .overlay {
   position: fixed;
@@ -156,10 +165,10 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  padding: 10px;
+  padding: 12px;
   font-weight: bold;
   background: #dcdcdc;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: background 0.3s;
 }
 
@@ -175,16 +184,20 @@ onUnmounted(() => {
 }
 
 .submenu li {
-  padding: 5px 0;
+  padding: 8px 0;
 }
 
 .submenu li a {
   color: rgb(0, 0, 0);
   text-decoration: none;
+  display: block;
+  padding: 8px;
+  border-radius: 5px;
+  transition: background 0.3s;
 }
 
 .submenu li a:hover {
-  text-decoration: underline;
+  background: #b0b0b0;
 }
 
 /* Saat sidebar aktif, nonaktifkan scroll */

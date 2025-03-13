@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <router-link class="navbar-brand" to="/">
+      <router-link class="navbar-brand" to="/dashboard">
         <img
           src="@/assets/logo.png"
           alt="Logo"
