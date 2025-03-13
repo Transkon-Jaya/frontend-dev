@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
 
 // Buat router
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/office/'),
   routes,
 });
 
