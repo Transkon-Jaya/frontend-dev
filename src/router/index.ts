@@ -10,20 +10,20 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin",
     name: "admin",
-    meta: {requiresAuth: true, minimumLevel: 0},
+    meta: { requiresAuth: true, minimumLevel: 0 },
     children: [
       {
         path: "users",
         name: "admin-users",
         component: () => import("../views/admin/UsersView.vue"),
-        meta: {requiresAuth: true, minimumLevel: 0},
+        meta: { requiresAuth: true, minimumLevel: 0 },
       },
       {
         path: "test",
         name: "admin-test",
         component: () => import("../views/admin/AdminTest.vue"),
-        meta: {requiresAuth: true, minimumLevel: 0},
-      }
+        meta: { requiresAuth: true, minimumLevel: 0 },
+      },
     ],
   },
   {

@@ -47,7 +47,7 @@ const dashboardItems = ref([
     ],
   },
   {
-    name: "Workshop",
+    name: "Operation",
     icon: "fas fa-screwdriver-wrench",
     submenus: [
       { name: "Repairs", link: "/workshop-repairs" },

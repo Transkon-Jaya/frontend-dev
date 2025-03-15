@@ -9,9 +9,9 @@ const fetchData = async () => {
     const response = await fetch("https://www.transkon-rent.com/api/users", {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`, // Attach token
-        "Content-Type": "application/json"
-      }
+        Authorization: `Bearer ${token}`, // Attach token
+        "Content-Type": "application/json",
+      },
     });
 
     const data = await response.json();

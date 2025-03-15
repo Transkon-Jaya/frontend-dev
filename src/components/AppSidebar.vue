@@ -41,8 +41,8 @@ const menus = ref([
     open: false,
     submenus: [
       { name: "Movement", link: "/movement" },
-      { name: "Mining Preparation", link: "/mining-preparation"},
-      { name: "Disposal", link:"/disposal"},
+      { name: "Mining Preparation", link: "/mining-preparation" },
+      { name: "Disposal", link: "/disposal" },
       { name: "Marketing", link: "/marketing" },
       { name: "PO List", link: "/po-list" },
     ],
