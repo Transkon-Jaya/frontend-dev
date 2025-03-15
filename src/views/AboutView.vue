@@ -27,11 +27,18 @@ const fetchMarketingData = async () => {
         { field: "id", header: "ID", sortable: true, frozen: true },
         ...Object.keys(response.data[0])
           .filter((key) => key !== "id")
-          .map((key) => ({ field: key, header: key.replace(/_/g, " ").toUpperCase(), sortable: true }))
+          .map((key) => ({
+            field: key,
+            header: key.replace(/_/g, " ").toUpperCase(),
+            sortable: true,
+          })),
       ];
     }
 
-    marketingData.value = response.data.map((item) => ({ ...item, isEditing: false }));
+    marketingData.value = response.data.map((item) => ({
+      ...item,
+      isEditing: false,
+    }));
   } catch (err) {
     error.value = "Failed to fetch data";
     console.error(err);
@@ -47,10 +54,20 @@ const updateMarketingData = async (item) => {
     delete updatedItem.isEditing;
     await axios.put(`${apiUrl}/${item.id}`, updatedItem);
     item.isEditing = false;
-    toast.add({ severity: "success", summary: "Success", detail: "Row updated successfully!", life: 3000 });
+    toast.add({
+      severity: "success",
+      summary: "Success",
+      detail: "Row updated successfully!",
+      life: 3000,
+    });
   } catch (err) {
     console.error("Update failed:", err);
-    toast.add({ severity: "error", summary: "Error", detail: "Failed to update row!", life: 3000 });
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "Failed to update row!",
+      life: 3000,
+    });
   }
 };
 
@@ -72,16 +89,33 @@ onMounted(fetchMarketingData);
   <div class="container">
     <h2>Marketing Data (PrimeVue Table)</h2>
 
-    <Button label="Export to Excel" icon="pi pi-file-excel" class="p-button-success" @click="exportToExcel" />
+    <Button
+      label="Export to Excel"
+      icon="pi pi-file-excel"
+      class="p-button-success"
+      @click="exportToExcel"
+    />
 
     <p v-if="loading">Loading...</p>
     <p v-if="error" class="error">{{ error }}</p>
 
     <Toast />
-    
-    <DataTable v-if="!loading && !error" :value="formattedData" paginator :rows="10" class="p-datatable-sm">
+
+    <DataTable
+      v-if="!loading && !error"
+      :value="formattedData"
+      paginator
+      :rows="10"
+      class="p-datatable-sm"
+    >
       <Column field="id" header="ID" sortable frozen></Column>
-      <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" sortable>
+      <Column
+        v-for="col in columns"
+        :key="col.field"
+        :field="col.field"
+        :header="col.header"
+        sortable
+      >
         <template #body="{ data, field }">
           <InputText v-if="data.isEditing" v-model="data[field]" />
           <span v-else>{{ data[field] }}</span>
@@ -93,7 +127,11 @@ onMounted(fetchMarketingData);
             :label="data.isEditing ? 'Save' : 'Edit'"
             :icon="data.isEditing ? 'pi pi-check' : 'pi pi-pencil'"
             class="p-button-sm p-button-rounded"
-            @click="data.isEditing ? updateMarketingData(data) : (data.isEditing = true)"
+            @click="
+              data.isEditing
+                ? updateMarketingData(data)
+                : (data.isEditing = true)
+            "
           />
         </template>
       </Column>

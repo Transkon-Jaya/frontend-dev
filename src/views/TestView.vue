@@ -17,7 +17,7 @@ const firstColumnWidth = ref("150px");
 const secondColumnWidth = ref("100px");
 const changedRows = ref(new Map()); // Store changed rows
 const checkboxFields = [
-  "front_bumper", 
+  "front_bumper",
   "rear_bumper",
   "roll_bar",
   "rops",
@@ -34,18 +34,18 @@ const checkboxFields = [
   "gps",
   "wheel_nut_indic",
   "tyre_gt_265_65_r17_mt",
-  "radio_icom"
+  "radio_icom",
 ];
 // Fetch Data
 const fetchCustomers = async () => {
   try {
-      const response = await fetch("/api/customer"); // Adjust URL if necessary
-      const data = await response.json();
-      this.customers = data; // Store fetched customer names
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-    }
-}
+    const response = await fetch("/api/customer"); // Adjust URL if necessary
+    const data = await response.json();
+    this.customers = data; // Store fetched customer names
+  } catch (error) {
+    console.error("Failed to fetch customers:", error);
+  }
+};
 
 const fetchMarketingData = async () => {
   try {
@@ -73,7 +73,14 @@ const fetchMarketingData = async () => {
             filterOptions: { enabled: true, placeholder: `${key}` },
             editable: true,
             type: checkboxFields.includes(key) ? "checkbox" : "text",
-            width: Math.max(...response.data.map(item => String(item[key]).length), key.length) * 10 + 20 + "px",
+            width:
+              Math.max(
+                ...response.data.map((item) => String(item[key]).length),
+                key.length
+              ) *
+                10 +
+              20 +
+              "px",
             minWidth: "80px",
           })),
       ];
@@ -138,7 +145,10 @@ const onTableFiltered = (filteredRows) => {
 const updateColumnWidths = () => {
   const secondCol = document.querySelector(".vue-good-table th:nth-child(1)");
   if (secondCol) secondColumnWidth.value = secondCol.offsetWidth + "px";
-  document.documentElement.style.setProperty("--second-column-width", secondColumnWidth.value);
+  document.documentElement.style.setProperty(
+    "--second-column-width",
+    secondColumnWidth.value
+  );
 };
 
 onMounted(() => {
@@ -160,29 +170,34 @@ onBeforeUnmount(() => {
     <p v-if="loading">Loading...</p>
     <p v-if="error" class="error">{{ error }}</p>
     <div class="table-container">
-          <vue-good-table
-            v-if="!loading && !error"
-            :columns="columns"
-            :rows="[{}]"
-            :pagination-options="{ enabled: false, mode: 'pages', perPage: 10 }"
-            :search-options="{ enabled: false }"
-            :sort-options="{ enabled: false }"
-            :filter-ptions="{ enabled: false }"
-            style="overflow-x: auto"
-          >
+      <vue-good-table
+        v-if="!loading && !error"
+        :columns="columns"
+        :rows="[{}]"
+        :pagination-options="{ enabled: false, mode: 'pages', perPage: 10 }"
+        :search-options="{ enabled: false }"
+        :sort-options="{ enabled: false }"
+        :filter-ptions="{ enabled: false }"
+        style="overflow-x: auto"
+      >
         <template v-slot:table-row="props">
           <template v-if="checkboxFields.includes(props.column.field)">
             <div class="checkbox-container">
               <input
                 type="checkbox"
                 :checked="props.row[props.column.field] == 1"
-                @change="props.row[props.column.field] = $event.target.checked ? 1 : 0"
+                @change="
+                  props.row[props.column.field] = $event.target.checked ? 1 : 0
+                "
               />
             </div>
           </template>
 
           <template v-else-if="props.column.editable !== false">
-            <input v-model="props.row[props.column.field]" @input="trackChanges(props.row, props.column.field)" />
+            <input
+              v-model="props.row[props.column.field]"
+              @input="trackChanges(props.row, props.column.field)"
+            />
           </template>
           <template v-else>
             <span>{{ props.row[props.column.field] }}</span>
@@ -207,13 +222,18 @@ onBeforeUnmount(() => {
               <input
                 type="checkbox"
                 :checked="props.row[props.column.field] == 1"
-                @change="props.row[props.column.field] = $event.target.checked ? 1 : 0"
+                @change="
+                  props.row[props.column.field] = $event.target.checked ? 1 : 0
+                "
               />
             </div>
           </template>
 
           <template v-else-if="props.column.editable !== false">
-            <input v-model="props.row[props.column.field]" @input="trackChanges(props.row, props.column.field)" />
+            <input
+              v-model="props.row[props.column.field]"
+              @input="trackChanges(props.row, props.column.field)"
+            />
           </template>
           <template v-else>
             <span>{{ props.row[props.column.field] }}</span>

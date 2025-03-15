@@ -40,9 +40,11 @@ const menus = ref([
     title: "Fleet",
     open: false,
     submenus: [
+      { name: "Movement", link: "/movement" },
+      { name: "Mining Preparation", link: "/mining-preparation"},
+      { name: "Disposal", link:"/disposal"},
       { name: "Marketing", link: "/marketing" },
       { name: "PO List", link: "/po-list" },
-      { name: "Operations", link: "/fleet-operations" },
     ],
   },
   {

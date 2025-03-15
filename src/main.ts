@@ -1,14 +1,13 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import '@/assets/global.css';
+import "@/assets/global.css";
 
-import PrimeVue from 'primevue/config';
-import ToastService from 'primevue/toastservice';
+import PrimeVue from "primevue/config";
+import ToastService from "primevue/toastservice";
 // import 'primevue/resources/themes/lara-light-blue/theme.css'; // Theme
 // import 'primevue/resources/primevue.min.css';
 // import 'primeicons/primeicons.css';
-;
 // Import Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";

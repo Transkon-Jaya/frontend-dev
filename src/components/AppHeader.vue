@@ -28,15 +28,23 @@
             <router-link class="nav-link" to="/test">Test</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/marketing">Marketing</router-link>
+            <router-link class="nav-link" to="/marketing"
+              >Marketing</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/marketing-e">Marketing-E</router-link>
+            <router-link class="nav-link" to="/marketing-e"
+              >Marketing-E</router-link
+            >
           </li>
         </ul>
 
         <div class="d-flex">
-          <router-link v-if="!isLoggedIn" class="btn btn-primary me-2" to="/login">
+          <router-link
+            v-if="!isLoggedIn"
+            class="btn btn-primary me-2"
+            to="/login"
+          >
             Login
           </router-link>
           <button v-if="isLoggedIn" @click="logout" class="btn btn-danger">

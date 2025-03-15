@@ -5,9 +5,7 @@ import DashboardView from "../views/DashboardView.vue";
 
 // Daftar Routes
 const routes: Array<RouteRecordRaw> = [
-  { path: "/", 
-    redirect: "/dashboard",
-   },
+  { path: "/", redirect: "/dashboard" },
   { path: "/login", name: "login", component: LoginView },
   {
     path: "/dashboard",
@@ -42,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
 
 // Buat router
 const router = createRouter({
-  history: createWebHistory('/office/'),
+  history: createWebHistory("/office/"),
   routes,
 });
 
