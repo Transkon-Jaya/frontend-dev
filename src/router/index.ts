@@ -8,6 +8,25 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/", redirect: "/dashboard" },
   { path: "/login", name: "login", component: LoginView },
   {
+    path: "/admin",
+    name: "admin",
+    meta: {requiresAuth: true, minimumLevel: 0},
+    children: [
+      {
+        path: "users",
+        name: "admin-users",
+        component: () => import("../views/admin/UsersView.vue"),
+        meta: {requiresAuth: true, minimumLevel: 0},
+      },
+      {
+        path: "test",
+        name: "admin-test",
+        component: () => import("../views/admin/AdminTest.vue"),
+        meta: {requiresAuth: true, minimumLevel: 0},
+      }
+    ],
+  },
+  {
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
@@ -47,6 +66,7 @@ const router = createRouter({
 // Middleware untuk autentikasi sebelum masuk ke halaman tertentu
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
+  console.log(token);
   const user_level = parseInt(localStorage.getItem("user_level") || "0", 10); // Default 0 jika tidak ada
   console.log(`${user_level} > ${to.meta.minimumLevel}`);
   // Cek apakah route memiliki meta auth atau minimumLevel
