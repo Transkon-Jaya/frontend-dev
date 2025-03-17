@@ -1,4 +1,7 @@
 <template>
+    <div class="content">
+      <slot></slot> <!-- Ini tempat kontennya -->
+    </div>
     <footer class="footer">
       <div class="container">
         <p>&copy; {{ new Date().getFullYear() }} Transkon Jaya. All Rights Reserved.</p>
@@ -6,26 +9,20 @@
     </footer>
   </template>
   
-  <script setup>
-  // Tidak memerlukan script tambahan untuk footer ini
-  </script>
-  
   <style scoped>
+  .content {
+    padding-bottom: 10px; /* Memberi ruang agar tidak terlalu mepet */
+  }
+  
   .footer {
     width: 100%;
-    background: #f5f5f5; /* Warna gelap elegan */
+    background: #f5f5f5;
     color: #161616;
     text-align: center;
-    padding: 2px 0;
+    padding: 10px 0; /* Tambah padding untuk estetika */
     position: fixed;
     bottom: 0;
     left: 0;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
   }
   </style>
   
