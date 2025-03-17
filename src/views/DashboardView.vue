@@ -36,31 +36,31 @@ const dashboardItems = ref([
       { name: "Disposal", link: "/disposal" },
       { name: "PO Unit", link: "/po-unit" },
       { name: "List Unit", link: "/list-unit" },
-      { name: "Marketing", link: "/marketing" },
+      { name: "Marketing", link: "/office/marketing" },
     ],
   },
   {
     name: "HR",
     icon: "fas fa-file-signature",
     submenus: [
-      { name: "Employee Data", link: "/test" },
-      { name: "Payroll", link: "/about" },
+      { name: "Employee Data", link: "/office/test" },
+      { name: "Payroll", link: "/office/about" },
     ],
   },
   {
     name: "Operation",
     icon: "fas fa-screwdriver-wrench",
     submenus: [
-      { name: "Repairs", link: "/marketing" },
-      { name: "Inventory", link: "/marketing-e" },
+      { name: "Repairs", link: "/office/marketing" },
+      { name: "Inventory", link: "/office/marketing-e" },
     ],
   },
   {
     name: "Supply Chain",
     icon: "fas fa-link",
     submenus: [
-      { name: "Logistics", link: "/about" },
-      { name: "Procurement", link: "/supply-chain-procurement" },
+      { name: "Logistics", link: "/office/about" },
+      { name: "Procurement", link: "/office/supply-chain-procurement" },
     ],
   },
 ]);
