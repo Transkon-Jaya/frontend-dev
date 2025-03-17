@@ -40,19 +40,9 @@ const checkboxFields = [
 ];
 const fieldsToRemove = ["isEditing", "filterable", "vgt_id", "originalIndex"];
 const dateFields = ["inquiry", "date_rfq", "date_deadline_tender", "approval_presdir", "date_Quotation_trja"
-  , "date_send_quot.", "date_approved_quot.", "date_spk_po_customer", "date_master_contract", "date_po_dealer"
-  , "data_send_po", "date_delvery_to_customer", "received_date_by_customer", "date_commisioning_finish"
+  , "date_send_quot", "date_approved_quot", "date_spk_po_customer", "date_master_contract", "date_po_dealer"
+  , "date_send_po", "date_delvery_to_customer", "received_date_by_customer", "date_commisioning_finish"
 ];
-// Fetch Data
-const fetchCustomers = async () => {
-  try {
-    const response = await fetch("/api/customer"); // Adjust URL if necessary
-    const data = await response.json();
-    this.customers = data; // Store fetched customer names
-  } catch (error) {
-    console.error("Failed to fetch customers:", error);
-  }
-};
 
 const fetchMarketingData = async () => {
   try {
@@ -106,16 +96,17 @@ const fetchMarketingData = async () => {
     console.error(err);
   } finally {
     loading.value = false;
+    addNewRow();
   }
 };
 
-// Track changes
-const trackChanges = (row, field) => {
-  if (!changedRows.value.has(row.id)) {
-    changedRows.value.set(row.id, { ...row });
-  } else {
-    changedRows.value.get(row.id)[field] = row[field];
-  }
+const addNewRow = () => {
+  const newRow = {};
+  columns.value.forEach((col) => {
+    newRow[col.field] = checkboxFields.includes(col.field) ? 0 : "";
+  });
+  newRow.id = marketingDataInsert.value.length + 1;
+  marketingDataInsert.value.push(newRow);
 };
 
 // Track changes
@@ -137,12 +128,24 @@ const upload = async () => {
       for (const prop of fieldsToRemove) {
         delete uploadItem[prop];
       }
+      delete uploadItem["id"];
       console.log(uploadItem);
       dateFields.forEach(key => {
         if (uploadItem[key] !== null && uploadItem[key] !== undefined && !isNaN(Date.parse(uploadItem[key]))) {
           uploadItem[key] = new Date(uploadItem[key]).toISOString().split("T")[0]; // Format: YYYY-MM-DD
         }
-      });    
+      });
+      Object.keys(uploadItem).forEach((key) => {
+        if (uploadItem[key] === "") {
+          uploadItem[key] = null;
+        }
+      });
+      await axios.post(`${apiUrl}`, uploadItem);
+      await fetchMarketingData();
+      alert("Data uploaded Successfully");
+      marketingDataInsert.value = [];
+      changedRowsInsert.value.clear();
+
     }
   } catch (err) {
     console.error("Failed to upload: ", err);
@@ -150,7 +153,15 @@ const upload = async () => {
   }
 }
 
-// Save all changes
+// For updates
+const trackChanges = (row, field) => {
+  if (!changedRows.value.has(row.id)) {
+    changedRows.value.set(row.id, { ...row });
+  } else {
+    changedRows.value.get(row.id)[field] = row[field];
+  }
+};
+// Save all changes (updates)
 const saveChanges = async () => {
   try {
     const updates = Array.from(changedRows.value.values());
@@ -210,19 +221,16 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <h2>Marketing Data (Always Editable)</h2>
-    <button @click="exportToExcel">Export to Excel</button>
-
+    <button @click="upload">Upload</button>
+    <button @click="addNewRow">Add New Row</button>
     <p v-if="loading">Loading...</p>
     <p v-if="error" class="error">{{ error }}</p>
     <div class="table-container">
       <vue-good-table
         v-if="!loading && !error"
         :columns="columns"
-        :rows=marketingDataInsert
-        :pagination-options="{ enabled: false, mode: 'pages', perPage: 10 }"
-        :search-options="{ enabled: false }"
-        :sort-options="{ enabled: false }"
-        :filter-ptions="{ enabled: false }"
+        :rows="marketingDataInsert"
+        :pagination-options="{ enabled: false }"
         style="overflow-x: auto"
       >
         <template v-slot:table-row="props">
@@ -231,13 +239,13 @@ onBeforeUnmount(() => {
               <input
                 type="checkbox"
                 :checked="props.row[props.column.field] == 1"
-                @change="
-                  props.row[props.column.field] = $event.target.checked ? 1 : 0
-                "
+                @change="(event) => {
+                  props.row[props.column.field] = event.target.checked ? 1 : 0;
+                  trackUpload(props.row, props.column.field);
+                }"
               />
             </div>
           </template>
-
           <template v-else-if="props.column.editable !== false">
             <input
               v-model="props.row[props.column.field]"
@@ -250,7 +258,8 @@ onBeforeUnmount(() => {
         </template>
       </vue-good-table>
     </div>
-    <button @click="upload">Upload</button>
+
+    <button @click="exportToExcel">Export to Excel</button>
     <button @click="saveChanges">Save Updates</button>
     <div class="table-container">
       <vue-good-table

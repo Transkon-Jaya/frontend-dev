@@ -43,24 +43,24 @@ const _dashboardItems = ref([
     name: "HR",
     icon: "fas fa-file-signature",
     submenus: [
-      { name: "Employee Data", link: "/office/test" },
-      { name: "Payroll", link: "/office/about" },
+      { name: "Employee Data", link: "/test" },
+      { name: "Payroll", link: "/about" },
     ],
   },
   {
     name: "Operation",
     icon: "fas fa-screwdriver-wrench",
     submenus: [
-      { name: "Repairs", link: "/office/marketing" },
-      { name: "Inventory", link: "/office/marketing-e" },
+      { name: "Repairs", link: "/marketing" },
+      { name: "Inventory", link: "/marketing-e" },
     ],
   },
   {
     name: "Supply Chain",
     icon: "fas fa-link",
     submenus: [
-      { name: "Logistics", link: "/office/about" },
-      { name: "Procurement", link: "/office/supply-chain-procurement" },
+      { name: "Logistics", link: "/about" },
+      { name: "Procurement", link: "/supply-chain-procurement" },
     ],
   },
 ]);
