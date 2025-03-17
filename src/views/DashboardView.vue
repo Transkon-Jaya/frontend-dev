@@ -34,32 +34,32 @@ const dashboardItems = ref([
       { name: "Movement", link: "/movement" },
       { name: "Mining Preparation", link: "/mining-preparation" },
       { name: "Disposal", link: "/disposal" },
-      { name: "Marketing", link: "/marketing" },
       { name: "PO Unit", link: "/po-unit" },
       { name: "List Unit", link: "/list-unit" },
+      { name: "Marketing", link: "/marketing" },
     ],
   },
   {
     name: "HR",
     icon: "fas fa-file-signature",
     submenus: [
-      { name: "Employee Data", link: "/hr-employee" },
-      { name: "Payroll", link: "/hr-payroll" },
+      { name: "Employee Data", link: "/test" },
+      { name: "Payroll", link: "/about" },
     ],
   },
   {
     name: "Operation",
     icon: "fas fa-screwdriver-wrench",
     submenus: [
-      { name: "Repairs", link: "/workshop-repairs" },
-      { name: "Inventory", link: "/workshop-inventory" },
+      { name: "Repairs", link: "/marketing" },
+      { name: "Inventory", link: "/marketing-e" },
     ],
   },
   {
     name: "Supply Chain",
     icon: "fas fa-link",
     submenus: [
-      { name: "Logistics", link: "/supply-chain-logistics" },
+      { name: "Logistics", link: "/about" },
       { name: "Procurement", link: "/supply-chain-procurement" },
     ],
   },

@@ -24,24 +24,7 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/about">Asset Unit</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/about">About</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/test">Test</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/marketing"
-              >Marketing</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/marketing-e"
-              >Marketing-E</router-link
-            >
-          </li>
         </ul>
-
         <div class="d-flex">
           <router-link
             v-if="!isLoggedIn"
