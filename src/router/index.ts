@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { jwtDecode } from "jwt-decode";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
@@ -25,6 +26,22 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true, minimumLevel: 0 },
       },
     ],
+  },
+  {
+    path: "/error",
+    name: "error",
+    children: [
+      {
+        path: "403",
+        name: "forbidden",
+        component: () => import("../views/errors/403.vue"),
+      },
+      {
+        path: "404",
+        name: "not found",
+        component: () => import("../views/errors/404.vue"),
+      }
+    ]
   },
   {
     path: "/dashboard",
@@ -54,7 +71,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/MarketingViewE.vue"),
     meta: { requiresAuth: true, minimumLevel: 5 },
   },
-  { path: "/:pathMatch(.*)*", redirect: "/dashboard" }, // Redirect untuk route yang tidak ditemukan
+  { path: "/:pathMatch(.*)*", redirect: "/error/404" }, // Redirect untuk route yang tidak ditemukan
 ];
 
 // Buat router
@@ -67,20 +84,24 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   console.log(token);
-  const user_level = parseInt(localStorage.getItem("user_level") || "0", 10); // Default 0 jika tidak ada
-  console.log(`${user_level} > ${to.meta.minimumLevel}`);
-  // Cek apakah route memiliki meta auth atau minimumLevel
-  if (to.meta.requiresAuth && !token) {
+
+  if (!("requiresAuth" in to.meta) ){ // no login needed
+    next();
+  }
+  else if (to.meta.requiresAuth && !token) { // need login first
     console.warn("🔒 Akses ditolak! Harus login dulu.");
     next("/login");
-  } else if (
+  }
+  const decoded = jwtDecode(token);
+  const user_level = parseInt(decoded.user_level, 10);
+  if (
     to.meta.minimumLevel &&
-    user_level > (to.meta.minimumLevel as number) // ✅ Type assertion agar TypeScript mengenali tipe
+    user_level > (to.meta.minimumLevel as number)
   ) {
     console.warn(
-      `⛔ Akses ditolak! Level ${user_level} kurang dari ${to.meta.minimumLevel}`
+      `⛔ Akses ditolak! Hubungi admin jika membutuhkan izin`
     );
-    next("/dashboard");
+    next("/error/403");
   } else {
     next();
   }

@@ -1,8 +1,8 @@
 <template>
   <div class="error-container">
     <h1>403 - Forbidden</h1>
-    <p>You do not have permission to access this resource.</p>
-    <button @click="goHome">Go to Home</button>
+    <p>Anda tidak mempunyai akses untuk halaman ini. Hubungi admin jika membutuhkan akses</p>
+    <button @click="goHome">Kembali ke dashboard</button>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 export default {
   methods: {
     goHome() {
-      this.$router.push("/office/");
+      this.$router.push("/");
     },
   },
 };

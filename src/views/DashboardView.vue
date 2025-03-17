@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
-const dashboardItems = ref([
+import { ref, computed } from "vue";
+const baseUrl = import.meta.env.BASE_URL;
+const _dashboardItems = ref([
   {
     name: "Fleet",
     icon: "fas fa-car-side",
@@ -64,6 +64,17 @@ const dashboardItems = ref([
     ],
   },
 ]);
+
+const dashboardItems = computed(() => {
+  return _dashboardItems.value.map(category => ({
+    ...category,
+    submenus: category.submenus.map(submenu => ({
+      ...submenu,
+      link: submenu.link.startsWith("/office") ? submenu.link : `${baseUrl}${submenu.link}`
+    }))
+  }));
+});
+console.log(dashboardItems);
 
 const openDropdown = ref(null);
 
