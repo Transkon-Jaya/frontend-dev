@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <h2>Marketing Data (Always Editable)</h2>
+    <h2>Marketing</h2>
     <button @click="upload">Upload</button>
     <button @click="addNewRow">Add New Row</button>
     <p v-if="loading">Loading...</p>
