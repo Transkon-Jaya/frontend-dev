@@ -35,7 +35,8 @@ const dashboardItems = ref([
       { name: "Mining Preparation", link: "/mining-preparation" },
       { name: "Disposal", link: "/disposal" },
       { name: "Marketing", link: "/marketing" },
-      { name: "PO List", link: "/po-list" },
+      { name: "PO Unit", link: "/po-unit" },
+      { name: "List Unit", link: "/list-unit" },
     ],
   },
   {
