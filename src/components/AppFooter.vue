@@ -16,7 +16,7 @@
     background: #f5f5f5; /* Warna gelap elegan */
     color: #161616;
     text-align: center;
-    padding: 4px 0;
+    padding: 2px 0;
     position: fixed;
     bottom: 0;
     left: 0;
