@@ -36,6 +36,11 @@ const checkboxFields = [
   "tyre_gt_265_65_r17_mt",
   "radio_icom",
 ];
+const fieldsToRemove = ["filterable", "vgt_id", "originalIndex"];
+const dateFields = ["inquiry", "date_rfq", "date_deadline_tender", "approval_presdir", "date_Quotation_trja"
+  , "date_send_quot.", "date_approved_quot.", "date_spk_po_customer", "date_master_contract", "date_po_dealer"
+  , "data_send_po", "date_delvery_to_customer", "received_date_by_customer", "date_commisioning_finish"
+];
 // Fetch Data
 const fetchCustomers = async () => {
   try {
@@ -117,8 +122,17 @@ const saveChanges = async () => {
     const updates = Array.from(changedRows.value.values());
     for (const item of updates) {
       const updatedItem = { ...item };
+      for (const prop of fieldsToRemove) {
+        delete updatedItem[prop];
+      }
+      dateFields.forEach(key => {
+        if (updatedItem[key] !== null && updatedItem[key] !== undefined && !isNaN(Date.parse(updatedItem[key]))) {
+          updatedItem[key] = new Date(updatedItem[key]).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+        }
+      });
+      console.log(updatedItem);
       delete updatedItem.isEditing;
-      await axios.put(`${apiUrl}/${item.id}`, updatedItem);
+      await axios.put(`${apiUrl}`, updatedItem);
     }
     alert("Changes saved successfully!");
     changedRows.value.clear();
@@ -164,7 +178,6 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <h2>Marketing Data (Always Editable)</h2>
-    <button @click="saveChanges">Save Changes</button>
     <button @click="exportToExcel">Export to Excel</button>
 
     <p v-if="loading">Loading...</p>
@@ -205,6 +218,8 @@ onBeforeUnmount(() => {
         </template>
       </vue-good-table>
     </div>
+    <button @click="saveChanges">Upload</button>
+    <button @click="saveChanges">Save Updates</button>
     <div class="table-container">
       <vue-good-table
         v-if="!loading && !error"
