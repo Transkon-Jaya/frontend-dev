@@ -8,6 +8,7 @@ import * as XLSX from "xlsx";
 const apiUrl = "https://www.transkon-rent.com/api/marketing";
 const customerUrl = "https://www-transkon-rent.com/api/customer";
 const marketingData = ref([]);
+const marketingDataInsert = ref([]);
 const customers = ref([]);
 const filteredData = ref([]); // Store filtered data
 const columns = ref([]);
@@ -16,6 +17,7 @@ const error = ref(null);
 const firstColumnWidth = ref("150px");
 const secondColumnWidth = ref("100px");
 const changedRows = ref(new Map()); // Store changed rows
+const changedRowsInsert = ref(new Map());
 const checkboxFields = [
   "front_bumper",
   "rear_bumper",
@@ -36,7 +38,7 @@ const checkboxFields = [
   "tyre_gt_265_65_r17_mt",
   "radio_icom",
 ];
-const fieldsToRemove = ["filterable", "vgt_id", "originalIndex"];
+const fieldsToRemove = ["isEditing", "filterable", "vgt_id", "originalIndex"];
 const dateFields = ["inquiry", "date_rfq", "date_deadline_tender", "approval_presdir", "date_Quotation_trja"
   , "date_send_quot.", "date_approved_quot.", "date_spk_po_customer", "date_master_contract", "date_po_dealer"
   , "data_send_po", "date_delvery_to_customer", "received_date_by_customer", "date_commisioning_finish"
@@ -116,6 +118,38 @@ const trackChanges = (row, field) => {
   }
 };
 
+// Track changes
+const trackUpload = (row, field) => {
+  if (!changedRowsInsert.value.has(row.id)) {
+    changedRowsInsert.value.set(row.id, { ...row });
+  } else {
+    changedRowsInsert.value.get(row.id)[field] = row[field];
+  }
+};
+
+const upload = async () => {
+  try {
+    console.log("button upload");
+    const uploads = Array.from(changedRowsInsert.value.values());
+    console.log(uploads);
+    for (const item of uploads) {
+      const uploadItem = { ...item };
+      for (const prop of fieldsToRemove) {
+        delete uploadItem[prop];
+      }
+      console.log(uploadItem);
+      dateFields.forEach(key => {
+        if (uploadItem[key] !== null && uploadItem[key] !== undefined && !isNaN(Date.parse(uploadItem[key]))) {
+          uploadItem[key] = new Date(uploadItem[key]).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+        }
+      });    
+    }
+  } catch (err) {
+    console.error("Failed to upload: ", err);
+    alert("Failed to upload");
+  }
+}
+
 // Save all changes
 const saveChanges = async () => {
   try {
@@ -130,8 +164,6 @@ const saveChanges = async () => {
           updatedItem[key] = new Date(updatedItem[key]).toISOString().split("T")[0]; // Format: YYYY-MM-DD
         }
       });
-      console.log(updatedItem);
-      delete updatedItem.isEditing;
       await axios.put(`${apiUrl}`, updatedItem);
     }
     alert("Changes saved successfully!");
@@ -186,7 +218,7 @@ onBeforeUnmount(() => {
       <vue-good-table
         v-if="!loading && !error"
         :columns="columns"
-        :rows="[{}]"
+        :rows=marketingDataInsert
         :pagination-options="{ enabled: false, mode: 'pages', perPage: 10 }"
         :search-options="{ enabled: false }"
         :sort-options="{ enabled: false }"
@@ -209,7 +241,7 @@ onBeforeUnmount(() => {
           <template v-else-if="props.column.editable !== false">
             <input
               v-model="props.row[props.column.field]"
-              @input="trackChanges(props.row, props.column.field)"
+              @input="trackUpload(props.row, props.column.field)"
             />
           </template>
           <template v-else>
@@ -218,7 +250,7 @@ onBeforeUnmount(() => {
         </template>
       </vue-good-table>
     </div>
-    <button @click="saveChanges">Upload</button>
+    <button @click="upload">Upload</button>
     <button @click="saveChanges">Save Updates</button>
     <div class="table-container">
       <vue-good-table
