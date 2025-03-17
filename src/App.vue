@@ -8,9 +8,11 @@
       <AppHeader v-if="showHeader" />
 
       <!-- Konten utama -->
-      <router-view />
+      <router-view />   
+      <Footer />
     </div>
   </div>
+  
 </template>
 
 <script setup>
@@ -18,6 +20,7 @@ import { useRoute } from "vue-router";
 import { computed } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import Sidebar from "./components/AppSidebar.vue";
+import Footer from "@/components/AppFooter.vue";
 
 // Dapatkan informasi rute saat ini
 const route = useRoute();
