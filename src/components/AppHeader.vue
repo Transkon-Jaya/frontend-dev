@@ -22,7 +22,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <router-link class="nav-link" to="/about">Asset Unit</router-link>
+            <router-link class="nav-link" to="/test">Asset Unit</router-link>
           </li>
         </ul>
         <div class="d-flex">
