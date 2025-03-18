@@ -31,12 +31,11 @@ const _dashboardItems = ref([
     name: "Fleet",
     icon: "fas fa-car-side",
     submenus: [
-      { name: "Movement", link: "/movement" },
-      { name: "Mining Preparation", link: "/mining-preparation" },
-      { name: "Disposal", link: "/disposal" },
-      { name: "PO Unit", link: "/po-unit" },
       { name: "List Unit", link: "/list-unit" },
-      { name: "Marketing", link: "/office/marketing" },
+      { name: "Movement", link: "/movement" },
+      { name: "Out Run and Return", link: "/out-run" },
+      { name: "Disposal", link: "/disposal" },
+      { name: "Mining Preparation", link: "/mining-preparation" },
     ],
   },
   {
@@ -51,6 +50,7 @@ const _dashboardItems = ref([
     name: "Operation",
     icon: "fas fa-screwdriver-wrench",
     submenus: [
+      { name: "Marketing", link: "/office/marketing" },
       { name: "Repairs", link: "/marketing" },
       { name: "Inventory", link: "/marketing-e" },
     ],
@@ -59,6 +59,7 @@ const _dashboardItems = ref([
     name: "Supply Chain",
     icon: "fas fa-link",
     submenus: [
+      { name: "PO Unit", link: "/po-unit" },
       { name: "Logistics", link: "/about" },
       { name: "Procurement", link: "/supply-chain-procurement" },
     ],
