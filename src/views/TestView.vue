@@ -54,6 +54,7 @@ const fetchMarketingData = async () => {
           label: "ID",
           field: "id",
           width: secondColumnWidth.value,
+          width: "80px", // Kurangi ukuran kolom ID
           minWidth: "100px",
           sortable: true,
           filterable: false,
@@ -310,6 +311,8 @@ onBeforeUnmount(() => {
 }
 .vue-good-table th,
 .vue-good-table td {
+  padding: 4px 8px; /* Sebelumnya mungkin lebih besar */
+  font-size: 14px; /* Kurangi ukuran font */
   white-space: nowrap;
 }
 .vue-good-table thead th {
@@ -317,6 +320,8 @@ onBeforeUnmount(() => {
   top: 0;
   background: white;
   z-index: 5;
+  font-size: 12px; /* Ubah dari default (biasanya 14px atau lebih) */
+  padding: 4px 6px; /* Kurangi padding agar tidak terlalu tinggi */
 }
 .vue-good-table th:nth-child(1),
 .vue-good-table td:nth-child(1) {
@@ -349,8 +354,9 @@ onBeforeUnmount(() => {
   color: red;
 }
 input {
-  padding: 5px;
-  width: 100%;
+  padding: 3px;
+  font-size: 12px; /* font size */
+  width: 95%;
   margin: 5px 0;
 }
 button {
