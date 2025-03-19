@@ -20,7 +20,7 @@
     color: #161616;
     text-align: right;
     padding: 10px 0; /* Tambah padding untuk estetika */
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
   }
