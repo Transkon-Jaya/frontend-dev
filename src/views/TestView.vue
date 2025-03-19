@@ -187,6 +187,7 @@ const saveChanges = async () => {
 
 // Export to Excel (filtered data only)
 const exportToExcel = () => {
+  
   const worksheet = XLSX.utils.json_to_sheet(filteredData.value);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Marketing Data");
@@ -196,6 +197,7 @@ const exportToExcel = () => {
 // Update filtered data when table is filtered
 const onTableFiltered = (filteredRows) => {
   filteredData.value = filteredRows;
+  console.log("F Len : ", filteredData.value.length, " | M Len : ", marketingData.value.length);
 };
 
 // Dynamic Column Width Calculation
