@@ -4,10 +4,11 @@
       <div
         v-for="(item, index) in dashboardItems"
         :key="item.name"
-        class="col-sm-6 col-xl-3 position-relative"
-      >
+        class="col-custom position-relative">
+       <!-- class="col-sm-6 col-xl-3 position-relative"> -->
+
         <div class="dashboard-card" @click="toggleDropdown(index)">
-          <i :class="item.icon + ' fa-3x text-danger'" class="mb-2"></i>
+          <i :class="item.icon + ' fa-4x text-danger'" class="mb-2"></i>
           <div class="text-center mt-2">
             <p class="mb-0">{{ item.name }}</p>
           </div>
@@ -39,29 +40,36 @@ const _dashboardItems = ref([
     ],
   },
   {
-    name: "HR",
-    icon: "fas fa-file-signature",
+    name: "Marketing",
+    icon: "fa-solid fa-chart-simple",
     submenus: [
-      { name: "Employee Data", link: "/test" },
-      { name: "Payroll", link: "/about" },
+      { name: "Master Marketing", link: "/marketing" },
+      { name: "Master Contract", link: "/contract" },
+      { name: "PO Unit", link: "/po-unit" },
     ],
   },
   {
-    name: "Operation",
+    name: "Workshop",
     icon: "fas fa-screwdriver-wrench",
     submenus: [
-      { name: "Marketing", link: "/office/marketing" },
-      { name: "Repairs", link: "/marketing" },
-      { name: "Inventory", link: "/marketing-e" },
+      { name: "Body Repairs", link: "/marketing" },
+      { name: "General Repairs", link: "/marketing-e" },
     ],
   },
   {
     name: "Supply Chain",
     icon: "fas fa-link",
     submenus: [
-      { name: "PO Unit", link: "/po-unit" },
       { name: "Logistics", link: "/about" },
       { name: "Procurement", link: "/supply-chain-procurement" },
+    ],
+  },
+  {
+    name: "HR",
+    icon: "fas fa-file-signature",
+    submenus: [
+      { name: "Employee Data", link: "/test" },
+      { name: "Payroll", link: "/about" },
     ],
   },
 ]);
@@ -141,4 +149,16 @@ const toggleDropdown = (index) => {
   border-radius: 4px;
   padding: 5px;
 }
+
+.row {
+  display: flex;
+  justify-content: space-between; /* Memberi jarak rata antar item */
+  flex-wrap: wrap; /* Agar responsif */
+}
+
+.col-custom {
+  width: calc(100% / 5 - 10px); /* 5 item dalam satu baris */
+  max-width: 300px; /* Bisa disesuaikan */
+}
+
 </style>
