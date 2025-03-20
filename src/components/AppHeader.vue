@@ -20,7 +20,7 @@
         <ul class="navbar-nav">
           <li class="nav-item dropdown" v-if="isLoggedIn">
             <a href="javascript:;" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-              <img :src="userPhoto" class="rounded-circle" width="45" height="45" alt="User" />
+              <img :src="userPhoto" akt="10.png"class="rounded-circle" width="45" height="45" alt="User" />
             </a>
             <div class="dropdown-menu dropdown-menu-end shadow">
               <div class="text-center p-3">
@@ -55,18 +55,19 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import userPhoto from "@/assets/images/avatars/10.png";
 
 const router = useRouter();
 const isLoggedIn = ref(false);
 const userName = ref("User");
-const userPhoto = ref("src/assets/images/avatars/10.png");
+//const userPhoto = ref("src/assets/images/avatars/10.png");
 
 const checkLoginStatus = () => {
   const token = localStorage.getItem("token");
   if (token) {
     isLoggedIn.value = true;
     userName.value = localStorage.getItem("user_name") || "User";
-    userPhoto.value = localStorage.getItem("user_photo") || "src/assets/images/avatars/10.png";
+    //userPhoto.value = localStorage.getItem("user_photo") || "src/assets/images/avatars/10.png";
   }
 };
 
