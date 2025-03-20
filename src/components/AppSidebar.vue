@@ -40,7 +40,7 @@ const menus = ref([
     title: "Fleet",
     open: false,
     submenus: [
-    { name: "List Unit", link: "/list-unit" },
+      { name: "List Unit", link: "/list-unit" },
       { name: "Movement", link: "/movement" },
       { name: "Out Run and Return", link: "/out-run" },
       { name: "Disposal", link: "/disposal" },

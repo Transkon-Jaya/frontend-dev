@@ -7,7 +7,7 @@
         class="col-sm-6 col-xl-3 position-relative"
       >
         <div class="dashboard-card" @click="toggleDropdown(index)">
-          <i :class="item.icon + ' fa-3x text-primary'" class="mb-2"></i>
+          <i :class="item.icon + ' fa-3x text-danger'" class="mb-2"></i>
           <div class="text-center mt-2">
             <p class="mb-0">{{ item.name }}</p>
           </div>
@@ -67,12 +67,14 @@ const _dashboardItems = ref([
 ]);
 
 const dashboardItems = computed(() => {
-  return _dashboardItems.value.map(category => ({
+  return _dashboardItems.value.map((category) => ({
     ...category,
-    submenus: category.submenus.map(submenu => ({
+    submenus: category.submenus.map((submenu) => ({
       ...submenu,
-      link: submenu.link.startsWith("/office") ? submenu.link : `${baseUrl}${submenu.link}`
-    }))
+      link: submenu.link.startsWith("/office")
+        ? submenu.link
+        : `${baseUrl}${submenu.link}`,
+    })),
   }));
 });
 console.log(dashboardItems);

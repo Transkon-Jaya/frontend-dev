@@ -2,10 +2,20 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
       <router-link class="navbar-brand" to="/dashboard">
-        <img src="@images/logo.png" alt="Logo" class="logo" style="width: 120px; height: auto" />
+        <img
+          src="@images/logo.png"
+          alt="Logo"
+          class="logo"
+          style="width: 120px; height: auto"
+        />
       </router-link>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -19,26 +29,50 @@
         <!-- User Dropdown -->
         <ul class="navbar-nav">
           <li class="nav-item dropdown" v-if="isLoggedIn">
-            <a href="javascript:;" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-              <img :src="userPhoto" akt="10.png"class="rounded-circle" width="45" height="45" alt="User" />
+            <a
+              href="javascript:;"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                :src="userPhoto"
+                akt="10.png"
+                class="rounded-circle"
+                width="45"
+                height="45"
+                alt="User"
+              />
             </a>
             <div class="dropdown-menu dropdown-menu-end shadow">
               <div class="text-center p-3">
-                <img :src="userPhoto" class="rounded-circle p-1 shadow mb-3" width="90" height="90" alt="User" />
+                <img
+                  :src="userPhoto"
+                  class="rounded-circle p-1 shadow mb-3"
+                  width="90"
+                  height="90"
+                  alt="User"
+                />
                 <h5 class="user-name mb-0 fw-bold">Hello, {{ userName }}</h5>
               </div>
               <hr class="dropdown-divider" />
-              <router-link class="dropdown-item d-flex align-items-center gap-2 py-2" to="/profile">
-                <i class="material-icons-outlined"></i>Profile
-              </router-link>
-              <router-link class="dropdown-item d-flex align-items-center gap-2 py-2" to="/settings">
+              <router-link
+                class="dropdown-item d-flex align-items-center gap-2 py-2"
+                to="/Setting"
+              >
                 <i class="material-icons-outlined"></i>Settings
               </router-link>
-              <router-link class="dropdown-item d-flex align-items-center gap-2 py-2" to="/dashboard">
+              <router-link
+                class="dropdown-item d-flex align-items-center gap-2 py-2"
+                to="/dashboard"
+              >
                 <i class="material-icons-outlined"></i>Dashboard
               </router-link>
               <hr class="dropdown-divider" />
-              <a href="javascript:;" @click="logout" class="dropdown-item d-flex align-items-center gap-2 py-2">
+              <a
+                href="javascript:;"
+                @click="logout"
+                class="dropdown-item d-flex align-items-center gap-2 py-2"
+              >
                 <i class="material-icons-outlined"></i>Logout
               </a>
             </div>
@@ -46,7 +80,9 @@
         </ul>
 
         <!-- Login Button (Jika Belum Login) -->
-        <router-link v-if="!isLoggedIn" class="btn btn-primary me-2" to="/login">Login</router-link>
+        <router-link v-if="!isLoggedIn" class="btn btn-primary me-2" to="/login"
+          >Login</router-link
+        >
       </div>
     </div>
   </nav>
@@ -124,7 +160,4 @@ onMounted(checkLoginStatus);
   box-shadow: none !important;
   border: none !important;
 }
-
-
-
 </style>
