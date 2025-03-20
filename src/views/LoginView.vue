@@ -9,7 +9,7 @@
     class="img-fluid mx-auto d-block mb-3"
     style="max-width: 100px"
   />
-  <h5 class="text-center mb-4">Enter your credentials to login your account</h5>
+  <h6 class="text-center mb-4">Enter your credentials to login your account</h6>
       <form @submit.prevent="login">
         <div class="mb-3">
           <label class="form-label text-start d-block">Username</label>
