@@ -98,21 +98,23 @@
                 required
               />
             </div>
-            <div class="col-md-12">
-              <label for="Department" class="form-label">Department</label>
-              <select
-                v-model="user.Department"
-                class="form-select"
-                id="Department"
-                required
-              >
-                <option value="">Select a department</option>
-                <option>Fleet</option>
-                <option>HR</option>
-                <option>Oprasional</option>
-                <option>Supplay Chain</option>
-              </select>
-            </div>
+            <div class="col-md-12 mb-4">
+                <label for="Department" class="form-label">Department</label>
+                <select
+                    v-model="user.Department"
+                    class="form-select"
+                    id="Department"
+                    required
+                >
+                    <option value="">Select a department</option>
+                    <option>Fleet</option>
+                    <option>Marketing</option>
+                    <option>Oprasional</option>
+                    <option>Supplay Chain</option>
+                    <option>HR</option>
+                </select>
+                </div>
+
            <!--
             <div class="col-md-12">
               <label for="address" class="form-label">Address</label>
@@ -137,7 +139,7 @@
               </div>
             </div>
              -->
-            <div class="col-md-12 mt-3 d-flex gap-3">
+             <div class="col-md-12 mt-4 mb-3 d-flex gap-3">
               <button type="submit" class="btn btn-primary">Submit</button>
               <button type="reset" class="btn btn-secondary" @click="resetForm">
                 Reset
@@ -162,8 +164,8 @@ const user = ref({
   gender: "",
   dob: "",
   department: "",
-  address: "",
-  agree: false,
+  //address: "",
+  //agree: false,
 });
 
 const submitForm = () => {
@@ -180,8 +182,8 @@ const resetForm = () => {
     gender: "",
     dob: "",
     department: "",
-    address: "",
-    agree: false,
+    //address: "",
+    //agree: false,
   };
 };
 </script>

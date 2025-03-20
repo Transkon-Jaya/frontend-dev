@@ -22,6 +22,8 @@
       </div>
     </div>
   </div>
+
+  
 </template>
 
 <script setup>
@@ -43,7 +45,7 @@ const _dashboardItems = ref([
     name: "Marketing",
     icon: "fa-solid fa-chart-simple",
     submenus: [
-      { name: "Master Marketing", link: "/marketing" },
+      { name: "Master Marketing", link: "/office/marketing" },
       { name: "Master Contract", link: "/contract" },
       { name: "PO Unit", link: "/po-unit" },
     ],
@@ -162,3 +164,4 @@ const toggleDropdown = (index) => {
 }
 
 </style>
+

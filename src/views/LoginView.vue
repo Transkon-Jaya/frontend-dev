@@ -2,15 +2,21 @@
   <div
     class="d-flex justify-content-center align-items-center vh-100 vw-100 bg-light position-absolute top-0 start-0"
   >
-    <div class="card p-4 shadow-lg" style="width: 350px">
-      <h2 class="text-center mb-4">Login</h2>
+  <div class="card p-4 shadow-lg text-center" style="width: 350px">
+  <img
+    src="@images/logo.png"
+    alt="Logo"
+    class="img-fluid mx-auto d-block mb-3"
+    style="max-width: 100px"
+  />
+  <h5 class="text-center mb-4">Enter your credentials to login your account</h5>
       <form @submit.prevent="login">
         <div class="mb-3">
-          <label class="form-label">Username</label>
+          <label class="form-label text-start d-block">Username</label>
           <input v-model="username" type="text" class="form-control" required />
         </div>
         <div class="mb-3">
-          <label class="form-label">Password</label>
+          <label class="form-label text-start d-block">Password</label>
           <input
             v-model="password"
             type="password"
