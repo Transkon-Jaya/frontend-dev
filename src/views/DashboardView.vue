@@ -47,7 +47,6 @@ const _dashboardItems = ref([
     submenus: [
       { name: "Master Marketing", link: "/office/marketing" },
       { name: "Master Contract", link: "/contract" },
-      { name: "PO Unit", link: "/po-unit" },
     ],
   },
   {
@@ -64,6 +63,7 @@ const _dashboardItems = ref([
     submenus: [
       { name: "Logistics", link: "/about" },
       { name: "Procurement", link: "/supply-chain-procurement" },
+      { name: "PO Unit", link: "/po-unit" },
     ],
   },
   {
