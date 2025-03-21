@@ -155,14 +155,14 @@
 import { ref } from "vue";
 
 const user = ref({
-  firstName: "",
-  lastName: "",
+  Name: "",
+  //lastName: "",
   phone: "",
   userName: "",
   password: "",
-  gender: "",
-  dob: "",
-  department: "",
+  //gender: "",
+  //dob: "",
+ // department: "",
   //address: "",
   //agree: false,
 });
@@ -173,14 +173,14 @@ const submitForm = () => {
 
 const resetForm = () => {
   user.value = {
-    firstName: "",
-    lastName: "",
+    Name: "",
+    //lastName: "",
     phone: "",
     userName: "",
     password: "",
-    gender: "",
-    dob: "",
-    department: "",
+    //gender: "",
+    //dob: "",
+    //department: "",
     //address: "",
     //agree: false,
   };
