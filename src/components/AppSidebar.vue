@@ -83,7 +83,7 @@ const menus = ref([
 
 // Fungsi untuk menampilkan sidebar jika mouse ke sisi kiri layar
 const handleMouseMove = (event) => {
-  if (event.clientX < 50 && !showDashboard.value) {
+  if (event.clientX < 20 && !showDashboard.value) {
     showDashboard.value = true;
     //document.body.classList.add("sidebar-active");
   }
