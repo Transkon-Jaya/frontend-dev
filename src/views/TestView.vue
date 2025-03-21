@@ -337,12 +337,16 @@ onBeforeUnmount(() => {
   max-width: 100%;
   position: relative;
   margin-top: "200px";
+  height: 100%;
+  padding: 0px 0px;
 }
+
 .vue-good-table th,
 .vue-good-table td {
-  padding: 4px 8px; /* Sebelumnya mungkin lebih besar */
-  font-size: 14px; /* Kurangi ukuran font */
+  padding: 0px 0px; /* Sebelumnya mungkin lebih besar */
+  font-size: 12px; /* Kurangi ukuran font */
   white-space: nowrap;
+  height: 100%;
 }
 .vue-good-table thead th {
   position: sticky;
@@ -350,26 +354,13 @@ onBeforeUnmount(() => {
   background: white;
   z-index: 5;
   font-size: 12px; /* Ubah dari default (biasanya 14px atau lebih) */
-  padding: 4px 6px; /* Kurangi padding agar tidak terlalu tinggi */
+  padding: 0px 0px; /* Kurangi padding agar tidak terlalu tinggi */
 }
-.vue-good-table th:nth-child(1),
-.vue-good-table td:nth-child(1) {
-  position: sticky;
-  left: 0;
-  background: white;
-  z-index: 4;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-.vue-good-table th:nth-child(2),
-.vue-good-table td:nth-child(2) {
-  position: sticky;
-  left: 100px;
-  background: white;
-  z-index: 4;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
+
 .vue-good-table table {
   min-width: 1200px;
+  height: 100%;
+  padding: 0px;
 }
 
 .checkbox-container {
@@ -383,10 +374,13 @@ onBeforeUnmount(() => {
   color: red;
 }
 input {
-  padding: 3px;
+  padding: 0px 0px;
   font-size: 12px; /* font size */
-  width: 95%;
-  margin: 5px 0;
+  width: 100%;
+  margin: 0px 0px;
+  border: none !important;
+  /* outline: none !important; */
+  height: 100%;
 }
 button {
   padding: 6px 10px;
