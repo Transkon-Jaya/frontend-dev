@@ -11,23 +11,13 @@
             class="row g-3 needs-validation"
             novalidate
           >
-            <div class="col-md-6">
-              <label for="firstName" class="form-label">First Name</label>
+            <div class="col-md-12">
+              <label for="Name" class="form-label">Name</label>
               <input
                 v-model="user.firstName"
                 type="text"
                 class="form-control"
                 id="firstName"
-                required
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="lastName" class="form-label">Last Name</label>
-              <input
-                v-model="user.lastName"
-                type="text"
-                class="form-control"
-                id="lastName"
                 required
               />
             </div>
@@ -61,7 +51,7 @@
                 required
               />
             </div>
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
               <label class="form-label">Gender</label>
               <div class="d-flex gap-3">
                 <div class="form-check">
@@ -115,7 +105,7 @@
                 </select>
                 </div>
 
-           <!--
+          
             <div class="col-md-12">
               <label for="address" class="form-label">Address</label>
               <textarea
@@ -139,6 +129,15 @@
               </div>
             </div>
              -->
+            <!-- Upload Foto -->
+            <div class="col-md-12">
+              <label for="photo" class="form-label">Upload Photo</label>
+              <input type="file" class="form-control" id="photo" @change="handleFileUpload" accept="image/*" />
+              <div v-if="previewImage" class="mt-3">
+                <img :src="previewImage" alt="Preview" class="img-thumbnail" style="max-width: 200px;" />
+              </div>
+            </div>
+
              <div class="col-md-12 mt-4 mb-3 d-flex gap-3">
               <button type="submit" class="btn btn-primary">Submit</button>
               <button type="reset" class="btn btn-secondary" @click="resetForm">
