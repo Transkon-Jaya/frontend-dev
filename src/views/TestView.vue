@@ -3,10 +3,12 @@ import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
 import { VueGoodTable } from "vue-good-table-next";
 import "vue-good-table-next/dist/vue-good-table-next.css";
+import Multiselect from "vue-multiselect";
+import "vue-multiselect/dist/vue-multiselect.css";
 import * as XLSX from "xlsx";
 
 const apiUrl = "https://www.transkon-rent.com/api/marketing";
-const customerUrl = "https://www-transkon-rent.com/api/customer";
+const customerUrl = "https://www.transkon-rent.com/api/customer";
 const marketingData = ref([]);
 const marketingDataInsert = ref([]);
 const customers = ref([]);
@@ -56,6 +58,20 @@ const dateFields = [
   "date_commisioning_finish",
 ];
 
+const fetchCustomerData = async () => {
+  try {
+    const response = await axios.get(customerUrl);
+    if (Array.isArray(response.data)) {
+      customers.value = response.data.map((item) => item.name ?? ""); // Handle missing values
+      console.log(customers.value);
+    } else {
+      console.error("Unexpected API response format:", response.data);
+    }
+  } catch (err) {
+    console.error("Failed to fetch customer data:", err);
+  }
+}
+
 const fetchMarketingData = async () => {
   try {
     loading.value = true;
@@ -65,13 +81,14 @@ const fetchMarketingData = async () => {
         {
           label: "ID",
           field: "id",
-          width: secondColumnWidth.value,
+          // width: secondColumnWidth.value,
           width: "80px", // Kurangi ukuran kolom ID
           minWidth: "100px",
           sortable: true,
           filterable: false,
           editable: false,
           frozen: true,
+          headerClass: "custom-header",
         },
         ...Object.keys(response.data[0])
           .filter((key) => key !== "id")
@@ -92,6 +109,7 @@ const fetchMarketingData = async () => {
               20 +
               "px",
             minWidth: "80px",
+            headerClass: "custome-header",
           })),
       ];
     }
@@ -236,6 +254,7 @@ const updateColumnWidths = () => {
 
 onMounted(() => {
   fetchMarketingData();
+  fetchCustomerData();
   window.addEventListener("resize", updateColumnWidths);
 });
 
@@ -251,6 +270,7 @@ onBeforeUnmount(() => {
     <button @click="addNewRow">Add New Row</button>
     <p v-if="loading">Loading...</p>
     <p v-if="error" class="error">{{ error }}</p>
+    <!-- INSERT TABLE -->
     <div class="table-container">
       <vue-good-table
         v-if="!loading && !error"
@@ -276,6 +296,24 @@ onBeforeUnmount(() => {
               />
             </div>
           </template>
+          <template v-else-if="props.column.field === 'name_customer'">
+            <Multiselect
+              v-model="props.row[props.column.field]"
+              :options="customers || []"
+              :searchable="true"
+              :allow-empty="false"
+              placeholder="Select customer..."
+              noResultsText="No matching customers found"
+              @update:modelValue="trackUpload(props.row, props.column.field)"
+            />
+          </template>
+          <template v-else-if="dateFields.includes(props.column.field)">
+            <input
+              type="date"
+              v-model="props.row[props.column.field]"
+              @input="trackUpload(props.row, props.column.field)"
+            />
+          </template>
           <template v-else-if="props.column.editable !== false">
             <input
               v-model="props.row[props.column.field]"
@@ -291,6 +329,7 @@ onBeforeUnmount(() => {
 
     <button @click="exportToExcel">Export to Excel</button>
     <button @click="saveChanges">Save Updates</button>
+    <!-- UPDATE TABLE -->
     <div class="table-container">
       <vue-good-table
         v-if="!loading && !error"
@@ -314,6 +353,24 @@ onBeforeUnmount(() => {
               />
             </div>
           </template>
+          <template v-else-if="props.column.field === 'name_customer'">
+            <Multiselect
+              v-model="props.row[props.column.field]"
+              :options="customers || []"
+              :searchable="true"
+              :allow-empty="false"
+              placeholder="Select customer..."
+              noResultsText="No matching customers found"
+              @update:modelValue="trackChanges(props.row, props.column.field)"
+            />
+          </template>
+          <template v-else-if="dateFields.includes(props.column.field)">
+            <input
+              type="date"
+              v-model="props.row[props.column.field]"
+              @input="trackChanges(props.row, props.column.field)"
+            />
+          </template>
 
           <template v-else-if="props.column.editable !== false">
             <input
@@ -331,7 +388,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
-.table-container {
+/* .table-container {
   width: 100%;
   overflow-x: auto;
   max-width: 100%;
@@ -339,35 +396,26 @@ onBeforeUnmount(() => {
   margin-top: "200px";
   height: 100%;
   padding: 0px 0px;
+} */
+
+.vgt-table th { /* table header */
+  padding: 0.5px 5px;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
 }
 
-.vue-good-table th,
-.vue-good-table td {
-  padding: 0px 0px; /* Sebelumnya mungkin lebih besar */
-  font-size: 12px; /* Kurangi ukuran font */
-  white-space: nowrap;
-  height: 100%;
-}
-.vue-good-table thead th {
-  position: sticky;
-  top: 0;
-  background: white;
-  z-index: 5;
-  font-size: 12px; /* Ubah dari default (biasanya 14px atau lebih) */
-  padding: 0px 0px; /* Kurangi padding agar tidak terlalu tinggi */
-}
-
-.vue-good-table table {
-  min-width: 1200px;
-  height: 100%;
-  padding: 0px;
+table.vgt-table td {/* table row / cell */
+  padding: 0.5px 5px;
 }
 
 .checkbox-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 75%;
+  padding: 1px;
 }
 
 .error {
@@ -379,9 +427,26 @@ input {
   width: 100%;
   margin: 0px 0px;
   border: none !important;
-  /* outline: none !important; */
+  outline: none !important;
   height: 100%;
 }
+
+.vgt-wrap__footer .footer__row-count__label,
+.vgt-wrap__footer .footer__row-count__select,
+.vgt-wrap__footer .footer__navigation__page-btn span,
+.vgt-wrap__footer .footer__navigation__page-info span {
+    font-size: 12px;
+}
+
+.multiselect__content-wrapper {
+  position:absolute !important;
+  z-index: 9999 !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  overflow-y: auto !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 button {
   padding: 6px 10px;
   margin: 5px;
