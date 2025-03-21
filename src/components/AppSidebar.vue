@@ -40,7 +40,7 @@ const menus = ref([
     title: "Fleet",
     open: false,
     submenus: [
-    { name: "List Unit", link: "/list-unit" },
+      { name: "List Unit", link: "/list-unit" },
       { name: "Movement", link: "/movement" },
       { name: "Out Run and Return", link: "/out-run" },
       { name: "Disposal", link: "/disposal" },
@@ -48,19 +48,19 @@ const menus = ref([
     ],
   },
   {
-    title: "HR",
+    title: "Marketing",
     open: false,
     submenus: [
-      { name: "Employee Data", link: "/hr-employee" },
-      { name: "Payroll", link: "/hr-payroll" },
+      { name: "Master Marketing", link: "/marketing" },
+      { name: "Master Contract", link: "/contract" },
     ],
   },
   {
     title: "Workshop",
     open: false,
     submenus: [
-      { name: "Repairs", link: "/workshop-repairs" },
-      { name: "Inventory", link: "/workshop-inventory" },
+      { name: "Body Repairs", link: "/workshop-repairs" },
+      { name: "General Repairs", link: "/workshop-inventory" },
     ],
   },
   {
@@ -71,11 +71,19 @@ const menus = ref([
       { name: "Procurement", link: "/supply-chain-procurement" },
     ],
   },
+  {
+    title: "HR",
+    open: false,
+    submenus: [
+      { name: "Employee Data", link: "/hr-employee" },
+      { name: "Payroll", link: "/hr-payroll" },
+    ],
+  },
 ]);
 
 // Fungsi untuk menampilkan sidebar jika mouse ke sisi kiri layar
 const handleMouseMove = (event) => {
-  if (event.clientX < 50 && !showDashboard.value) {
+  if (event.clientX < 20 && !showDashboard.value) {
     showDashboard.value = true;
     //document.body.classList.add("sidebar-active");
   }
@@ -127,7 +135,7 @@ onUnmounted(() => {
   text-align: center;
   font-size: 24px; /* Perbesar tulisan */
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   padding: 10px 0;
 }
 

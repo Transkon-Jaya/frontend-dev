@@ -39,9 +39,21 @@ const checkboxFields = [
   "radio_icom",
 ];
 const fieldsToRemove = ["isEditing", "filterable", "vgt_id", "originalIndex"];
-const dateFields = ["inquiry", "date_rfq", "date_deadline_tender", "approval_presdir", "date_Quotation_trja"
-  , "date_send_quot", "date_approved_quot", "date_spk_po_customer", "date_master_contract", "date_po_dealer"
-  , "date_send_po", "date_delvery_to_customer", "received_date_by_customer", "date_commisioning_finish"
+const dateFields = [
+  "inquiry",
+  "date_rfq",
+  "date_deadline_tender",
+  "approval_presdir",
+  "date_Quotation_trja",
+  "date_send_quot",
+  "date_approved_quot",
+  "date_spk_po_customer",
+  "date_master_contract",
+  "date_po_dealer",
+  "date_send_po",
+  "date_delvery_to_customer",
+  "received_date_by_customer",
+  "date_commisioning_finish",
 ];
 
 const fetchMarketingData = async () => {
@@ -131,9 +143,15 @@ const upload = async () => {
       }
       delete uploadItem["id"];
       console.log(uploadItem);
-      dateFields.forEach(key => {
-        if (uploadItem[key] !== null && uploadItem[key] !== undefined && !isNaN(Date.parse(uploadItem[key]))) {
-          uploadItem[key] = new Date(uploadItem[key]).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+      dateFields.forEach((key) => {
+        if (
+          uploadItem[key] !== null &&
+          uploadItem[key] !== undefined &&
+          !isNaN(Date.parse(uploadItem[key]))
+        ) {
+          uploadItem[key] = new Date(uploadItem[key])
+            .toISOString()
+            .split("T")[0]; // Format: YYYY-MM-DD
         }
       });
       Object.keys(uploadItem).forEach((key) => {
@@ -146,13 +164,12 @@ const upload = async () => {
       alert("Data uploaded Successfully");
       marketingDataInsert.value = [];
       changedRowsInsert.value.clear();
-
     }
   } catch (err) {
     console.error("Failed to upload: ", err);
     alert("Failed to upload");
   }
-}
+};
 
 // For updates
 const trackChanges = (row, field) => {
@@ -171,9 +188,15 @@ const saveChanges = async () => {
       for (const prop of fieldsToRemove) {
         delete updatedItem[prop];
       }
-      dateFields.forEach(key => {
-        if (updatedItem[key] !== null && updatedItem[key] !== undefined && !isNaN(Date.parse(updatedItem[key]))) {
-          updatedItem[key] = new Date(updatedItem[key]).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+      dateFields.forEach((key) => {
+        if (
+          updatedItem[key] !== null &&
+          updatedItem[key] !== undefined &&
+          !isNaN(Date.parse(updatedItem[key]))
+        ) {
+          updatedItem[key] = new Date(updatedItem[key])
+            .toISOString()
+            .split("T")[0]; // Format: YYYY-MM-DD
         }
       });
       await axios.put(`${apiUrl}`, updatedItem);
@@ -242,10 +265,14 @@ onBeforeUnmount(() => {
               <input
                 type="checkbox"
                 :checked="props.row[props.column.field] == 1"
-                @change="(event) => {
-                  props.row[props.column.field] = event.target.checked ? 1 : 0;
-                  trackUpload(props.row, props.column.field);
-                }"
+                @change="
+                  (event) => {
+                    props.row[props.column.field] = event.target.checked
+                      ? 1
+                      : 0;
+                    trackUpload(props.row, props.column.field);
+                  }
+                "
               />
             </div>
           </template>

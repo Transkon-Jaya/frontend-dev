@@ -40,8 +40,8 @@ const routes: Array<RouteRecordRaw> = [
         path: "404",
         name: "not found",
         component: () => import("../views/errors/404.vue"),
-      }
-    ]
+      },
+    ],
   },
   {
     path: "/dashboard",
@@ -55,9 +55,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/AboutView.vue"),
   },
   {
+    path: "/prime",
+    name: "prime",
+    component: () => import("../views/PrimeView.vue"),
+  },
+  {
     path: "/test",
     name: "test",
     component: () => import("../views/TestView.vue"),
+  },
+  {
+    path: "/setting",
+    name: "setting",
+    component: () => import("../views/SettingView.vue"),
   },
   {
     path: "/marketing",
@@ -85,22 +95,18 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   console.log(token);
 
-  if (!("requiresAuth" in to.meta) ){ // no login needed
+  if (!("requiresAuth" in to.meta)) {
+    // no login needed
     next();
-  }
-  else if (to.meta.requiresAuth && !token) { // need login first
+  } else if (to.meta.requiresAuth && !token) {
+    // need login first
     console.warn("🔒 Akses ditolak! Harus login dulu.");
     next("/login");
   }
   const decoded = jwtDecode(token);
   const user_level = parseInt(decoded.user_level, 10);
-  if (
-    to.meta.minimumLevel &&
-    user_level > (to.meta.minimumLevel as number)
-  ) {
-    console.warn(
-      `⛔ Akses ditolak! Hubungi admin jika membutuhkan izin`
-    );
+  if (to.meta.minimumLevel && user_level > (to.meta.minimumLevel as number)) {
+    console.warn(`⛔ Akses ditolak! Hubungi admin jika membutuhkan izin`);
     next("/error/403");
   } else {
     next();

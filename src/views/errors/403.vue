@@ -1,7 +1,10 @@
 <template>
   <div class="error-container">
     <h1>403 - Forbidden</h1>
-    <p>Anda tidak mempunyai akses untuk halaman ini. Hubungi admin jika membutuhkan akses</p>
+    <p>
+      Anda tidak mempunyai akses untuk halaman ini. Hubungi admin jika
+      membutuhkan akses
+    </p>
     <button @click="goHome">Kembali ke dashboard</button>
   </div>
 </template>

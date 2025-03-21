@@ -8,11 +8,10 @@
       <AppHeader v-if="showHeader" />
 
       <!-- Konten utama -->
-      <router-view />   
+      <router-view />
       <Footer />
     </div>
   </div>
-  
 </template>
 
 <script setup>
