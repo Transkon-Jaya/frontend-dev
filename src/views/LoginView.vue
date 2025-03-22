@@ -24,7 +24,7 @@
             required
           />
         </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <button type="submit" class="btn btn-danger w-100">Login</button>
         <p v-if="error" class="text-danger text-center mt-2">{{ error }}</p>
       </form>
     </div>
