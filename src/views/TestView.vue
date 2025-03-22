@@ -9,9 +9,11 @@ import * as XLSX from "xlsx";
 
 const apiUrl = "https://www.transkon-rent.com/api/marketing";
 const customerUrl = "https://www.transkon-rent.com/api/customer";
+const locationUrl = "https://www.transkon-rent.com/api/location";
 const marketingData = ref([]);
 const marketingDataInsert = ref([]);
 const customers = ref([]);
+const locations = ref([]);
 const filteredData = ref([]); // Store filtered data
 const columns = ref([]);
 const loading = ref(true);
@@ -63,7 +65,19 @@ const fetchCustomerData = async () => {
     const response = await axios.get(customerUrl);
     if (Array.isArray(response.data)) {
       customers.value = response.data.map((item) => item.name ?? ""); // Handle missing values
-      console.log(customers.value);
+    } else {
+      console.error("Unexpected API response format:", response.data);
+    }
+  } catch (err) {
+    console.error("Failed to fetch customer data:", err);
+  }
+}
+
+const fetchLocationData = async () => {
+  try {
+    const response = await axios.get(locationUrl);
+    if (Array.isArray(response.data)) {
+      locations.value = response.data.map((item) => item.location ?? ""); // Handle missing values
     } else {
       console.error("Unexpected API response format:", response.data);
     }
@@ -255,6 +269,7 @@ const updateColumnWidths = () => {
 onMounted(() => {
   fetchMarketingData();
   fetchCustomerData();
+  fetchLocationData();
   window.addEventListener("resize", updateColumnWidths);
 });
 
@@ -303,6 +318,17 @@ onBeforeUnmount(() => {
               :searchable="true"
               :allow-empty="false"
               placeholder="Select customer..."
+              noResultsText="No matching customers found"
+              @update:modelValue="trackUpload(props.row, props.column.field)"
+            />
+          </template>
+          <template v-else-if="props.column.field === 'location'">
+            <Multiselect
+              v-model="props.row[props.column.field]"
+              :options="locations || []"
+              :searchable="true"
+              :allow-empty="false"
+              placeholder="Select location..."
               noResultsText="No matching customers found"
               @update:modelValue="trackUpload(props.row, props.column.field)"
             />
@@ -360,6 +386,17 @@ onBeforeUnmount(() => {
               :searchable="true"
               :allow-empty="false"
               placeholder="Select customer..."
+              noResultsText="No matching customers found"
+              @update:modelValue="trackChanges(props.row, props.column.field)"
+            />
+          </template>
+          <template v-else-if="props.column.field === 'location'">
+            <Multiselect
+              v-model="props.row[props.column.field]"
+              :options="locations || []"
+              :searchable="true"
+              :allow-empty="true"
+              placeholder="Select location..."
               noResultsText="No matching customers found"
               @update:modelValue="trackChanges(props.row, props.column.field)"
             />
