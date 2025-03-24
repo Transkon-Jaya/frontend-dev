@@ -21,7 +21,7 @@
   export default {
     setup() {
       const user = ref({
-        name: "Khaza",
+        name: "User",
       });
   
       const portals = ref([
