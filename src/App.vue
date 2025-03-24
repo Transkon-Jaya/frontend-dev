@@ -25,8 +25,8 @@ import Footer from "@/components/AppFooter.vue";
 const route = useRoute();
 
 // Sembunyikan Header & Sidebar jika berada di halaman login
-const showHeader = computed(() => route.path !== "/login");
-const showSidebar = computed(() => route.path !== "/login");
+const showHeader = computed(() => route.path !== "/login" && !route.meta.hideHeader);
+const showSidebar = computed(() => route.path !== "/login" && !route.meta.hideHeader);
 </script>
 
 <style>

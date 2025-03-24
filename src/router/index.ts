@@ -58,6 +58,13 @@ const routes: Array<RouteRecordRaw> = [
     path: "/fleet",
     name: "fleet",
     component: () => import("../views/FleetView.vue"),
+    meta: { hideHeader: true }, // sembunyikan Appheader.vue
+  },
+  {
+    path: "/marketing-dashboard",
+    name: "marketing-dashboard",
+    component: () => import("../views/Marketing-DashboardView.vue"),
+    meta: { hideHeader: true }, // sembunyikan Appheader.vue
   },
   {
     path: "/test",
