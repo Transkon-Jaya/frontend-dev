@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container row-4">
     <h1>Absensi Test</h1>
     <p>Ayo Absen</p>
 

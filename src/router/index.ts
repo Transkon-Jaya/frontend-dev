@@ -60,16 +60,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/AbsensiView.vue"),
   },
   {
+    path: "/pengumuman-test",
+    name: "pengumuman",
+    component: () => import("../views/PengumumanTestingView.vue"),
+  },
+  {
     path: "/fleet",
     name: "fleet",
     component: () => import("../views/FleetView.vue"),
-    meta: { hideHeader: true }, // sembunyikan Appheader.vue
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
     path: "/marketing-dashboard",
     name: "marketing-dashboard",
     component: () => import("../views/Marketing-DashboardView.vue"),
-    meta: { hideHeader: true }, // sembunyikan Appheader.vue
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
     path: "/test",
