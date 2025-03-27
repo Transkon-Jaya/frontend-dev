@@ -60,9 +60,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/AbsensiView.vue"),
   },
   {
-    path: "/prime",
-    name: "prime",
-    component: () => import("../views/PrimeView.vue"),
+    path: "/fleet",
+    name: "fleet",
+    component: () => import("../views/FleetView.vue"),
+    meta: { hideHeader: true }, // sembunyikan Appheader.vue
+  },
+  {
+    path: "/marketing-dashboard",
+    name: "marketing-dashboard",
+    component: () => import("../views/Marketing-DashboardView.vue"),
+    meta: { hideHeader: true }, // sembunyikan Appheader.vue
   },
   {
     path: "/test",
