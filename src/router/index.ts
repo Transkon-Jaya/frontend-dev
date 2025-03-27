@@ -55,6 +55,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/AboutView.vue"),
   },
   {
+    path: "/a-test",
+    name: "absensi",
+    component: () => import("../views/AbsensiView.vue"),
+  },
+  {
     path: "/prime",
     name: "prime",
     component: () => import("../views/PrimeView.vue"),
@@ -93,7 +98,7 @@ const router = createRouter({
 // Middleware untuk autentikasi sebelum masuk ke halaman tertentu
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(from, " -> ", to);
 
   if (!("requiresAuth" in to.meta)) {
     // no login needed

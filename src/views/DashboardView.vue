@@ -16,7 +16,8 @@
         <!-- Dropdown menu -->
         <ul v-if="openDropdown === index" class="dropdown-menu show">
           <li v-for="submenu in item.submenus" :key="submenu.name">
-            <a :href="submenu.link">{{ submenu.name }}</a>
+            <router-link :to="submenu.link" class="nav-link">{{ submenu.name }}</router-link>
+            <!-- <a :href="submenu.link">{{ submenu.name }}</a> -->
           </li>
         </ul>
       </div>
@@ -27,7 +28,7 @@
 <script setup>
 import { ref, computed } from "vue";
 const baseUrl = import.meta.env.BASE_URL;
-const _dashboardItems = ref([
+const dashboardItems = ref([
   { name: "Fleet", icon: "fas fa-car-side", submenus: [
       { name: "List Unit", link: "/list-unit" },
       { name: "Movement", link: "/movement" },
@@ -54,25 +55,17 @@ const _dashboardItems = ref([
   },
   { name: "HR", icon: "fas fa-file-signature", submenus: [
       { name: "Employee Data", link: "/test" },
-      { name: "Payroll", link: "/about" }
+      { name: "Payroll", link: "/about" },
+      { name: "a-test", link: "/a-test"}
     ]
   }
 ]);
-
-const dashboardItems = computed(() => {
-  return _dashboardItems.value.map((category) => ({
-    ...category,
-    submenus: category.submenus.map((submenu) => ({
-      ...submenu,
-      link: submenu.link.startsWith("/office") ? submenu.link : `${baseUrl}${submenu.link}`
-    }))
-  }));
-});
 
 const openDropdown = ref(null);
 const toggleDropdown = (index) => {
   openDropdown.value = openDropdown.value === index ? null : index;
 };
+
 </script>
 
 <style scoped>
