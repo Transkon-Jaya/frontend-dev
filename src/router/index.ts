@@ -82,9 +82,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/TestView.vue"),
   },
   {
-    path: "/setting",
-    name: "setting",
-    component: () => import("../views/SettingView.vue"),
+    path: "/profile",
+    name: "profile",
+    component: () => import("../views/ProfileView.vue"),
   },
   {
     path: "/marketing",

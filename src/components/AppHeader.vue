@@ -57,9 +57,9 @@
               <hr class="dropdown-divider" />
               <router-link
                 class="dropdown-item d-flex align-items-center gap-2 py-2"
-                to="/Setting"
+                to="/profile"
               >
-                <i class="material-icons-outlined"></i>Settings
+                <i class="material-icons-outlined"></i>Profile
               </router-link>
               <router-link
                 class="dropdown-item d-flex align-items-center gap-2 py-2"
