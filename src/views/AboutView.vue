@@ -27,17 +27,17 @@
 <div class="container">
     <div class="bg-light p-5 rounded-lg m-3">
         <h1 class="display-4">Transkon Info</h1>
-        <p class="lead">Selamat Hari Raya Idul Fitri</p>
+        <p class="lead">Selamat Hari Raya Idul Fitri 1445 H</p>
         <hr class="my-4">
         <p>
           <!-- Gambar dengan pengaturan ukuran -->
-          <img src="/src/assets/images/avatars/eid.jpeg" 
+          <img src="/src/assets/images/avatars/eid.jpg" 
                alt="Gambar Lebaran" 
                class="img-fluid rounded" 
                style="width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto;">
         </p>
         <!-- Tambahan teks di bawah gambar jika perlu -->
-        <p class="mt-3">1445 H - 2024 M</p>
+        <p class="mt-3"></p>
     </div>
 </div>
 
