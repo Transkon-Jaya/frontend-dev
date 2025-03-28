@@ -26,8 +26,8 @@
     <!-- papan pengumuman -->
 <div class="container">
     <div class="bg-light p-5 rounded-lg m-3">
-        <h1 class="display-4">Transkon Info</h1>
-        <p class="lead">Selamat Hari Raya Idul Fitri 1445 H</p>
+        <h1 class="display-4"></h1>
+        <p class="lead">Transkon Info</p>
         <hr class="my-4">
         <p>
           <!-- Gambar dengan pengaturan ukuran -->
