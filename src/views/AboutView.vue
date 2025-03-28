@@ -1,11 +1,11 @@
 <template>
   <div class="container row-4">
     <h1>Absensi Test</h1>
-    <p>Ayo Absen</p>
+    <p></p>
 
     <!-- Dropdown Lokasi Absen -->
     <div class="form-group">
-      <label for="location">Pilih Lokasi Absen:</label>
+      <label for="location">Pilih Lokasi:</label>
       <select v-model="selectedLocation" id="location">
         <option v-for="(location, index) in locations" :key="index" :value="location">
           {{ location }}
@@ -14,31 +14,34 @@
     </div>
 
     <!-- Tombol Absen -->
-    <button @click="startAttendance" class="absen-btn">Absen Sekarang</button>
+    <input type="file" accept="image/*" capture="environment" @change="handlePhoto" id="cameraInput" style="display: none" />
+    <button @click="openCamera" class="absen-btn">Absen Sekarang</button>
 
     <!-- Notifikasi Absen -->
     <p v-if="attendanceRecorded" class="confirmation-text">✅ Absen Anda sudah terekam!</p>
     <br>
+     <!-- papan pengumuman 
     <button @click="goHome">Kembali ke dashboard</button>
-
-
-     <!-- papan pengumuman -->
-    <div class="container">
+-->
+    <!-- papan pengumuman -->
+<div class="container">
     <div class="bg-light p-5 rounded-lg m-3">
-        <h1 class="display-4">Transkon jaya</h1>
+        <h1 class="display-4">Transkon Info</h1>
         <p class="lead">Selamat Hari Raya Idul Fitri</p>
         <hr class="my-4">
         <p>
+          <!-- Gambar dengan pengaturan ukuran -->
           <img src="/src/assets/images/avatars/eid.jpeg" 
-           alt="Gambar Lebaran" 
-        class="img-fluid rounded" 
-        style="max-width: 100%; height: auto; max-height: 400px;">
+               alt="Gambar Lebaran" 
+               class="img-fluid rounded" 
+               style="width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto;">
         </p>
+        <!-- Tambahan teks di bawah gambar jika perlu -->
+        <p class="mt-3">1445 H - 2024 M</p>
     </div>
 </div>
 
-  <!-- gps info box -->
-
+    <!-- GPS & IP Info -->
     <div class="info-box">
       <h3>IP Addresses</h3>
       <p><strong>IPv4:</strong> {{ ipData.ipv4 }}</p>
@@ -76,7 +79,6 @@ export default {
     const attendanceRecorded = ref(false);
     const selectedLocation = ref("");
     const locations = ref(["HO Balikpapan", "HUB Sanga-sanga", "HUB Melak", "HUB Sangata", "HUB Berau"]);
-
     const ZOOM_LEVEL = 12;
 
     const fetchIp = async () => {
@@ -136,23 +138,19 @@ export default {
     goHome() {
       this.$router.push("/");
     },
-    startAttendance() {
+    openCamera() {
       if (!this.selectedLocation) {
         alert("Pilih lokasi absen terlebih dahulu!");
         return;
       }
-
-      // Buka kamera perangkat untuk mengambil foto
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          this.attendanceRecorded = true;
-          stream.getTracks().forEach((track) => track.stop()); // Matikan kamera setelah digunakan
-        })
-        .catch((error) => {
-          console.error("Tidak dapat mengakses kamera:", error);
-          alert("Gagal mengakses kamera. Pastikan izin diberikan.");
-        });
+      document.getElementById("cameraInput").click();
+    },
+    handlePhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.attendanceRecorded = true;
+        alert("Foto berhasil diambil, absen Anda sudah terekam!");
+      }
     },
   },
 };
@@ -192,21 +190,5 @@ select {
   font-size: 18px;
   font-weight: bold;
   color: green;
-}
-
-.info-box {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #f9f9f9;
-}
-
-.map-img {
-  width: 100%;
-  max-width: 450px;
-  height: auto;
-  margin-top: 10px;
-  border-radius: 8px;
 }
 </style>
