@@ -3,15 +3,21 @@
     <h1>Absensi Test</h1>
     <p></p>
 
-    <!-- Dropdown Lokasi Absen -->
     <div class="form-group">
-      <label for="location">Pilih Lokasi:</label>
-      <select v-model="selectedLocation" id="location">
-        <option v-for="(location, index) in locations" :key="index" :value="location">
-          {{ location }}
-        </option>
-      </select>
-    </div>
+  <label for="location">Pilih Lokasi:</label>
+  <br>
+  <select v-model="selectedLocation" id="location" 
+          style="padding: 0.25rem 0.5rem;
+                 font-size: 0.875rem;
+                 line-height: 1.5;
+                 border-radius: 0.2rem;
+                 width: 350px;
+                 height: 30px;">
+    <option v-for="(location, index) in locations" :key="index" :value="location">
+      {{ location }}
+    </option>
+  </select>
+</div>
 
     <!-- Tombol Absen -->
     <input type="file" accept="image/*" capture="environment" @change="handlePhoto" id="cameraInput" style="display: none" />
@@ -20,21 +26,23 @@
     <!-- Notifikasi Absen -->
     <p v-if="attendanceRecorded" class="confirmation-text">✅ Absen Anda sudah terekam!</p>
     <br>
-     <!-- papan pengumuman 
+     <!-- button dashboard 
     <button @click="goHome">Kembali ke dashboard</button>
 -->
     <!-- papan pengumuman -->
-<div class="container">
+    <div class="container">
     <div class="bg-light p-5 rounded-lg m-3">
         <h1 class="display-4"></h1>
         <p class="lead">Transkon Info</p>
         <hr class="my-4">
         <p>
-          <!-- Gambar dengan pengaturan ukuran -->
-          <img src="/src/assets/images/avatars/eid.jpg" 
-               alt="Gambar Lebaran" 
-               class="img-fluid rounded" 
-               style="width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto;">
+          <!-- Gambar dengan pengaturan ukuran responsif -->
+          <div class="d-flex justify-content-center">
+            <img src="/src/assets/images/avatars/eid.jpg" 
+                 alt="Gambar Lebaran" 
+                 class="img-fluid rounded"
+                 style="max-width: 100%; height: auto;">
+          </div>
         </p>
         <!-- Tambahan teks di bawah gambar jika perlu -->
         <p class="mt-3"></p>
