@@ -2,7 +2,7 @@
     <div class="dashboard-container">
       <div class="header">
         <h2>Hallo, <span class="username">{{ user.name }}</span></h2>
-        <button class="logout-btn">Logout 🚪</button>
+        <!-- <button class="logout-btn">Logout 🚪</button>-->
       </div>
       <div class="portal-grid">
         <div v-for="portal in portals" :key="portal.title" class="portal-card">

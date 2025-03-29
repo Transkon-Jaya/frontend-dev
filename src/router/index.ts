@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
+import { Sidebar } from "primevue";
 
 // Daftar Routes
 const routes: Array<RouteRecordRaw> = [
@@ -53,6 +54,10 @@ const routes: Array<RouteRecordRaw> = [
     path: "/about",
     name: "about",
     component: () => import("../views/AboutView.vue"),
+    meta: {
+      hideHeader: true, // sembunyikan Appheader.vue
+      hideSidebar: true // sembunyikan Sidebar.vue
+    }
   },
   {
     path: "/a-test",

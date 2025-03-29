@@ -26,7 +26,7 @@ const route = useRoute();
 
 // Sembunyikan Header & Sidebar jika berada di halaman login
 const showHeader = computed(() => route.path !== "/login" && !route.meta.hideHeader);
-const showSidebar = computed(() => route.path !== "/login" && !route.meta.hideHeader);
+const showSidebar = computed(() => route.path !== "/login" && !route.meta.hideSidebar);
 </script>
 
 <style>
