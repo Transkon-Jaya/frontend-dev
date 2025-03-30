@@ -8,7 +8,7 @@
     <!-- Main Content -->
     <main class="main-content">
       <h1 class="app-title">Absensi Karyawan</h1>
-      <p class="app-subtitle">PT. Transkon Jaya</p>
+      <p class="app-subtitle"></p>
       <!-- Attendance Form -->
       <div class="attendance-card">
         <div class="form-group">
@@ -40,7 +40,7 @@
       <div class="announcement-card">
         <div class="announcement-header">
           <i class="fa-solid fa-bullhorn announcement-icon"></i>
-          <h3>Pengumuman Perusahaan</h3>
+          <h3>TRJA Memo</h3>
         </div>
         <div class="announcement-content">
           <img src="/src/assets/images/avatars/eid.jpg" 
@@ -324,6 +324,7 @@ body {
   margin-bottom: 0.5rem;
   font-weight: 500;
   color: var(--dark-color);
+  text-align: left;
 }
 
 .form-select {

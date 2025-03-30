@@ -55,7 +55,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "about",
     component: () => import("../views/AboutView.vue"),
     meta: {
-      hideHeader: true, // sembunyikan Appheader.vue
+      hideHeader: false, // sembunyikan Appheader.vue
       hideSidebar: true // sembunyikan Sidebar.vue
     }
   },
