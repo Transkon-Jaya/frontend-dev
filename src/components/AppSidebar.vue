@@ -56,7 +56,7 @@ const menus = ref([
     ],
   },
   {
-    title: "Workshop",
+    title: "Operation",
     open: false,
     submenus: [
       { name: "Body Repairs", link: "/workshop-repairs" },

@@ -42,7 +42,7 @@ const dashboardItems = ref([
       { name: "Master Contract", link: "/contract" }
     ]
   },
-  { name: "Workshop", icon: "fas fa-screwdriver-wrench", submenus: [
+  { name: "Operation", icon: "fas fa-screwdriver-wrench", submenus: [
       { name: "Body Repairs", link: "/marketing" },
       { name: "General Repairs", link: "/marketing-e" }
     ]
