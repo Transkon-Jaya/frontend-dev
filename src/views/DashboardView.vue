@@ -48,7 +48,7 @@ const dashboardItems = ref([
     ]
   },
   { name: "Supply Chain", icon: "fas fa-link", submenus: [
-      { name: "Logistics", link: "/about" },
+      { name: "Logistics", link: "/inventory" },
       { name: "Procurement", link: "/supply-chain-procurement" },
       { name: "PO Unit", link: "/po-unit" }
     ]
