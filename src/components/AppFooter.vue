@@ -22,7 +22,7 @@
   width: 100%;
   background: #f5f5f5;
   color: #161616;
-  text-align: right;
+  text-align: center;
   padding: 10px 0; /* Tambah padding untuk estetika */
   position: absolute;
   bottom: 0;
