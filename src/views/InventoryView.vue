@@ -50,24 +50,24 @@
             </tr>
             <tr>
               <th>Item name</th>
-              <th>Image</th>
-              <th>Price</th>
+              <th class="text-center">Image</th>
+              <th class="text-center">Price</th>
               <th class="text-center">Category</th>
-              <th class="text-right">Stock</th>
-              <th>Status</th>
+              <th class="text-center">Stock</th>
+              <th class="text-center">Status</th>
             </tr>
           </thead>
           <tbody>
             
             <tr v-for="product in filteredProducts" :key="product.id" @click="goToDetail(product.id)" class="clickable-row">
               <td>{{ product.name }}</td>
-              <td>
+              <td class="text-center">
                 <img :src="product.image" alt="Product Image" class="product-img" />
               </td>
-              <td>{{ formatRupiah(product.price) }}</td>
+              <td class="text-center">{{ formatRupiah(product.price) }}</td>
               <td class="text-center">{{ product.category }}</td>
-              <td>{{ product.stock }}</td>
-              <td>
+              <td class="text-center">{{ product.stock }}</td>
+              <td class="text-center">
                 <span :class="getStatusClass(product.status)">{{ product.status }}</span>
               </td>
             </tr>
@@ -90,11 +90,11 @@ import { RouterLink } from 'vue-router';
         priceFilter: { operator: ">", value: null },
         stockFilter: { operator: ">", value: null },
         products: [
-          { id: 1, name: "Ban", image: import.meta.env.BASE_URL + "src/assets/images/avatars/ban.jpg", price: 1250000, category: "P1", stock: 10, status: "INSTOCK" },
-          { id: 2, name: "Pin Caliper", image: import.meta.env.BASE_URL + "src/assets/images/avatars/caliper.jpg", price: 120000, category: "P2", stock: 5, status: "INSTOCK" },
-          { id: 3, name: "Piston", image: import.meta.env.BASE_URL + "src/assets/images/avatars/piston.jpg", price: 300000, category: "P2", stock: 2, status: "LOWSTOCK" },
-          { id: 4, name: "Bearing", image: import.meta.env.BASE_URL + "src/assets/images/avatars/bearing.jpg", price: 400000, category: "P1", stock: 8, status: "INSTOCK" },
-          { id: 5, name: "Gear", image: import.meta.env.BASE_URL + "src/assets/images/avatars/Gear.jpg", price: 1500000, category: "P3", stock: 0, status: "OUTSTOCK" }
+          { id: 1, name: "Ban", image: import.meta.env.BASE_URL + "/images/ban.jpg", price: 1250000, category: "P1", stock: 10, status: "INSTOCK" },
+          { id: 2, name: "Pin Caliper", image: import.meta.env.BASE_URL + "/images/caliper.jpg", price: 120000, category: "P2", stock: 5, status: "INSTOCK" },
+          { id: 3, name: "Piston", image: import.meta.env.BASE_URL + "/images/piston.jpg", price: 300000, category: "P2", stock: 2, status: "LOWSTOCK" },
+          { id: 4, name: "Bearing", image: import.meta.env.BASE_URL + "/images/bearing.jpg", price: 400000, category: "P1", stock: 8, status: "INSTOCK" },
+          { id: 5, name: "Gear", image: import.meta.env.BASE_URL + "/images/Gear.jpg", price: 1500000, category: "P3", stock: 0, status: "OUTSTOCK" }
         ]
       };
     },

@@ -47,7 +47,7 @@
         product: {
           id: 1,
           name: "Ban",
-          image: import.meta.env.BASE_URL + "src/assets/images/avatars/ban.jpg",
+          image: import.meta.env.BASE_URL + "/images/ban.jpg",
           price: 1250000,
           category: "P1",
           stock: 10,
