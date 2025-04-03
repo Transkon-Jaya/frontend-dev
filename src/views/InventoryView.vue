@@ -5,12 +5,14 @@
           <h2 class="fw-bold">Inventory</h2>
           <input type="text" class="form-control w-25" placeholder="Search" v-model="searchQuery" />
         </div>
-  
         <table class="table table-hover align-middle">
           <thead class="table-light">
             <tr class="filter-row">
               <th>
-                <input type="text" class="form-control form-control-sm" placeholder="Filter name..." v-model="columnFilters.name" />
+                <input type="text" class="form-control form-control-sm" placeholder="Filter name" v-model="columnFilters.name" />
+              </th>
+              <th>
+                <input type="text" class="form-control form-control-sm" placeholder="Filter Unit" v-model="columnFilters.unit" />
               </th>
               <th></th>
               <th>
@@ -62,7 +64,7 @@
             
             <tr v-for="product in filteredProducts" :key="product.id" @click="goToDetail(product.id)" class="clickable-row">
               <td>{{ product.name }}</td>
-              <td>{{ product.unit }}</td>
+              <td class="text-center">{{ product.unit }}</td>
               <td class="text-center">
                 <img :src="product.image" alt="Product Image" class="product-img" />
               </td>
@@ -108,6 +110,7 @@ import { RouterLink } from 'vue-router';
         return this.products.filter(product => {
           if (this.searchQuery && !product.name.toLowerCase().includes(this.searchQuery.toLowerCase())) return false;
           if (this.columnFilters.name && !product.name.toLowerCase().includes(this.columnFilters.name.toLowerCase())) return false;
+          if (this.columnFilters.unit && !product.unit.toLowerCase().includes(this.columnFilters.unit.toLowerCase())) return false;
           if (this.columnFilters.category && product.category !== this.columnFilters.category) return false;
           if (this.columnFilters.status && product.status !== this.columnFilters.status) return false;
           return true;
