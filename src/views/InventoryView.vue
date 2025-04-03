@@ -49,11 +49,11 @@
               </th>
             </tr>
             <tr>
-              <th>Name</th>
+              <th>Item name</th>
               <th>Image</th>
               <th>Price</th>
-              <th>Category</th>
-              <th>Stock</th>
+              <th class="text-center">Category</th>
+              <th class="text-right">Stock</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -65,7 +65,7 @@
                 <img :src="product.image" alt="Product Image" class="product-img" />
               </td>
               <td>{{ formatRupiah(product.price) }}</td>
-              <td>{{ product.category }}</td>
+              <td class="text-center">{{ product.category }}</td>
               <td>{{ product.stock }}</td>
               <td>
                 <span :class="getStatusClass(product.status)">{{ product.status }}</span>
@@ -144,5 +144,8 @@ import { RouterLink } from 'vue-router';
   .clickable-row:hover {
     background-color: #f1f1f1;
   }
+  .text-center {
+  text-align: center;
+}
   </style>
   

@@ -35,7 +35,7 @@
             </tbody>
           </table>
         </div>
-        <router-link to="/inventory" class="btn btn-primary mt-3">Back to Inventory</router-link>
+        <router-link to="/inventory" class="btn btn-danger mt-3">Back to Inventory</router-link>
       </div>
     </div>
   </template>
