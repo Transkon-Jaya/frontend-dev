@@ -82,6 +82,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
+    path: "/marketing-admin",
+    name: "marketing-admin",
+    component: () => import("../views/MarketingAdminView.vue"),
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
+  },
+  {
     path: "/test",
     name: "test",
     component: () => import("../views/TestView.vue"),
