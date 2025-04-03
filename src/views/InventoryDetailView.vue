@@ -47,9 +47,9 @@
         product: {
           id: 1,
           name: "Ban",
-          image: "https://pixabay.com/get/g6bf130bf74f25c5422a162e79d49387712e20ee88aae279df1cb44486b042a4cdd07bcdf85701f9b15f5ad6baf095310dee7fe0d3e5273e93eaa8c28c348f572a8b2f427a79cf70e6fc655478619ae6c_640.jpg",
+          image: import.meta.env.BASE_URL + "src/assets/images/avatars/ban.jpg",
           price: 1250000,
-          category: "Stok LV",
+          category: "P1",
           stock: 10,
           status: "INSTOCK",
           stockHistory: [
