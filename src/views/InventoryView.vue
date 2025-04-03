@@ -50,6 +50,7 @@
             </tr>
             <tr>
               <th>Item name</th>
+              <th class="text-center">Unit</th>
               <th class="text-center">Image</th>
               <th class="text-center">Price</th>
               <th class="text-center">Category</th>
@@ -61,6 +62,7 @@
             
             <tr v-for="product in filteredProducts" :key="product.id" @click="goToDetail(product.id)" class="clickable-row">
               <td>{{ product.name }}</td>
+              <td>{{ product.unit }}</td>
               <td class="text-center">
                 <img :src="product.image" alt="Product Image" class="product-img" />
               </td>
@@ -90,11 +92,11 @@ import { RouterLink } from 'vue-router';
         priceFilter: { operator: ">", value: null },
         stockFilter: { operator: ">", value: null },
         products: [
-          { id: 1, name: "Ban", image: import.meta.env.BASE_URL + "/images/ban.jpg", price: 1250000, category: "P1", stock: 10, status: "INSTOCK" },
-          { id: 2, name: "Pin Caliper", image: import.meta.env.BASE_URL + "/images/caliper.jpg", price: 120000, category: "P2", stock: 5, status: "INSTOCK" },
-          { id: 3, name: "Piston", image: import.meta.env.BASE_URL + "/images/piston.jpg", price: 300000, category: "P2", stock: 2, status: "LOWSTOCK" },
-          { id: 4, name: "Bearing", image: import.meta.env.BASE_URL + "/images/bearing.jpg", price: 400000, category: "P1", stock: 8, status: "INSTOCK" },
-          { id: 5, name: "Gear", image: import.meta.env.BASE_URL + "/images/Gear.jpg", price: 1500000, category: "P3", stock: 0, status: "OUTSTOCK" }
+          { id: 1, name: "Ban",unit:"Triton 4x4", image: import.meta.env.BASE_URL + "/images/ban.jpg", price: 1250000, category: "P1", stock: 10, status: "INSTOCK" },
+          { id: 2, name: "Pin Caliper", unit:"Strada 2x4", image: import.meta.env.BASE_URL + "/images/caliper.jpg", price: 120000, category: "P2", stock: 5, status: "INSTOCK" },
+          { id: 3, name: "Piston", unit:"Triton  4x4", image: import.meta.env.BASE_URL + "/images/piston.jpg", price: 300000, category: "P2", stock: 2, status: "LOWSTOCK" },
+          { id: 4, name: "Bearing", unit:"Strada 2x4", image: import.meta.env.BASE_URL + "/images/bearing.jpg", price: 400000, category: "P1", stock: 8, status: "INSTOCK" },
+          { id: 5, name: "Gear", unit:"Triton 4x4", image: import.meta.env.BASE_URL + "/images/Gear.jpg", price: 1500000, category: "P3", stock: 0, status: "OUTSTOCK" }
         ]
       };
     },

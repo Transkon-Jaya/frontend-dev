@@ -6,11 +6,12 @@
           <div class="d-flex align-items-center mb-3">
             <img :src="product.image" alt="Product Image" class="detail-img me-3" />
             <div>
-              <p><strong>Name:</strong> {{ product.name }}</p>
-              <p><strong>Price:</strong> {{ formatRupiah(product.price) }}</p>
-              <p><strong>Category:</strong> {{ product.category }}</p>
-              <p><strong>Stock:</strong> {{ product.stock }}</p>
-              <p><strong>Status:</strong> <span :class="getStatusClass(product.status)">{{ product.status }}</span></p>
+              <p class="mb-1"><strong>Name:</strong> {{ product.name }}</p>
+              <p class="mb-1"><strong>Unit:</strong> {{ product.unit }}</p>
+              <p class="mb-1"><strong>Price:</strong> {{ formatRupiah(product.price) }}</p>
+              <p class="mb-1"><strong>Category:</strong> {{ product.category }}</p>
+              <p class="mb-1"><strong>Stock:</strong> {{ product.stock }}</p>
+              <p class="mb-1"><strong>Status:</strong> <span :class="getStatusClass(product.status)">{{ product.status }}</span></p>
             </div>
           </div>
           
@@ -47,6 +48,7 @@
         product: {
           id: 1,
           name: "Ban",
+          unit: "Triton 4x4",
           image: import.meta.env.BASE_URL + "/images/ban.jpg",
           price: 1250000,
           category: "P1",
