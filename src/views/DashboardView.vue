@@ -40,13 +40,14 @@ const dashboardItems = ref([
   { name: "Marketing", icon: "fa-solid fa-chart-simple", submenus: [
       { name: "Master Marketing", link: "/office/marketing" },
       { name: "Master Contract", link: "/contract" },
-      { name: "Biling", link: "/biling" }
+      { name: "Billing", link: "/billing" },
+      { name: "Collection", link: "/collection" }
     ]
   },
   { name: "Operation", icon: "fas fa-screwdriver-wrench", submenus: [
       { name: "Body Repairs", link: "/marketing" },
       { name: "General Repairs", link: "/marketing-e" },
-      { name: "PA", link: "/pa" }
+      { name: "Physical Availability", link: "/pa" }
     ]
   },
   { name: "Supply Chain", icon: "fas fa-link", submenus: [

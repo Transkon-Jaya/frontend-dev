@@ -2,7 +2,7 @@
     <div class="dashboard-container">
       <div class="header">
         <h2>Hallo, <span class="username">{{ user.name }}</span></h2>
-        <button class="logout-btn">Logout 🚪</button>
+        
       </div>
       <div class="portal-grid">
         <div v-for="portal in portals" :key="portal.title" class="portal-card">
@@ -27,6 +27,8 @@
       const portals = ref([
         { title: "Master Marketing", description: "Database untuk marketing.", icon: "", link: "/office/test" },
         { title: "Master Contract", description: "Database untuk contract.", icon: "", link: "/office/test" },
+        { title: "Biling", description: "Database untuk biling.", icon: "", link: "/office/test" },
+        { title: "Collection", description: "Database untuk collection.", icon: "", link: "/office/test" },
       ]);
   
       return { user, portals };
