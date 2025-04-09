@@ -47,7 +47,7 @@
       return {
         product: {
           id: 1,
-          name: "Ban",
+          name: "Tire",
           unit: "Triton 4x4",
           image: import.meta.env.BASE_URL + "/images/ban.jpg",
           price: 1250000,

@@ -89,7 +89,7 @@ import { RouterLink } from 'vue-router';
         priceFilter: { operator: ">", value: null },
         stockFilter: { operator: ">", value: null },
         products: [
-          { id: 1, name: "Ban",unit:"Triton 4x4", price: 1250000, category: "P1", stock: 10, status: "INSTOCK" },
+          { id: 1, name: "Tire",unit:"Triton 4x4", price: 1250000, category: "P1", stock: 10, status: "INSTOCK" },
           { id: 2, name: "Pin Caliper", unit:"Strada 2x4", price: 120000, category: "P2", stock: 5, status: "INSTOCK" },
           { id: 3, name: "Piston", unit:"Triton  4x4", price: 300000, category: "P2", stock: 2, status: "LOWSTOCK" },
           { id: 4, name: "Bearing", unit:"Strada 2x4", price: 400000, category: "P1", stock: 8, status: "INSTOCK" },

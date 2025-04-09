@@ -101,6 +101,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/inventory",
     name: "inventory",
     component: () => import("../views/InventoryView.vue"),
+    meta: { hideSidebar: true }, // sembunyikan Sidebar.vue
   },
   {
     path: "/inventory-detail",
