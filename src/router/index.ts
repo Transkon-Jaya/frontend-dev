@@ -60,9 +60,13 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: "/a-test",
+    path: "/absensi",
     name: "absensi",
     component: () => import("../views/AbsensiView.vue"),
+    meta: {
+      hideHeader: false, // sembunyikan Appheader.vue
+      hideSidebar: true // sembunyikan Sidebar.vue
+    }
   },
   {
     path: "/pengumuman-test",
@@ -73,6 +77,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/fleet",
     name: "fleet",
     component: () => import("../views/FleetView.vue"),
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
+  },
+  {
+    path: "/hr/dashboard",
+    name: "hr-dashboard",
+    component: () => import("../views/hr/HrDashboardView.vue"),
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {

@@ -57,6 +57,7 @@ const dashboardItems = ref([
     ]
   },
   { name: "HR", icon: "fas fa-file-signature", submenus: [
+      { name: "Data Absensi", link: "/hr/dashboard" },
       { name: "Employee Data", link: "/test" },
       { name: "Payroll", link: "/about" },
       { name: "a-test", link: "/a-test"}
