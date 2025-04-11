@@ -2,85 +2,92 @@
     <div class="container mt-4">
       <div class="card p-4 shadow-sm">
         <h2 class="fw-bold">Employee Attendance Detail</h2>
-        <div v-if="product">
+        <div v-if="employee">
           <div class="d-flex align-items-center mb-3">
-            <img :src="product.image" alt="Product Image" class="detail-img me-3" />
+            <img :src="employee.image" alt="Employee Photo" class="detail-img me-3" />
             <div>
-              <p class="mb-1"><strong>Name:</strong> {{ product.name }}</p>
-              <p class="mb-1"><strong>Unit:</strong> {{ product.unit }}</p>
-              <p class="mb-1"><strong>Price:</strong> {{ formatRupiah(product.price) }}</p>
-              <p class="mb-1"><strong>Category:</strong> {{ product.category }}</p>
-              <p class="mb-1"><strong>Stock:</strong> {{ product.stock }}</p>
-              <p class="mb-1"><strong>Status:</strong> <span :class="getStatusClass(product.status)">{{ product.status }}</span></p>
+              <p class="mb-1"><strong>Name:</strong> {{ employee.name }}</p>
+              <p class="mb-1"><strong>Department:</strong> {{ employee.dept }}</p>
+              <p class="mb-1"><strong>Position:</strong> {{ employee.position }}</p>
+              <p class="mb-1"><strong>In:</strong> {{ employee.in }}</p>
+              <p class="mb-1"><strong>Out:</strong> {{ employee.out }}</p>
+              <p class="mb-1"><strong>Status:</strong> 
+                <span :class="getStatusClass(employee.status)">
+                  {{ getStatusText(employee.status) }}
+                </span>
+              </p>
             </div>
           </div>
-          
-          <!-- Stock Transaction Table -->
-          <h4 class="fw-bold mt-4">Employee Attendance History</h4>
-          <table class="table table-bordered mt-3">
+  
+          <!-- Attendance History -->
+            <h4 class="fw-bold mt-4">Attendance History</h4>
+            <table class="table table-bordered mt-3">
             <thead class="table-light">
-              <tr>
+            <tr>
                 <th>Date</th>
-                <th>Name</th>
                 <th>In</th>
                 <th>Out</th>
-              </tr>
+                <th>Status</th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="(entry, index) in product.stockHistory" :key="index">
+            <tr v-for="(entry, index) in employee.attendanceHistory" :key="index">
                 <td>{{ entry.date }}</td>
-                <td :class="getTransactionClass(entry.type)">{{ entry.type }}</td>
-                <td>{{ entry.quantity }}</td>
-                <td>{{ entry.notes }}</td>
-              </tr>
+                <td>{{ entry.in }}</td>
+                <td>{{ entry.out }}</td>
+                <td>
+                <span :class="getStatusClass(entry.status)">
+                    {{ getStatusText(entry.status) }}
+                </span>
+                </td>
+            </tr>
             </tbody>
-          </table>
+            </table>
+
         </div>
-        <router-link to="/inventory" class="btn btn-danger mt-3">Back to Inventory</router-link>
+        <router-link to="/hr/absensi" class="btn btn-danger mt-3">Back to Attendance List</router-link>
       </div>
     </div>
   </template>
   
   <script>
-  import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import userPhoto from "@/assets/images/avatars/10.png";
-
+  import userPhoto from "@/assets/images/avatars/10.png";
+  
   export default {
     data() {
       return {
-        product: {
+        employee: {
           id: 1,
-          name: "Tire",
-          unit: "Triton 4x4",
-          image: import.meta.env.BASE_URL + "/images/ban.jpg",
-          price: 1250000,
-          category: "P1",
-          stock: 10,
-          status: "INSTOCK",
-          stockHistory: [
-            { date: "2025-03-25", type: "IN", quantity: 5, notes: "Restock from supplier" },
-            { date: "2025-03-20", type: "OUT", quantity: 2, notes: "Used for vehicle maintenance" },
-            { date: "2025-03-15", type: "IN", quantity: 8, notes: "Initial stock" }
-          ]
+          name: "Sarah Azahra",
+          dept: "HR",
+          position: "Head Dept",
+          image: userPhoto,
+          in: "07:54",
+          out: "17:01",
+          status: "Done",
+          attendanceHistory: [
+            { date: "2025-04-01", in: "07:54", out: "17:01", status: "Done" },
+            { date: "2025-04-02", in: "07:58", out: "17:05", status: "Done" },
+            { date: "2025-04-03", in: "-", out: "-", status: "Izin" },
+            { date: "2025-04-04", in: "-", out: "-", status: "Belum Absen" },
+            ]
         }
       };
     },
     methods: {
-      formatRupiah(value) {
-        return new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          minimumFractionDigits: 0,
-        }).format(value);
-      },
       getStatusClass(status) {
-        if (status === "INSTOCK") return "badge bg-success";
-        if (status === "LOWSTOCK") return "badge bg-warning text-dark";
-        if (status === "OUTSTOCK") return "badge bg-danger";
+        return {
+          'Done': 'badge bg-success',
+          'Izin': 'badge bg-warning text-dark',
+          'Belum Absen': 'badge bg-danger'
+        }[status] || 'badge bg-secondary';
       },
-      getTransactionClass(type) {
-        return type === "IN" ? "text-success fw-bold" : "text-danger fw-bold";
+      getStatusText(status) {
+        return {
+          'Done': 'Present',
+          'Izin': 'Permission',
+          'Belum Absen': 'Absent'
+        }[status] || status;
       }
     }
   };
@@ -103,3 +110,4 @@ import userPhoto from "@/assets/images/avatars/10.png";
     text-align: center;
   }
   </style>
+  
