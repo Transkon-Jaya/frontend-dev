@@ -33,6 +33,7 @@
 
 <script>
 import axios from "axios";
+import { useUserStore } from "@/stores/user";
 
 export default {
   data() {
@@ -55,6 +56,13 @@ export default {
         console.log(response.data);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user_level", response.data.user_level);
+        const userStore = useUserStore();
+        userStore.setUser({
+          username : this.username,
+          level: response.data.user_level,
+          token : response.data.token,
+        });
+        console.log(userStore.username);
         this.$router.push("/dashboard"); // ✅ Redirect ke DashboardView setelah login sukses
       } catch (err) {
         this.error = err.response?.data?.error || "Login failed";

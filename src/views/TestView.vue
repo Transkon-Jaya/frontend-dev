@@ -6,6 +6,7 @@ import "vue-good-table-next/dist/vue-good-table-next.css";
 import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.css";
 import * as XLSX from "xlsx";
+import { fetchApi } from '@/utils/fetchApi.js';
 
 const apiUrl = "https://www.transkon-rent.com/api/marketing";
 const customerUrl = "https://www.transkon-rent.com/api/customer";
