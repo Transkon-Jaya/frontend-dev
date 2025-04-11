@@ -1,10 +1,5 @@
 <template>
   <div class="app-container">
-  
-       
-      
-   
-
     <!-- Main Content -->
     <main class="main-content">
       <h1 class="app-title">Absensi Karyawan</h1>
@@ -84,19 +79,32 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
+import axios from "axios";
+import { useUserStore } from "@/stores/user";
 
+const userData = useUserStore();
 export default {
   setup() {
-    const ipData = ref({ ipv4: "Mengambil data...", ipv6: "Mengambil data..." });
-    const gpsLocation = ref({ lat: "Mengambil data...", lon: "Mengambil data..." });
-    const ipLocation = ref({ city: "Mengambil data...", country: "Mengambil data...", lat: "", lon: "" });
+    const default_str = "Mengambil data...";
+    const ipData = ref({ ipv4: default_str, ipv6: default_str });
+    const gpsLocation = ref({ lat: default_str, lon: default_str });
+    const ipLocation = ref({ city: default_str, country: default_str, lat: "", lon: "" });
     const gpsMapUrl = ref("");
     const ipMapUrl = ref("");
     const attendanceRecorded = ref(false);
     const selectedLocation = ref("");
     const locations = ref(["HO Balikpapan", "HUB Sanga-sanga", "HUB Melak", "HUB Sangata", "HUB Berau"]);
     const ZOOM_LEVEL = 12;
+
+    const dataLoaded = computed(() => {
+      return (
+        gpsLocation.value.lat !== default_str &&
+        gpsLocation.value.lon !== default_str &&
+        ipData.value.ipv4 !== default_str &&
+        ipData.value.ipv6 !== default_str
+      );
+    });
 
     const fetchIp = async () => {
       try {
@@ -158,27 +166,55 @@ export default {
       fetchIp();
       fetchGPSLocation();
       fetchIPLocation();
+      console.log(userData.username);
+      console.log("test");
     });
 
     return { ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations };
   },
   methods: {
     openCamera() {
+      // return;
       if (!this.selectedLocation) {
         alert("Silakan pilih lokasi absen terlebih dahulu!");
         return;
       }
       document.getElementById("cameraInput").click();
     },
-    handlePhoto(event) {
+    async handlePhoto(event) {
+      // return;
       const file = event.target.files[0];
-      if (file) {
-        this.attendanceRecorded = true;
-        setTimeout(() => {
-          this.attendanceRecorded = false;
-        }, 5000);
+      if (!file) return;
+      try {
+        console.log(this.ipData.ipv4);
+        const formData = new FormData();
+        formData.append("foto", file);
+        formData.append("username", "testing");
+        formData.append("lokasi", this.selectedLocation);
+        formData.append("long", this.gpsLocation.lon);
+        formData.append("lang", this.gpsLocation.lat);
+        formData.append("ip", this.ipData.ipv4);
+
+        const response = await axios.post("https://www.transkon-rent.com/api/absensi", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        });
+
+        const result = response.data;
+        console.log(result);
+
+        if (result.status === "success") {
+          this.attendanceRecorded = true;
+          console.log("Attendance uploaded:", result);
+        } else {
+          console.error("Attendance failed:", result.message);
+        }
+
+      } catch (err) {
+        console.error("Upload error:", err);
       }
-    },
+    }
   },
 };
 </script>

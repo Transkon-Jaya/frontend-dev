@@ -52,7 +52,7 @@
                   height="90"
                   alt="User"
                 />
-                <h5 class="user-name mb-0 fw-bold">Hello, {{ userName }}</h5>
+                <h5 class="user-name mb-0 fw-bold">Hello, {{ userData.username }}</h5>
               </div>
               <hr class="dropdown-divider" />
               <router-link
@@ -92,6 +92,9 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import userPhoto from "@/assets/images/avatars/10.png";
+
+import { useUserStore } from "@/stores/user";
+const userData = useUserStore();
 
 const router = useRouter();
 const isLoggedIn = ref(false);
