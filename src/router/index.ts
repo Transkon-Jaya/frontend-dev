@@ -86,6 +86,18 @@ const routes: Array<RouteRecordRaw> = [
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
+    path: "/hr/absensi",
+    name: "hr-absensi",
+    component: () => import("../views/hr/AbsensiView.vue"),
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
+  },
+  {
+    path: "/hr/absensi/detail",
+    name: "hr-absensi-detail",
+    component: () => import("../views/hr/AbsensiDetailView.vue"),
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
+  },
+  {
     path: "/marketing-dashboard",
     name: "marketing-dashboard",
     component: () => import("../views/Marketing-DashboardView.vue"),

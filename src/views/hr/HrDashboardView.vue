@@ -25,7 +25,8 @@
       });
   
       const portals = ref([
-        { title: "Absensi", description: "Database untuk mengambil data absensi seluruh data karyawan Transkon.", icon: "", link: "#" },
+        { title: "Absensi", description: "Database untuk mengambil data absensi seluruh data karyawan Transkon.", icon: "", link: "/office/hr/absensi" },
+        { title: "Izin", description: "Database untuk melihat karyawan yang izin.", icon: "", link: "#" },
       ]);
   
       return { user, portals };
