@@ -485,12 +485,13 @@ input {
 }
 
 button {
-  padding: 6px 10px;
+  padding: 3px 8px;
   margin: 5px;
   background-color: #28a745;
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 0.25rem;
 }
 button:hover {
   background-color: #218838;
