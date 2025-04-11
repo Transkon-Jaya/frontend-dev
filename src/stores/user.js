@@ -6,6 +6,7 @@ export const useUserStore = defineStore('user', {
     level: '',
     role: '',
     token: localStorage.getItem('jwt') || '',
+    apiBaseUrl: 'https://www.transkon-rent.com/api',
   }),
 
   actions: {

@@ -17,12 +17,15 @@
         </div>
 
         <!-- Attendance Button -->
-        <div class="action-group">
-          <input type="file" accept="image/*" capture="environment" @change="handlePhoto" id="cameraInput" class="hidden-input" />
-          <button @click="openCamera" class="primary-btn" :disabled="!selectedLocation">
-            <i class="fa-solid fa-camera"></i> Absen Sekarang
-          </button>
-        </div>
+        <button 
+          @click="openCamera" 
+          class="primary-btn" 
+          :disabled="!selectedLocation || absensiStatus === 'DONE' || isLoadingAbsensiStatus"
+        >
+          <i class="fa-solid fa-camera"></i>
+          <span v-if="isLoadingAbsensiStatus">Loading...</span>
+          <span v-else>{{ absensiStatus === 'DONE' ? 'Sudah Absen' : absensiStatus === 'OUT' ? 'Absen OUT' : 'Absen IN' }}</span>          
+        </button>
 
         <!-- Attendance Confirmation -->
         <div v-if="attendanceRecorded" class="confirmation-message">
@@ -107,6 +110,30 @@ export default {
       );
     });
 
+    const absensiStatusArray = ref([]);
+    const isLoadingAbsensiStatus = ref(true);
+    const absensiStatus = computed(() => {
+      if (absensiStatusArray.value.length === 0) {
+        return "IN";
+      }
+
+      const latest = absensiStatusArray.value[absensiStatusArray.value.length - 1];
+      if (latest.hour_out && latest.tanggal !== new Date().toISOString().slice(0, 10)) {
+        return "IN";
+      }
+      if (!latest.hour_out || latest.hour_out === "00:00:00") {
+        return "OUT";
+      }
+      return "DONE";
+    });
+    const fetchAbsensiStatus = async () => {
+      const responseStatus = await fetch(userData.apiBaseUrl+"/absensi-status?username="+userData.username);
+      absensiStatusArray.value = await responseStatus.json();
+      isLoadingAbsensiStatus.value = false;
+      console.log(absensiStatusArray.value);
+      console.log(absensiStatus.value);
+    }
+
     const fetchIp = async () => {
       try {
         const responseIPv4 = await fetch("https://api.ipify.org?format=json");
@@ -163,15 +190,14 @@ export default {
       }
     };
 
-    onMounted(() => {
+    onMounted( () => {
+      fetchAbsensiStatus();
       fetchIp();
       fetchGPSLocation();
       fetchIPLocation();
-      console.log(userData.username);
-      console.log("test");
     });
 
-    return { ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations };
+    return { ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations, absensiStatus, isLoadingAbsensiStatus };
   },
   methods: {
     openCamera() {
@@ -190,6 +216,8 @@ export default {
         console.log(this.ipData.ipv4);
         const formData = new FormData();
         formData.append("foto", file);
+        formData.append("id", this.absensiStatus == "IN" ? null : this.absensiStatusArray[0].id);
+        formData.append("status", this.absensiStatus);
         formData.append("username", userData.username);
         formData.append("lokasi", this.selectedLocation);
         formData.append("long", this.gpsLocation.lon);
