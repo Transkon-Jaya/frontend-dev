@@ -81,9 +81,10 @@
 <script>
 import { onMounted, ref, computed } from "vue";
 import axios from "axios";
-import { useUserStore } from "@/stores/user";
 
+import { useUserStore } from "@/stores/user";
 const userData = useUserStore();
+
 export default {
   setup() {
     const default_str = "Mengambil data...";
@@ -189,7 +190,7 @@ export default {
         console.log(this.ipData.ipv4);
         const formData = new FormData();
         formData.append("foto", file);
-        formData.append("username", "testing");
+        formData.append("username", userData.username);
         formData.append("lokasi", this.selectedLocation);
         formData.append("long", this.gpsLocation.lon);
         formData.append("lang", this.gpsLocation.lat);

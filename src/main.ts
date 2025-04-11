@@ -1,7 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { createPinia } from 'pinia'
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import "@/assets/global.css";
 import PrimeVue from 'primevue/config';
 import ToastService from "primevue/toastservice";
@@ -16,6 +17,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 // Buat aplikasi Vue dan gunakan router
 const app = createApp(App);
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);

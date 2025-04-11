@@ -24,5 +24,6 @@ export const useUserStore = defineStore('user', {
       this.token = ''
       localStorage.removeItem('jwt')
     }
-  }
+  },
+  persist: true
 })
