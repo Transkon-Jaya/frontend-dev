@@ -92,7 +92,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
-    path: "/hr/absensi/detail",
+    path: "/hr/absensi-detail",
     name: "hr-absensi-detail",
     component: () => import("../views/hr/AbsensiDetailView.vue"),
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
