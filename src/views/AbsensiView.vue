@@ -17,15 +17,18 @@
         </div>
 
         <!-- Attendance Button -->
-        <button 
-          @click="openCamera" 
-          class="primary-btn" 
-          :disabled="!selectedLocation || absensiStatus === 'DONE' || isLoadingAbsensiStatus"
-        >
-          <i class="fa-solid fa-camera"></i>
-          <span v-if="isLoadingAbsensiStatus">Loading...</span>
-          <span v-else>{{ absensiStatus === 'DONE' ? 'Sudah Absen' : absensiStatus === 'OUT' ? 'Absen OUT' : 'Absen IN' }}</span>          
-        </button>
+        <div class="action-group">
+          <input type="file" accept="image/*" capture="environment" @change="handlePhoto" id="cameraInput" class="hidden-input" />
+            <button 
+              @click="openCamera"
+              class="primary-btn" 
+              :disabled="!selectedLocation || absensiStatus === 'DONE' || isLoadingAbsensiStatus"
+            >
+              <i class="fa-solid fa-camera"></i>
+              <span v-if="isLoadingAbsensiStatus">Loading...</span>
+              <span v-else>{{ absensiStatus === 'DONE' ? 'Sudah Absen' : absensiStatus === 'OUT' ? 'Absen OUT' : 'Absen IN' }}</span>          
+            </button>
+        </div>
 
         <!-- Attendance Confirmation -->
         <div v-if="attendanceRecorded" class="confirmation-message">
@@ -197,7 +200,7 @@ export default {
       fetchIPLocation();
     });
 
-    return { ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations, absensiStatus, isLoadingAbsensiStatus };
+    return { ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations, absensiStatusArray, absensiStatus, isLoadingAbsensiStatus };
   },
   methods: {
     openCamera() {
