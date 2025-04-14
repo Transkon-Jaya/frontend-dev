@@ -7,22 +7,44 @@
       <!-- Attendance Form -->
       <div class="attendance-card">
         <div class="form-group">
-          <label for="location" class="form-label">Lokasi Absensi</label>
+          <!-- <label for="location" class="form-label">Lokasi Absensi</label>
           <select v-model="selectedLocation" id="location" class="form-select">
-            <option value="" disabled selected>Pilih lokasi Anda</option>
+            <option value="" disabled selected>Loading...</option>
             <option v-for="(location, index) in locations" :key="index" :value="location">
-              {{ location }}
+              {{ location.nama }}
             </option>
-          </select>
+          </select> -->
+          <p v-if="locations.length > 0" id="location" class="form-control-plaintext">
+            {{ locations[0].nama }}
+            <!-- {{ userData.baseUrl + absensiStatusArray[0].foto_in }} -->
+          </p>
+          <p v-else class="form-control-plaintext text-muted">Loading location...</p>
+        </div>
+        <div v-if="absensiStatus === 'OUT' || absensiStatus === 'DONE'">
+          <button @click="openModal(absensiStatusArray[0].foto_in)" class="btn btn-primary">Lihat Foto IN</button>
+
+          <ImageModal
+            :imageSrc="imageSrc"
+            :showModal="showModal"
+            @close="closeModal"
+          />
         </div>
 
+        <div v-if="absensiStatus === 'DONE'">
+          <button @click="openModal(absensiStatusArray[0].foto_out)" class="btn btn-primary">Lihat Foto OUT</button>
+          <ImageModal
+            :imageSrc="imageSrc"
+            :showModal="showModal"
+            @close="closeModal"
+          />
+        </div>
         <!-- Attendance Button -->
         <div class="action-group">
-          <input type="file" accept="image/*" capture="environment" @change="handlePhoto" id="cameraInput" class="hidden-input" />
+          <input type="file" accept="image/*" capture="environment" @change="handlePhoto" id="cameraInput" style="display: none;" />
             <button 
               @click="openCamera"
               class="primary-btn" 
-              :disabled="!selectedLocation || absensiStatus === 'DONE' || isLoadingAbsensiStatus"
+              :disabled="!selectedLocation || absensiStatus === 'DONE' || isLoadingAbsensiStatus || !dataLoaded"
             >
               <i class="fa-solid fa-camera"></i>
               <span v-if="isLoadingAbsensiStatus">Loading...</span>
@@ -69,13 +91,22 @@
               <span class="info-value">{{ gpsLocation.lon }}</span>
             </div>
             <div class="info-row">
+              <span class="info-label">Jarak:</span>
+              <span v-if="locations.length > 0" class="info-value">
+                {{ locations[0].distance + " KM" }}
+              </span>
+              <span v-else class="info-value text-muted">
+                Loading distance...
+              </span>
+            </div>
+            <div class="info-row">
               <span class="info-label">IPv4:</span>
               <span class="info-value">{{ ipData.ipv4 }}</span>
             </div>
-            <div class="info-row">
+            <!-- <div class="info-row">
               <span class="info-label">IPv6:</span>
               <span class="info-value">{{ ipData.ipv6 }}</span>
-            </div>
+            </div> -->
             <img :src="gpsMapUrl" alt="GPS Map" v-if="gpsMapUrl" class="map-image" />
           </div>
         </div>
@@ -86,13 +117,18 @@
 
 <script>
 import { onMounted, ref, computed } from "vue";
+import ImageModal from '@/components/ImageModal.vue';
 import axios from "axios";
 
 import { useUserStore } from "@/stores/user";
 const userData = useUserStore();
 
 export default {
+  components: {
+    ImageModal
+  },
   setup() {
+    const fileInput = ref(null);
     const default_str = "Mengambil data...";
     const ipData = ref({ ipv4: default_str, ipv6: default_str });
     const gpsLocation = ref({ lat: default_str, lon: default_str });
@@ -101,27 +137,30 @@ export default {
     const ipMapUrl = ref("");
     const attendanceRecorded = ref(false);
     const selectedLocation = ref("");
-    const locations = ref(["HO Balikpapan", "HUB Sanga-sanga", "HUB Melak", "HUB Sangata", "HUB Berau"]);
+    const locations = ref([]);
     const ZOOM_LEVEL = 12;
 
     const dataLoaded = computed(() => {
       return (
         gpsLocation.value.lat !== default_str &&
         gpsLocation.value.lon !== default_str &&
-        ipData.value.ipv4 !== default_str &&
-        ipData.value.ipv6 !== default_str
+        ipData.value.ipv4 !== default_str
+        // ipData.value.ipv6 !== default_str
       );
     });
 
     const absensiStatusArray = ref([]);
     const isLoadingAbsensiStatus = ref(true);
     const absensiStatus = computed(() => {
-      if (absensiStatusArray.value.length === 0) {
+      const latest = absensiStatusArray.value[0];
+      if (!latest) {
         return "IN";
       }
-
-      const latest = absensiStatusArray.value[absensiStatusArray.value.length - 1];
-      if (latest.hour_out && latest.tanggal !== new Date().toISOString().slice(0, 10)) {
+      const hourIn = latest.hour_in ? new Date(latest.hour_in) : null;
+      const now = new Date();
+      const timeDiffHours = hourIn ? (now - hourIn) / (1000 * 60 * 60) : null;
+      //latest.tanggal !== new Date().toISOString().slice(0, 10)
+      if (latest.hour_out && timeDiffHours >= 16 || timeDiffHours >= 16) {
         return "IN";
       }
       if (!latest.hour_out || latest.hour_out === "00:00:00") {
@@ -132,10 +171,78 @@ export default {
     const fetchAbsensiStatus = async () => {
       const responseStatus = await fetch(userData.apiBaseUrl+"/absensi-status?username="+userData.username);
       absensiStatusArray.value = await responseStatus.json();
+      if(absensiStatusArray.value.length > 0){
+        absensiStatusArray.value[0].foto_in = userData.baseUrl + absensiStatusArray.value[0].foto_in
+        absensiStatusArray.value[0].foto_out = userData.baseUrl + absensiStatusArray.value[0].foto_out
+      }
       isLoadingAbsensiStatus.value = false;
-      console.log(absensiStatusArray.value);
-      console.log(absensiStatus.value);
     }
+
+    const fetchGPSLocation = () => {
+      return new Promise((resolve, reject) => {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              gpsLocation.value.lat = position.coords.latitude.toFixed(6);
+              gpsLocation.value.lon = position.coords.longitude.toFixed(6);
+              gpsMapUrl.value = `https://static-maps.yandex.ru/1.x/?lang=en-US&ll=${gpsLocation.value.lon},${gpsLocation.value.lat}&size=450,300&z=${ZOOM_LEVEL}&l=map&pt=${gpsLocation.value.lon},${gpsLocation.value.lat},pm2rdm`;
+              resolve();
+            },
+            (error) => {
+              console.error("GPS Geolocation Error:", error);
+              gpsLocation.value.lat = "Izin ditolak";
+              gpsLocation.value.lon = "Izin ditolak";
+              reject(error);
+            }
+          );
+        } else {
+          gpsLocation.value.lat = "Tidak didukung";
+          gpsLocation.value.lon = "Tidak didukung";
+          reject(new Error("Geolocation tidak didukung"));
+        }
+      });
+    };
+
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Earth's radius in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) ** 2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return (R * c).toFixed(3);
+    }
+
+    const fetchLokasi = async () => {
+      const responseLokasi = await axios.get(userData.apiBaseUrl + "/hr-lokasi");
+
+      // Map and calculate distance
+      locations.value = responseLokasi.data.map((item) => {
+        const lat = item.latitude ?? null;
+        const lon = item.longitude ?? null;
+        const distance = (lat !== null && lon !== null && gpsLocation.value.lat && gpsLocation.value.lon)
+          ? getDistanceFromLatLonInKm(gpsLocation.value.lat, gpsLocation.value.lon, lat, lon)
+          : Infinity;
+
+        return {
+          nama: item.nama ?? "",
+          lat,
+          lon,
+          distance,
+        };
+      });
+
+      // Sort by nearest
+      locations.value.sort((a, b) => a.distance - b.distance);
+
+      // Optionally set the closest one as selected
+      if (locations.value.length > 0) {
+        selectedLocation.value = locations.value[0];
+      }
+    };
 
     const fetchIp = async () => {
       try {
@@ -143,33 +250,13 @@ export default {
         const dataIPv4 = await responseIPv4.json();
         ipData.value.ipv4 = dataIPv4.ip;
 
-        const responseIPv6 = await fetch("https://api64.ipify.org?format=json");
-        const dataIPv6 = await responseIPv6.json();
-        ipData.value.ipv6 = dataIPv6.ip;
+        // const responseIPv6 = await fetch("https://api64.ipify.org?format=json");
+        // const dataIPv6 = await responseIPv6.json();
+        // ipData.value.ipv6 = dataIPv6.ip;
       } catch (error) {
         console.error("Error fetching IP:", error);
         ipData.value.ipv4 = "Gagal memuat";
-        ipData.value.ipv6 = "Gagal memuat";
-      }
-    };
-
-    const fetchGPSLocation = () => {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            gpsLocation.value.lat = position.coords.latitude.toFixed(6);
-            gpsLocation.value.lon = position.coords.longitude.toFixed(6);
-            gpsMapUrl.value = `https://static-maps.yandex.ru/1.x/?lang=en-US&ll=${gpsLocation.value.lon},${gpsLocation.value.lat}&size=450,300&z=${ZOOM_LEVEL}&l=map&pt=${gpsLocation.value.lon},${gpsLocation.value.lat},pm2rdm`;
-          },
-          (error) => {
-            console.error("GPS Geolocation Error:", error);
-            gpsLocation.value.lat = "Izin ditolak";
-            gpsLocation.value.lon = "Izin ditolak";
-          }
-        );
-      } else {
-        gpsLocation.value.lat = "Tidak didukung";
-        gpsLocation.value.lon = "Tidak didukung";
+        // ipData.value.ipv6 = "Gagal memuat";
       }
     };
 
@@ -193,22 +280,37 @@ export default {
       }
     };
 
-    onMounted( () => {
-      fetchAbsensiStatus();
-      fetchIp();
-      fetchGPSLocation();
-      fetchIPLocation();
+    onMounted( async () => {
+      await fetchGPSLocation();
+      await fetchLokasi();
+      await fetchIp();
+      await fetchAbsensiStatus();
+      // fetchIPLocation();
     });
 
-    return { ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations, absensiStatusArray, absensiStatus, isLoadingAbsensiStatus };
+    return { fileInput, ipData, gpsLocation, ipLocation, gpsMapUrl, ipMapUrl, attendanceRecorded, selectedLocation, locations, absensiStatusArray, absensiStatus, isLoadingAbsensiStatus, dataLoaded };
+  },
+  data() {
+    return {
+      showModal: false,
+      imageSrc: ''
+    };
   },
   methods: {
+    openModal(imageSrc) {
+      this.imageSrc = imageSrc; // Set the image source
+      this.showModal = true; // Open the modal
+    },
+    closeModal() {
+      this.showModal = false; // Close the modal
+    },
     openCamera() {
       // return;
       if (!this.selectedLocation) {
         alert("Silakan pilih lokasi absen terlebih dahulu!");
         return;
       }
+      // this.fileInput.value?.click();
       document.getElementById("cameraInput").click();
     },
     async handlePhoto(event) {
@@ -216,13 +318,13 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
       try {
-        console.log(this.ipData.ipv4);
         const formData = new FormData();
         formData.append("foto", file);
         formData.append("id", this.absensiStatus == "IN" ? null : this.absensiStatusArray[0].id);
         formData.append("status", this.absensiStatus);
         formData.append("username", userData.username);
-        formData.append("lokasi", this.selectedLocation);
+        formData.append("lokasi", this.selectedLocation.nama);
+        formData.append("jarak", this.selectedLocation.distance);
         formData.append("long", this.gpsLocation.lon);
         formData.append("lang", this.gpsLocation.lat);
         formData.append("ip", this.ipData.ipv4);
