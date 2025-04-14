@@ -21,6 +21,17 @@
                 required
               />
             </div>
+            
+            <div class="col-md-12">
+              <label for="phone" class="form-label">E-mail</label>
+              <input
+                v-model="user.phone"
+                type="text"
+                class="form-control"
+                id="email"
+                required
+              />
+            </div>
             <div class="col-md-12">
               <label for="phone" class="form-label">Phone</label>
               <input
@@ -28,6 +39,26 @@
                 type="text"
                 class="form-control"
                 id="phone"
+                required
+              />
+            </div>
+            <div class="col-md-12">
+              <label for="department" class="form-label">Department</label>
+              <input
+                v-model="user.phone"
+                type="text"
+                class="form-control"
+                id="department"
+                required
+              />
+            </div>
+            <div class="col-md-12">
+              <label for="position" class="form-label">Position</label>
+              <input
+                v-model="user.phone"
+                type="text"
+                class="form-control"
+                id="position"
                 required
               />
             </div>
@@ -51,84 +82,7 @@
                 required
               />
             </div>
-            <!-- <div class="col-md-12">
-              <label class="form-label">Gender</label>
-              <div class="d-flex gap-3">
-                <div class="form-check">
-                  <input
-                    v-model="user.gender"
-                    type="radio"
-                    class="form-check-input"
-                    id="male"
-                    value="Male"
-                    required
-                  />
-                  <label class="form-check-label" for="male">Male</label>
-                </div>
-                <div class="form-check">
-                  <input
-                    v-model="user.gender"
-                    type="radio"
-                    class="form-check-input"
-                    id="female"
-                    value="Female"
-                    required
-                  />
-                  <label class="form-check-label" for="female">Female</label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <label for="dob" class="form-label">Date of Birth</label>
-              <input
-                v-model="user.dob"
-                type="date"
-                class="form-control"
-                id="dob"
-                required
-              />
-            </div>
-            <div class="col-md-12 mb-4">
-                <label for="Department" class="form-label">Department</label>
-                <select
-                    v-model="user.Department"
-                    class="form-select"
-                    id="Department"
-                    required
-                >
-                    <option value="">Select a department</option>
-                    <option>Fleet</option>
-                    <option>Marketing</option>
-                    <option>Oprasional</option>
-                    <option>Supplay Chain</option>
-                    <option>HR</option>
-                </select>
-                </div>
-
-          
-            <div class="col-md-12">
-              <label for="address" class="form-label">Address</label>
-              <textarea
-                v-model="user.address"
-                class="form-control"
-                id="address"
-                rows="3"
-                required
-              ></textarea>
-            </div>
-           
-            <div class="col-md-12 mb-4">
-              <div class="form-check">
-                <input
-                  v-model="user.agree"
-                  type="checkbox"
-                  class="form-check-input"
-                  id="agree"
-                  required/>
-                <label class="form-check-label" for="agree">Agree to terms and conditions</label>
-              </div>
-            </div>
-             -->
+            
             <!-- Upload Foto -->
             <div class="col-md-12">
               <label for="photo" class="form-label">Upload Photo</label>
@@ -157,14 +111,13 @@ import { ref } from "vue";
 const user = ref({
   Name: "",
   //lastName: "",
+  email: "",
   phone: "",
+  department: "",
+  position: "",
   userName: "",
   password: "",
-  //gender: "",
-  //dob: "",
- // department: "",
-  //address: "",
-  //agree: false,
+ department: "",
 });
 
 const submitForm = () => {
@@ -175,14 +128,14 @@ const resetForm = () => {
   user.value = {
     Name: "",
     //lastName: "",
+    email: "",
     phone: "",
+    department: "",
+    position: "",
     userName: "",
     password: "",
-    //gender: "",
-    //dob: "",
-    //department: "",
-    //address: "",
-    //agree: false,
+    department: "",
+  
   };
 };
 </script>
