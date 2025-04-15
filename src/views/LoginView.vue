@@ -31,44 +31,52 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
-export default {
-  data() {
-    return {
-      username: "",
-      password: "",
-      error: "",
-    };
-  },
-  methods: {
-    async login() {
-      try {
-        const response = await axios.post(
-          "https://www.transkon-rent.com/api/login",
-          {
-            username: this.username,
-            password: this.password,
-          }
-        );
-        console.log(response.data);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user_level", response.data.user_level);
-        const userStore = useUserStore();
-        userStore.setUser({
-          username : this.username,
-          level: response.data.user_level,
-          token : response.data.token,
-        });
-        console.log(userStore.username);
-        this.$router.push("/dashboard"); // ✅ Redirect ke DashboardView setelah login sukses
-      } catch (err) {
-        this.error = err.response?.data?.error || "Login failed";
-      }
-    },
-  },
+const router = useRouter();
+const userStore = useUserStore();
+
+const username = ref("");
+const password = ref("");
+const error = ref("");
+
+const urlProfile = userStore.apiBaseUrl + "/profile";
+
+const login = async () => {
+  try {
+    const response = await axios.post(userStore.apiBaseUrl + "/login", {
+      username: username.value,
+      password: password.value,
+    });
+    const responseProfile = await axios.get(urlProfile, {
+      params: {
+        username: username.value,
+      },
+    });
+    const profileData = responseProfile.data[0];
+    userStore.setProfile(profileData.name, profileData.foto);
+    // Save to localStorage
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user_level", response.data.user_level);
+
+    // Set user data in Pinia store
+    userStore.setUser({
+      username: username.value,
+      level: response.data.user_level,
+      token: response.data.token,
+    });
+
+    console.log("Login successful:", userStore.username);
+
+    // Redirect to dashboard
+    router.push("/dashboard");
+  } catch (err) {
+    error.value = err.response?.data?.error || "Login failed";
+  }
 };
 </script>
 

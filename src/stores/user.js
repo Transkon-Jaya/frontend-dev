@@ -5,9 +5,12 @@ export const useUserStore = defineStore('user', {
     username: '',
     level: '',
     role: '',
+    name: '',
+    photo: '',
     token: localStorage.getItem('jwt') || '',
     baseUrl: 'https://www.transkon-rent.com',
     apiBaseUrl: 'https://www.transkon-rent.com/api',
+    ppBaseUrl: 'https://www.transkon-rent.com/uploads/profile/',
   }),
 
   actions: {
@@ -17,6 +20,11 @@ export const useUserStore = defineStore('user', {
       this.roles = roles
       this.token = token
       localStorage.setItem('jwt', token)
+    },
+
+    setProfile({ name, photo}) {
+      this.name = name
+      this.photo = this.ppBaseUrl + photo
     },
 
     clearUser() {
