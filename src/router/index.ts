@@ -80,6 +80,18 @@ const routes: Array<RouteRecordRaw> = [
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
+    path: "/de/down-equipment",
+    name: "de-down-equipment",
+    component: () => import("../views/de/DownEquipment.vue"),
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
+  },
+  {
+    path: "/de/admin",
+    name: "admin",
+    component: () => import("../views/de/AdminForm.vue"),
+    meta: { hideHeader: false }, // sembunyikan Appheader.vue
+  },
+  {
     path: "/hr/dashboard",
     name: "hr-dashboard",
     component: () => import("../views/hr/HrDashboardView.vue"),

@@ -24,6 +24,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/absensi">Absensi Testing</router-link>
           </li>
+          <li class="nav-item">
+          <router-link class="nav-link" to="/de/down-equipment">Down Equipment</router-link>
+        </li>
         </ul>
 
         <!-- User Dropdown -->
