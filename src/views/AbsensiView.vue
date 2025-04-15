@@ -172,8 +172,8 @@ export default {
       const responseStatus = await fetch(userData.apiBaseUrl+"/absensi-status?username="+userData.username);
       absensiStatusArray.value = await responseStatus.json();
       if(absensiStatusArray.value.length > 0){
-        absensiStatusArray.value[0].foto_in = userData.baseUrl + absensiStatusArray.value[0].foto_in
-        absensiStatusArray.value[0].foto_out = userData.baseUrl + absensiStatusArray.value[0].foto_out
+        absensiStatusArray.value[0].foto_in = userData.baseUrl + "/uploads/absensi/" + absensiStatusArray.value[0].foto_in
+        absensiStatusArray.value[0].foto_out = userData.baseUrl + "/uploads/absensi/" + absensiStatusArray.value[0].foto_out
       }
       isLoadingAbsensiStatus.value = false;
     }

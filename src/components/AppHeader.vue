@@ -35,7 +35,7 @@
               data-bs-toggle="dropdown"
             >
               <img
-                :src="userPhoto"
+                :src="userData.photo || userPhoto"
                 akt="10.png"
                 class="rounded-circle"
                 width="45"
