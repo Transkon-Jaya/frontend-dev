@@ -86,6 +86,93 @@
           <button class="btn btn-sm btn-outline-primary me-1" @click="currentPage--" :disabled="currentPage === 1">Prev</button>
           <span>Page {{ currentPage }} of {{ totalPages }}</span>
           <button class="btn btn-sm btn-outline-primary ms-1" @click="currentPage++" :disabled="currentPage === totalPages">Next</button>
+        <div><button @click="exportToExcel">Download data</button></div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr class="filter-row">
+                <th>
+                  <input 
+                    type="text" 
+                    class="form-control form-control-sm" 
+                    placeholder="Filter name" 
+                    v-model="columnFilters.name" 
+                  />
+                </th>
+                <th>
+                  <select 
+                    class="form-select form-select-sm" 
+                    v-model="columnFilters.dept"
+                  >
+                    <option value="">All Departments</option>
+                    <option 
+                      v-for="dept in uniqueDepts" 
+                      :value="dept"
+                    >
+                      { dept }
+                    </option>
+                  </select>
+                </th>
+                <th>
+                  <select 
+                    class="form-select form-select-sm" 
+                    v-model="columnFilters.position"
+                  >
+                    <option value="">All Positions</option>
+                    <option 
+                      v-for="position in uniquePositions" 
+                      :value="position"
+                    >{ position }</option>
+                  </select>
+                </th>
+                <th></th>
+                <th></th>
+                <th>
+                  <select 
+                    class="form-select form-select-sm" 
+                    v-model="columnFilters.status"
+                  >
+                    <option value="">All Status</option>
+                    <option value="Done">Present</option>
+                    <option value="Izin">Permission</option>
+                    <option value="Belum Absen">Absent</option>
+                  </select>
+                </th>
+              </tr>
+              <tr>
+                <th>Employee Name</th>
+                <th class="text-center">Department</th>
+                <th class="text-center">Position</th>
+                <th class="text-center">In</th>
+                <th class="text-center">Out</th>
+                <th class="text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+                v-for="employee in filteredEmployees" 
+                :key="employee.id" 
+                @click="goToDetail(employee.id)" 
+                class="clickable-row"
+              >
+                <td>{{ employee.name }}</td>
+                <td class="text-center">{{ employee.dept }}</td>
+                <td class="text-center">{{ employee.position }}</td>
+                <td class="text-center">{{ employee.in }}</td>
+                <td class="text-center">{{ employee.out }}</td>
+                <td class="text-center">
+                  <span :class="getStatusClass(employee.status)">
+                    {{ getStatusText(employee.status) }}
+                  </span>
+                </td>
+              </tr>
+              <tr v-if="filteredEmployees.length === 0">
+                <td colspan="6" class="text-center text-muted py-4">
+                  No employees found matching your criteria
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
