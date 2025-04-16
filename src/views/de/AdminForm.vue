@@ -28,7 +28,7 @@
             </div>
           </div>
   
-          <button type="submit" class="btn btn-primary me-2">
+          <button type="submit" class="btn btn-danger me-2">
             {{ editIndex !== null ? "Update Entry" : "Add Entry" }}
           </button>
           <button type="button" v-if="editIndex !== null" @click="resetForm" class="btn btn-secondary">
