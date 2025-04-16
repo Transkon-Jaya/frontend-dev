@@ -6,24 +6,47 @@ import "vue-good-table-next/dist/vue-good-table-next.css";
 import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.css";
 import * as XLSX from "xlsx";
-import { fetchApi } from '@/utils/fetchApi.js';
 
-const apiUrl = "https://www.transkon-rent.com/api/marketing";
-const customerUrl = "https://www.transkon-rent.com/api/customer";
-const locationUrl = "https://www.transkon-rent.com/api/location";
-const marketingData = ref([]);
-const marketingDataInsert = ref([]);
-const customers = ref([]);
-const locations = ref([]);
-const filteredData = ref([]); // Store filtered data
+import { useUserStore} from "@/stores/user.js";
+const userData = useUserStore();
+
+const props = defineProps({
+  urls: {
+    type: Object,
+    required: true,
+  },
+  fields: {
+    type: Object,
+    required: true,
+  },
+  canInsert: {
+    type: String
+  },
+  canUpload: {
+    type: String
+  }
+});
+
+const canInsert = ref(true);
+const canUpdate = ref(true);
+
+const urls = ref({data : "", dropdowns : {}});
+const fields = ref({checkbox : [], date : [], uneditable : [], toRemove : ["isEditing", "filterable", "vgt_id", "originalIndex"]});
+
+const datas = ref({data : [], dropdowns : []});
 const columns = ref([]);
-const loading = ref(true);
-const error = ref(null);
-const firstColumnWidth = ref("150px");
-const secondColumnWidth = ref("100px");
-const changedRows = ref(new Map()); // Store changed rows
-const changedRowsInsert = ref(new Map());
-const checkboxFields = [
+let insertColumns = ref([]);
+
+urls.value.data = userData.apiBaseUrl + "/marketing";
+urls.value.dropdowns.customer = {url : userData.apiBaseUrl + "/customer", valueField : "name", labelField : "name_customer"};
+urls.value.dropdowns.location = {url : userData.apiBaseUrl + "/location", valueField : "location", labelField : "location"};
+
+fields.value.uneditable.push(
+    "id",
+    "plan_hub"
+);
+
+fields.value.checkbox.push(
   "front_bumper",
   "rear_bumper",
   "roll_bar",
@@ -42,101 +65,142 @@ const checkboxFields = [
   "wheel_nut_indic",
   "tyre_gt_265_65_r17_mt",
   "radio_icom",
-];
-const fieldsToRemove = ["isEditing", "filterable", "vgt_id", "originalIndex"];
-const dateFields = [
-  "inquiry",
-  "date_rfq",
-  "date_deadline_tender",
-  "approval_presdir",
-  "date_Quotation_trja",
-  "date_send_quot",
-  "date_approved_quot",
-  "date_spk_po_customer",
-  "date_master_contract",
-  "date_po_dealer",
-  "date_send_po",
-  "date_delvery_to_customer",
-  "received_date_by_customer",
-  "date_commisioning_finish",
-];
+);
 
-const fetchCustomerData = async () => {
-  try {
-    const response = await axios.get(customerUrl);
-    console.log(typeof response.data);
-    console.log(response.data);
-    if (Array.isArray(response.data)) {
-      customers.value = response.data.map((item) => item.name ?? ""); // Handle missing values
-    } else {
-      console.error("Unexpected API response format:", response.data);
+fields.value.date.push(
+    "inquiry",
+    "date_rfq",
+    "date_deadline_tender",
+    "approval_presdir",
+    "date_Quotation_trja",
+    "date_send_quot",
+    "date_approved_quot",
+    "date_spk_po_customer",
+    "date_master_contract",
+    "date_po_dealer",
+    "date_send_po",
+    "date_delvery_to_customer",
+    "received_date_by_customer",
+    "date_commisioning_finish",
+);
+
+const DataInsert = ref([]);
+const filteredData = ref([]); // Store filtered data
+const loading = ref(true);
+const error = ref(null);
+const firstColumnWidth = ref("150px");
+const secondColumnWidth = ref("100px");
+const changedRows = ref(new Map()); // Store changed rows
+const changedRowsInsert = ref(new Map());
+
+
+const fetchAllDropdowns = async () => {
+  const dropdownKeys = Object.keys(urls.value.dropdowns);
+
+  for (const key of dropdownKeys) {
+    const url = urls.value.dropdowns[key].url;
+    const valueField = urls.value.dropdowns[key].valueField;
+    const labelField = urls.value.dropdowns[key].labelField;
+    
+    try {
+      const response = await axios.get(url);
+
+    //   datas.value.dropdowns[labelField] = response.data.map(item => ({
+    //     value: item[valueField] ?? "",
+    //   }));
+      datas.value.dropdowns[labelField] = response.data.map((item) => item[valueField] ?? "");
+    } catch (error) {
+      console.error(`Failed to fetch ${key} data from ${url}:`, error);
     }
-  } catch (err) {
-    console.error("Failed to fetch customer data:", err);
   }
-}
+  console.log("Fetched dropdown data:", Object.keys(datas.value.dropdowns));
+};
 
-const fetchLocationData = async () => {
-  try {
-    const response = await axios.get(locationUrl);
-    if (Array.isArray(response.data)) {
-      locations.value = response.data.map((item) => item.location ?? ""); // Handle missing values
-    } else {
-      console.error("Unexpected API response format:", response.data);
-    }
-  } catch (err) {
-    console.error("Failed to fetch customer data:", err);
-  }
-}
-
-const fetchMarketingData = async () => {
+const fetchData = async () => {
   try {
     loading.value = true;
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(urls.value.data);
     if (response.data.length > 0) {
-      columns.value = [
+        columns.value = [
         {
-          label: "ID",
-          field: "id",
-          // width: secondColumnWidth.value,
-          width: "80px", // Kurangi ukuran kolom ID
-          minWidth: "100px",
-          sortable: true,
-          filterable: false,
-          editable: false,
-          frozen: true,
-          headerClass: "custom-header",
+            label: "ID",
+            field: "id",
+            width: "80px",
+            minWidth: "100px",
+            sortable: true,
+            filterable: false,
+            editable: false,
+            frozen: true,
+            type: "number",
+            headerClass: "custom-header",
         },
         ...Object.keys(response.data[0])
-          .filter((key) => key !== "id")
-          .map((key) => ({
-            label: key.replace(/_/g, " ").toUpperCase(),
-            field: key,
-            sortable: true,
-            filterable: true,
-            filterOptions: { enabled: true, placeholder: `${key}` },
-            editable: true,
-            type: checkboxFields.includes(key) ? "checkbox" : "text",
-            width:
-              Math.max(
-                ...response.data.map((item) => String(item[key]).length),
-                key.length
-              ) *
-                10 +
-              20 +
-              "px",
-            minWidth: "80px",
-            headerClass: "custome-header",
-          })),
-      ];
-    }
+            .filter((key) => key !== "id")
+            .map((key) => {
+            const isCheckbox = fields.value.checkbox.includes(key);
 
-    marketingData.value = response.data.map((item) => ({
+            const isNumeric =
+                !isCheckbox &&
+                response.data.every((row) => {
+                const value = row[key];
+                return !isNaN(Number(value));
+                });
+
+            return {
+                label: key.replace(/_/g, " ").toUpperCase(),
+                field: key,
+                sortable: true,
+                filterable: true,
+                filterOptions: { enabled: true, placeholder: `${key}` },
+                editable: canUpdate.value && !fields.value.uneditable.includes(key),
+                type: isCheckbox ? "checkbox" : isNumeric ? "number" : "text",
+                width:
+                Math.max(
+                    ...response.data.map((item) => String(item?.[key] ?? "").length),
+                    key.length
+                ) *
+                    10 +
+                20 +
+                "px",
+                minWidth: "80px",
+                headerClass: "custome-header",
+            };
+            }),
+        ];
+    }
+    insertColumns = computed(() =>
+        columns.value.map(col => ({
+            ...col,
+            filterOptions: { enabled: false },
+            sortable: false,
+        }))
+    );
+    datas.value.data = response.data.map((item) => ({
       ...item,
       filterable: true,
     }));
+    datas.value.data = response.data.map((item) => {
+        const formatted = {};
 
-    filteredData.value = [...marketingData.value]; // Initialize filtered data
+        for (const key in item) {
+            const value = item[key];
+
+            if (value === null || value === undefined) {
+            formatted[key] = value;
+            } else {
+            const num = Number(value);
+            formatted[key] = isNaN(num) ? String(value) : num;
+            }
+        }
+
+        // Add your extra field like this
+        formatted.filterable = true;
+
+        return formatted;
+    });
+
+
+    filteredData.value = [...datas.value.data]; // Initialize filtered data
 
     setTimeout(updateColumnWidths, 500);
   } catch (err) {
@@ -151,10 +215,10 @@ const fetchMarketingData = async () => {
 const addNewRow = () => {
   const newRow = {};
   columns.value.forEach((col) => {
-    newRow[col.field] = checkboxFields.includes(col.field) ? 0 : "";
+    newRow[col.field] = fields.value.checkbox.includes(col.field) ? 0 : "";
   });
-  newRow.id = marketingDataInsert.value.length + 1;
-  marketingDataInsert.value.push(newRow);
+  newRow.id = DataInsert.value.length + 1;
+  DataInsert.value.push(newRow);
 };
 
 // Track changes
@@ -173,12 +237,12 @@ const upload = async () => {
     console.log(uploads);
     for (const item of uploads) {
       const uploadItem = { ...item };
-      for (const prop of fieldsToRemove) {
+      for (const prop of fields.value.toRemove) {
         delete uploadItem[prop];
       }
       delete uploadItem["id"];
       console.log(uploadItem);
-      dateFields.forEach((key) => {
+      fields.value.date.forEach((key) => {
         if (
           uploadItem[key] !== null &&
           uploadItem[key] !== undefined &&
@@ -194,10 +258,11 @@ const upload = async () => {
           uploadItem[key] = null;
         }
       });
-      await axios.post(`${apiUrl}`, uploadItem);
-      await fetchMarketingData();
-      alert("Data uploaded Successfully");
-      marketingDataInsert.value = [];
+      console.log(uploadItem);
+      await axios.post(urls.value.data, uploadItem);
+      await fetchData();
+    //   alert("Data uploaded Successfully");
+      DataInsert.value = [];
       changedRowsInsert.value.clear();
     }
   } catch (err) {
@@ -220,10 +285,10 @@ const saveChanges = async () => {
     const updates = Array.from(changedRows.value.values());
     for (const item of updates) {
       const updatedItem = { ...item };
-      for (const prop of fieldsToRemove) {
+      for (const prop of fields.value.toRemove) {
         delete updatedItem[prop];
       }
-      dateFields.forEach((key) => {
+      fields.value.date.forEach((key) => {
         if (
           updatedItem[key] !== null &&
           updatedItem[key] !== undefined &&
@@ -234,7 +299,7 @@ const saveChanges = async () => {
             .split("T")[0]; // Format: YYYY-MM-DD
         }
       });
-      await axios.put(`${apiUrl}`, updatedItem);
+      await axios.put(urls.value.data, updatedItem);
     }
     alert("Changes saved successfully!");
     changedRows.value.clear();
@@ -256,7 +321,7 @@ const exportToExcel = () => {
 // Update filtered data when table is filtered
 const onTableFiltered = (filteredRows) => {
   filteredData.value = filteredRows;
-  console.log("F Len : ", filteredData.value.length, " | M Len : ", marketingData.value.length);
+  console.log("F Len : ", filteredData.value.length, " | M Len : ", datas.value.data.length);
 };
 
 // Dynamic Column Width Calculation
@@ -270,9 +335,10 @@ const updateColumnWidths = () => {
 };
 
 onMounted(() => {
-  fetchMarketingData();
-  fetchCustomerData();
-  fetchLocationData();
+    fetchAllDropdowns();
+    fetchData();
+    console.log(datas.value.dropdowns);
+
   window.addEventListener("resize", updateColumnWidths);
 });
 
@@ -284,21 +350,25 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <h2>Marketing</h2>
-    <button @click="upload">Upload</button>
-    <button @click="addNewRow">Add New Row</button>
+    <button v-if="canInsert" @click="upload">Upload</button>
+    <button v-if="canInsert" @click="addNewRow">Add New Row</button>
     <p v-if="loading">Loading...</p>
     <p v-if="error" class="error">{{ error }}</p>
     <!-- INSERT TABLE -->
     <div class="table-container">
       <vue-good-table
-        v-if="!loading && !error"
-        :columns="columns"
-        :rows="marketingDataInsert"
+        v-if="!loading && !error && canInsert"
+        :columns="insertColumns"
+        :rows="DataInsert"
+        :search-options="{ enabled: false }"
+        :sort-options="{ enabled: false }"
+        :line-numbers="false"
+        :select-options="{ enabled: false }"
         :pagination-options="{ enabled: false }"
         style="overflow-x: auto"
       >
         <template v-slot:table-row="props">
-          <template v-if="checkboxFields.includes(props.column.field)">
+          <template v-if="fields.checkbox.includes(props.column.field)">
             <div class="checkbox-container">
               <input
                 type="checkbox"
@@ -314,29 +384,17 @@ onBeforeUnmount(() => {
               />
             </div>
           </template>
-          <template v-else-if="props.column.field === 'name_customer'">
+          <template v-else-if="Object.keys(datas.dropdowns).includes(props.column.field)">
             <Multiselect
-              v-model="props.row[props.column.field]"
-              :options="customers || []"
-              :searchable="true"
-              :allow-empty="false"
-              placeholder="Select customer..."
-              noResultsText="No matching customers found"
-              @update:modelValue="trackUpload(props.row, props.column.field)"
+                v-model="props.row[props.column.field]"
+                :options="datas.dropdowns[props.column.field] || []"
+                :searchable="true"
+                :allow-empty="false"
+                :placeholder="`Select ${props.column.field}`"
+                @update:modelValue="trackUpload?.(props.row, props.column.field) || trackChanges?.(props.row, props.column.field)"
             />
-          </template>
-          <template v-else-if="props.column.field === 'location'">
-            <Multiselect
-              v-model="props.row[props.column.field]"
-              :options="locations || []"
-              :searchable="true"
-              :allow-empty="false"
-              placeholder="Select location..."
-              noResultsText="No matching customers found"
-              @update:modelValue="trackUpload(props.row, props.column.field)"
-            />
-          </template>
-          <template v-else-if="dateFields.includes(props.column.field)">
+            </template>
+          <template v-else-if="fields.date.includes(props.column.field)">
             <input
               type="date"
               v-model="props.row[props.column.field]"
@@ -363,7 +421,7 @@ onBeforeUnmount(() => {
       <vue-good-table
         v-if="!loading && !error"
         :columns="columns"
-        :rows="marketingData"
+        :rows="datas.data"
         :pagination-options="{ enabled: true, mode: 'pages', perPage: 10 }"
         :search-options="{ enabled: true }"
         :sort-options="{ enabled: true }"
@@ -371,7 +429,7 @@ onBeforeUnmount(() => {
         @on-filtered="onTableFiltered"
       >
         <template v-slot:table-row="props">
-          <template v-if="checkboxFields.includes(props.column.field)">
+          <template v-if="fields.checkbox.includes(props.column.field)">
             <div class="checkbox-container">
               <input
                 type="checkbox"
@@ -382,10 +440,22 @@ onBeforeUnmount(() => {
               />
             </div>
           </template>
-          <template v-else-if="props.column.field === 'name_customer'">
+          <template v-else-if="Object.keys(datas.dropdowns).includes(props.column.field) && canUpdate">
+            <Multiselect
+                v-model="props.row[props.column.field]"
+                :options="datas.dropdowns[props.column.field] || []"
+                :searchable="true"
+                :allow-empty="false"
+                :placeholder="`Select ${props.column.field}`"
+
+                noResultsText="No matching results"
+                @update:modelValue="trackUpload?.(props.row, props.column.field) || trackChanges?.(props.row, props.column.field)"
+            />
+            </template>
+          <!-- <template v-else-if="props.column.field === 'name_customer'">
             <Multiselect
               v-model="props.row[props.column.field]"
-              :options="customers || []"
+              :options="datas.dropdowns.name_customer || []"
               :searchable="true"
               :allow-empty="false"
               placeholder="Select customer..."
@@ -396,15 +466,15 @@ onBeforeUnmount(() => {
           <template v-else-if="props.column.field === 'location'">
             <Multiselect
               v-model="props.row[props.column.field]"
-              :options="locations || []"
+              :options="datas.dropdowns.location || []"
               :searchable="true"
               :allow-empty="true"
               placeholder="Select location..."
               noResultsText="No matching customers found"
               @update:modelValue="trackChanges(props.row, props.column.field)"
             />
-          </template>
-          <template v-else-if="dateFields.includes(props.column.field)">
+          </template> -->
+          <template v-else-if="fields.date.includes(props.column.field)">
             <input
               type="date"
               v-model="props.row[props.column.field]"

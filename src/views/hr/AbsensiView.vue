@@ -33,7 +33,7 @@
                       v-for="dept in uniqueDepts" 
                       :value="dept"
                     >
-                      {{ dept }}
+                      { dept }
                     </option>
                   </select>
                 </th>
@@ -46,9 +46,7 @@
                     <option 
                       v-for="position in uniquePositions" 
                       :value="position"
-                    >
-                      {{ position }}
-                    </option>
+                    >{ position }</option>
                   </select>
                 </th>
                 <th></th>

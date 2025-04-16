@@ -127,6 +127,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/TestView.vue"),
   },
   {
+    path: "/bt",
+    name: "bt",
+    component: () => import("@/components/BigTable.vue"),
+  },
+  {
+    path: "/it",
+    name: "it",
+    component: () => import("@/views/ImportTest.vue"),
+  },
+  {
     path: "/profile",
     name: "profile",
     component: () => import("../views/ProfileView.vue"),
