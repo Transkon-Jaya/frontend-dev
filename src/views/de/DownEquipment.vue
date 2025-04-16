@@ -9,7 +9,7 @@
         </div>
       </div>
   
-      <!-- Work Group -->
+      <!-- Work Group 
       <div class="mb-3">
         <label class="form-label fw-bold">Work Group</label>
         <select class="form-select w-auto">
@@ -17,9 +17,8 @@
           <option>Pama</option>
           <option>THies</option>
           <option>Customer</option>
-          <!-- Add more options if needed -->
         </select>
-      </div>
+      </div> -->
   
       <!-- Status Cards -->
       <div class="row text-center mb-4">
@@ -54,8 +53,8 @@
         <table class="table table-bordered align-middle text-center">
           <thead class="table-primary">
             <tr>
-              <th>Equipment</th>
-              <th>Fleet</th>
+              <th>TK Number</th>
+              <th>Vehicle Type</th>
               <th>Comment</th>
               <th>Down Since</th>
               <th>Estimated Return</th>
@@ -71,6 +70,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div>
+        <router-link to="/de/dashboard" class="btn btn-danger mt-3">Dashboard</router-link>
       </div>
     </div>
   </template>

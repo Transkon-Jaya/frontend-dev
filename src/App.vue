@@ -3,7 +3,7 @@
     <!-- Sidebar hanya muncul jika bukan di halaman login -->
     <Sidebar v-if="showSidebar" />
 
-    <div class="content">
+    <div :class="['content', showHeader ? 'with-header' : 'no-header']">
       <!-- Header hanya muncul jika bukan di halaman login -->
       <AppHeader v-if="showHeader" />
 
@@ -40,14 +40,18 @@ const showSidebar = computed(() => route.path !== "/login" && !route.meta.hideSi
 .content {
   flex: 1;
   position: relative;
-  z-index: 1; /* Pastikan konten tetap bisa diklik saat sidebar ditutup */
-  width: 100%; /* Pastikan mengambil seluruh lebar */
-  padding: 20px; /* Beri padding agar konten tidak menempel */
+  z-index: 1;
+  width: 100%;
+  padding: 20px;
   box-sizing: border-box;
   margin: 0;
 }
 
-.content {
-  padding-top: 100px; /* Adjust based on navbar height */
+.with-header {
+  padding-top: 100px;
+}
+
+.no-header {
+  padding-top: 0px;
 }
 </style>
