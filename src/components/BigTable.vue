@@ -20,69 +20,28 @@ const props = defineProps({
     required: true,
   },
   canInsert: {
-    type: String
+    type: Boolean,
+    default: true
   },
-  canUpload: {
-    type: String
+  canUpdate: {
+    type: Boolean,
+    default: true
   }
 });
 
-const canInsert = ref(true);
-const canUpdate = ref(true);
+const urls = ref();
+const fields = ref();
+const canInsert = ref();
+const canUpdate = ref();
 
-const urls = ref({data : "", dropdowns : {}});
-const fields = ref({checkbox : [], date : [], uneditable : [], toRemove : ["isEditing", "filterable", "vgt_id", "originalIndex"]});
+urls.value = props.urls;
+fields.value = props.fields;
+canInsert.value = props.canInsert;
+canUpdate.value = props.canUpdate;
 
 const datas = ref({data : [], dropdowns : []});
 const columns = ref([]);
 let insertColumns = ref([]);
-
-urls.value.data = userData.apiBaseUrl + "/marketing";
-urls.value.dropdowns.customer = {url : userData.apiBaseUrl + "/customer", valueField : "name", labelField : "name_customer"};
-urls.value.dropdowns.location = {url : userData.apiBaseUrl + "/location", valueField : "location", labelField : "location"};
-
-fields.value.uneditable.push(
-    "id",
-    "plan_hub"
-);
-
-fields.value.checkbox.push(
-  "front_bumper",
-  "rear_bumper",
-  "roll_bar",
-  "rops",
-  "buggy_whip_cw_flag",
-  "body_strip_3m",
-  "foglamp_led_16_mata",
-  "rotary_lamp_led",
-  "rotary_lamp_flash_tube",
-  "lamp_comb_led",
-  "safety_cone",
-  "wheel_chock",
-  "fire_exting",
-  "radio_motorolla",
-  "gps",
-  "wheel_nut_indic",
-  "tyre_gt_265_65_r17_mt",
-  "radio_icom",
-);
-
-fields.value.date.push(
-    "inquiry",
-    "date_rfq",
-    "date_deadline_tender",
-    "approval_presdir",
-    "date_Quotation_trja",
-    "date_send_quot",
-    "date_approved_quot",
-    "date_spk_po_customer",
-    "date_master_contract",
-    "date_po_dealer",
-    "date_send_po",
-    "date_delvery_to_customer",
-    "received_date_by_customer",
-    "date_commisioning_finish",
-);
 
 const DataInsert = ref([]);
 const filteredData = ref([]); // Store filtered data
