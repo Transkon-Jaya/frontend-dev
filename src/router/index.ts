@@ -92,6 +92,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: { hideHeader: false }, // sembunyikan Appheader.vue
   },
   {
+    path: "/de/dashboard",
+    name: "de-dashboard",
+    component: () => import("../views/de/DeDashboard.vue"),
+    meta: {
+      hideHeader: true, // sembunyikan Appheader.vue
+      hideSidebar: true // sembunyikan Sidebar.vue
+    }
+  },
+  {
     path: "/hr/dashboard",
     name: "hr-dashboard",
     component: () => import("../views/hr/HrDashboardView.vue"),

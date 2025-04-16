@@ -7,11 +7,11 @@
         <form @submit.prevent="handleSubmit">
           <div class="row">
             <div class="col-md-4 mb-3">
-              <label class="form-label">Equipment</label>
+              <label class="form-label">TK Number</label>
               <input v-model="form.equipment" type="text" class="form-control" required />
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Fleet</label>
+              <label class="form-label">Vehicle Type</label>
               <input v-model="form.fleet" type="text" class="form-control" required />
             </div>
             <div class="col-md-4 mb-3">
