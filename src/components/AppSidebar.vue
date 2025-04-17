@@ -222,11 +222,15 @@ ul {
   color: white;
   font-weight: bold;
 }
-
+.menu-icon {
+  margin-right: 10px;
+  width: 20px;
+}
 /* Optional: Responsive */
 @media (max-width: 768px) {
   .dashboard {
-    width: 100%;
+    width: 50%;
   }
 }
+
 </style>
