@@ -7,21 +7,23 @@
     <transition name="sidebar-fade">
       <div v-if="showDashboard" class="dashboard" @mouseleave="hideDashboard">
         <h2 class="sidebar-title">
-          <i class="fas fa-truck me-2"></i> Transkon Jaya
+          <i class=""></i> Transkon Jaya
         </h2>
 
         <ul>
           <li v-for="(menu, index) in menus" :key="index">
             <div @click="toggleDropdown(index)" class="menu-title">
-              <i class="fas fa-folder me-2"></i> {{ menu.title }}
-              <i
-                :class="[
-                  'fas',
-                  'chevron-icon',
-                  menu.open ? 'fa-chevron-down rotate' : 'fa-chevron-right'
-                ]"
-              ></i>
-            </div>
+            <i :class="menu.icon + ' menu-icon'"></i>
+            {{ menu.title }}
+            <i
+              :class="[
+                'fas',
+                'chevron-icon',
+                menu.open ? 'fa-chevron-down rotate' : 'fa-chevron-right'
+              ]"
+            ></i>
+          </div>
+
 
             <ul v-if="menu.open" class="submenu">
               <li
@@ -48,6 +50,7 @@ const showDashboard = ref(false);
 const menus = ref([
   {
     title: "Fleet",
+    icon: "fas fa-truck",
     open: false,
     submenus: [
       { name: "List Unit", link: "/list-unit" },
@@ -59,6 +62,7 @@ const menus = ref([
   },
   {
     title: "Marketing",
+    icon: "fas fa-bullhorn",
     open: false,
     submenus: [
       { name: "Master Marketing", link: "/marketing" },
@@ -67,6 +71,7 @@ const menus = ref([
   },
   {
     title: "Operation",
+    icon: "fas fa-tools",
     open: false,
     submenus: [
       { name: "Body Repairs", link: "/workshop-repairs" },
@@ -75,6 +80,7 @@ const menus = ref([
   },
   {
     title: "Supply Chain",
+    icon: "fas fa-boxes",
     open: false,
     submenus: [
       { name: "Logistics", link: "/supply-chain-logistics" },
@@ -83,6 +89,7 @@ const menus = ref([
   },
   {
     title: "HR",
+    icon: "fas fa-user-friends",
     open: false,
     submenus: [
       { name: "Employee Data", link: "/hr-employee" },
@@ -134,7 +141,7 @@ onUnmounted(() => {
   text-align: center;
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   color: #34495e;
 }
 
