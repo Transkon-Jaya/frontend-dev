@@ -336,11 +336,12 @@ export default {
         });
 
         const result = response.data;
-        console.log(result);
+        // console.log(result);
 
         if (result.status === "success") {
           this.attendanceRecorded = true;
-          console.log("Attendance uploaded:", result);
+          // console.log("Attendance uploaded:", result);
+          window.location.reload();
         } else {
           console.error("Attendance failed:", result.message);
         }

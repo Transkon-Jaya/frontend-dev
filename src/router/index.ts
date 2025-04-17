@@ -136,14 +136,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/TestView.vue"),
   },
   {
-    path: "/bt",
-    name: "bt",
-    component: () => import("@/components/BigTable.vue"),
+    path: "/detest",
+    name: "detest",
+    component: () => import("@/views/de/DeTestView.vue"),
   },
   {
     path: "/it",
     name: "it",
-    component: () => import("@/views/ImportTest.vue"),
+    component: () => import("@/views/de/MtTestView.vue"),
+  },
+  {
+    path: "/mt",
+    name: "mt",
+    component: () => import("@/components/MiniTable.vue"),
   },
   {
     path: "/profile",
