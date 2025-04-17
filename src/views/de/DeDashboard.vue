@@ -17,39 +17,8 @@
         </div>
       </div>
   
-      <!-- Charts -->
-      <div class="row g-4 mb-4">
-        <!-- UM Down by Site -->
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">UM Down by Site</h5>
-              <canvas ref="umChart" class="w-100" style="height: 300px;"></canvas>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Status Summary -->
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Status Summary</h5>
-              <canvas ref="statusChart" class="w-100" style="height: 300px;"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Daily Trend -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <h5 class="card-title">Daily Trend</h5>
-          <canvas ref="trendChart" class="w-100" style="height: 300px;"></canvas>
-        </div>
-      </div>
-  
       <!-- Table -->
-      <div class="card">
+      <div class="card mb-4">
         <div class="card-body">
           <h5 class="card-title">Site Summary</h5>
           <div class="table-responsive">
@@ -72,6 +41,38 @@
           </div>
         </div>
       </div>
+      <!-- Charts -->
+      <div class="row g-4 mb-4">
+        <!-- UM Down by Site -->
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">UM Down by Site</h5>
+              <canvas ref="umChart" class="w-100" style="height: 300px;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Summary -->
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Status Summary</h5>
+              <canvas ref="statusChart" class="w-100" style="height: 300px;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Daily Trend -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Daily Trend</h5>
+          <canvas ref="trendChart" class="w-100" style="height: 300px;"></canvas>
+        </div>
+      </div>
+  
+      
     <div>
         <router-link to="/de/down-equipment" class="btn btn-danger mt-3">Back to Down Equipment</router-link>
       </div>
