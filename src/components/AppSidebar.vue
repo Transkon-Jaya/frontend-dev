@@ -141,7 +141,7 @@ onUnmounted(() => {
   text-align: center;
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   color: #34495e;
 }
 
@@ -214,7 +214,7 @@ ul {
 }
 
 .submenu li a:hover {
-  background: #bdc3c7;
+  background: #bb01018e;
 }
 
 .active-link {
