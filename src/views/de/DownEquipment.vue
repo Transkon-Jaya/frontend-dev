@@ -72,7 +72,7 @@
         </table>
       </div>
       <div>
-        <router-link to="/de/dashboard" class="btn btn-danger mt-3">Dashboard</router-link>
+        <router-link to="/de/dashboard" class="btn btn-danger mt-3">Back to Dashboard</router-link>
       </div>
     </div>
   </template>

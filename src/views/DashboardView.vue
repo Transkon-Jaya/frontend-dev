@@ -123,7 +123,7 @@ const toggleDropdown = (index) => {
 }
 .dropdown-menu a:hover {
   text-decoration: underline;
-  background: #e2e6ea;
+  background: #bb01018e;
   border-radius: 4px;
   padding: 5px;
 }

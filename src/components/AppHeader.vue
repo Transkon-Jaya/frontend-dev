@@ -166,4 +166,33 @@ onMounted(checkLoginStatus);
   box-shadow: none !important;
   border: none !important;
 }
+.navbar-nav .nav-link {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+/* Hover effect */
+.navbar-nav .nav-link {
+  position: relative;
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  width: 70%;
+  height: 2px;
+  background-color: #bb01018e;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: left;
+}
+
+.navbar-nav .nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+
 </style>
