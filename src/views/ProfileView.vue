@@ -172,6 +172,8 @@ const AssignForm = () => {
   user.value.department = data.value.department;
   user.value.position = data.value.jabatan;
   user.value.username = userData.username;
+  user.value.password = "";
+  user.value.confirmPassword = "";
 }
 
 const resetForm = () => {
@@ -197,10 +199,9 @@ const submitForm = async () => {
     }
 
     const response = await axios.post(urlProfile, formData);
-
     userData.setProfile(user.value.name, response.data.foto);
-    console.log(userData);
-    console.log("Success:", response.data);
+    // resetForm();
+    window.location.reload();
     alert("Profile updated successfully!");
   } catch (error) {
     console.error("Submit error:", error);

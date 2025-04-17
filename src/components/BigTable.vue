@@ -11,6 +11,10 @@ import { useUserStore} from "@/stores/user.js";
 const userData = useUserStore();
 
 const props = defineProps({
+  settings: {
+    type: Object,
+    required: true,
+  },
   urls: {
     type: Object,
     required: true,
@@ -29,15 +33,19 @@ const props = defineProps({
   }
 });
 
+const settings = ref();
 const urls = ref();
 const fields = ref();
 const canInsert = ref();
 const canUpdate = ref();
 
+settings.value = props.settings;
 urls.value = props.urls;
 fields.value = props.fields;
 canInsert.value = props.canInsert;
 canUpdate.value = props.canUpdate;
+
+fields.value.toRemove = ["isEditing", "filterable", "vgt_id", "originalIndex"];
 
 const datas = ref({data : [], dropdowns : []});
 const columns = ref([]);
@@ -72,7 +80,7 @@ const fetchAllDropdowns = async () => {
       console.error(`Failed to fetch ${key} data from ${url}:`, error);
     }
   }
-  console.log("Fetched dropdown data:", Object.keys(datas.value.dropdowns));
+//   console.log("Fetched dropdown data:", Object.keys(datas.value.dropdowns));
 };
 
 const fetchData = async () => {
@@ -82,19 +90,19 @@ const fetchData = async () => {
     if (response.data.length > 0) {
         columns.value = [
         {
-            label: "ID",
-            field: "id",
+            label: fields.value.firstCol.label,
+            field: fields.value.firstCol.field,
             width: "80px",
             minWidth: "100px",
             sortable: true,
             filterable: false,
             editable: false,
             frozen: true,
-            type: "number",
+            type: fields.value.firstCol.type,
             headerClass: "custom-header",
         },
         ...Object.keys(response.data[0])
-            .filter((key) => key !== "id")
+            .filter((key) => key !== fields.value.firstCol.field)
             .map((key) => {
             const isCheckbox = fields.value.checkbox.includes(key);
 
@@ -258,6 +266,7 @@ const saveChanges = async () => {
             .split("T")[0]; // Format: YYYY-MM-DD
         }
       });
+      console.log(updatedItem);
       await axios.put(urls.value.data, updatedItem);
     }
     alert("Changes saved successfully!");
@@ -308,7 +317,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <h2>Marketing</h2>
+    <h2>{{ settings.title }}</h2>
     <button v-if="canInsert" @click="upload">Upload</button>
     <button v-if="canInsert" @click="addNewRow">Add New Row</button>
     <p v-if="loading">Loading...</p>
