@@ -26,7 +26,7 @@
           <div class="card border-success">
             <div class="card-body">
               <h3 class="text-success">{{ workingCount }}</h3>
-              <p class="fw-bold mb-0">Working</p>
+              <p class="fw-bold mb-0">Unit Rental</p>
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <div class="card border-danger">
             <div class="card-body">
               <h3 class="text-danger">{{ smDownCount }}</h3>
-              <p class="fw-bold mb-0">SM Down</p>
+              <p class="fw-bold mb-0">Physical Availability Unit</p>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <div class="card border-warning">
             <div class="card-body">
               <h3 class="text-warning">{{ umDownCount }}</h3>
-              <p class="fw-bold mb-0">UM Down</p>
+              <p class="fw-bold mb-0">Physical Availability Rental</p>
             </div>
           </div>
         </div>
