@@ -146,7 +146,7 @@ export default {
           umChart.value = new Chart(umChartRef.value.getContext('2d'), {
             type: "bar",
             data: {
-              labels: ["Maluk", "Berau", "Sangata", "Tenggarong"],
+              labels: ["Maluk", "Berau", "Sangata", "Tk pama bekb tenaiq"],
               datasets: [{
                 label: "Unit Down",
                 data: [5, 10, 3, 3],
