@@ -20,7 +20,7 @@
           <!-- Fleet / Vehicle Type -->
           <div class="col-md-4 mb-3">
             <label class="form-label">Vehicle Type</label>
-            <input v-model="form.comment" type="text" class="form-control" required />
+            <input v-model="form.vehicle" type="text" class="form-control" required />
           </div>
 
           <!-- Comment -->

@@ -146,7 +146,7 @@ export default {
           umChart.value = new Chart(umChartRef.value.getContext('2d'), {
             type: "bar",
             data: {
-              labels: ["Site A", "Site B", "Site C", "Site D"],
+              labels: ["Maluk", "Berau", "Sangata", "Tenggarong"],
               datasets: [{
                 label: "Unit Down",
                 data: [5, 10, 3, 3],
@@ -255,5 +255,8 @@ canvas {
 .nav-tabs .nav-link.active {
   background-color: #dc3545;
   color: #fff;
+}
+.nav-tabs .nav-link {
+  color: #000; /* Warna hitam untuk text tab tidak aktif */
 }
 </style>
